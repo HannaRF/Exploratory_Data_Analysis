@@ -1,0 +1,232 @@
+---
+title: "Familiarização com o dplyr - Exercício 1"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Exercícios a seguir retirados de <https://livro.curso-r.com/7-2-dplyr.html>
+
+```{r lib,message=FALSE}
+#install.packages("dplyr")
+library(dplyr)
+```
+
+Utilize a base imdb nos exercícios a seguir.
+
+
+
+```{r read}
+imdb <- readr::read_rds("imdb.rds")
+head(imdb)
+```
+
+### Selecionando colunas
+
+#### 1. Teste aplicar a função glimpse() do pacote {dplyr} à base imdb. O que ela faz?
+
+This is like a transposed version of print: columns run down the page, and data runs across. This makes it possible to see every column in a data frame.
+
+```{r glimpse}
+glimpse(imdb)
+```
+
+
+#### 2. Crie uma tabela com apenas as colunas titulo, diretor, e orcamento. Salve em um objeto chamado imdb_simples.
+
+```{r select}
+imdb_simples <- select(imdb,titulo,ano,nota_imdb)
+head(imdb_simples)
+```
+
+#### 3. Selecione apenas as colunas ator_1, ator_2 e ator_3 usando o ajudante contains().
+
+```{r contains}
+head(select(imdb,contains("ator")))
+```
+
+#### 4. Usando a função select() (e seus ajudantes), escreva códigos que retornem a base IMDB sem as colunas ator_1, ator_2 e ator_3. Escreva todas as soluções diferentes que você conseguir pensar.
+
+```{r ators,results='hide'}
+
+select(imdb,-ator_1,-ator_2,-ator_3)
+
+select(imdb,-(ator_1:ator_3))
+
+select(imdb,-starts_with("ator"))
+
+select(imdb,-contains("ator"))
+
+```
+
+```{r ator,echo=FALSE}
+
+head(select(imdb,-contains("ator")))
+
+```
+
+### Ordenando a base
+
+#### 1. Ordene os filmes em ordem crescente de ano e decrescente de receita e salve em um objeto chamado filmes_ordenados.
+
+```{r}
+
+filmes_ordenados <- arrange(imdb,ano,desc(receita))
+head(filmes_ordenados)
+
+```
+
+#### 2. Selecione apenas as colunas titulo e orcamento e então ordene de forma decrescente pelo orcamento.
+
+```{r}
+
+head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
+
+```
+
+### O pipe em ação
+
+#### 1. Crie um objeto chamado filmes_pb apenas com filmes preto e branco.
+
+```{r}
+
+
+
+```
+
+#### 2. Crie um objeto chamado curtos_legais com filmes de 90 minutos ou menos de duração e nota no imdb maior do que 8.5.
+
+```{r}
+
+
+
+```
+
+#### 3. Retorne tabelas (tibbles) apenas com:
+
+#### a. filmes coloridos anteriores a 1950;
+
+```{r}
+
+
+
+```
+
+#### b. filmes do “Woody Allen” ou do “Wes Anderson”;
+
+```{r}
+
+
+
+```
+
+#### c. filmes do “Steven Spielberg” ordenados de forma decrescente por ano, mostrando apenas as colunas titulo e ano;
+
+```{r}
+
+
+
+```
+
+#### d. filmes que tenham “Action” ou “Comedy” entre os seus gêneros;
+
+```{r}
+
+
+
+```
+
+#### e. filmes que tenham “Action” e “Comedy” entre os seus gêneros e tenha nota_imdb maior que 8;
+
+```{r}
+
+
+
+```
+
+#### f. filmes que não possuem informação tanto de receita quanto de orçamento (isto é, possuem NA em ambas as colunas).
+
+```{r}
+
+
+
+```
+
+### Summarisando a base
+
+#### 1. Calcule a duração média e mediana dos filmes da base.
+
+```{r}
+
+
+
+```
+
+#### 2. Calcule o lucro médio dos filmes com duração menor que 60 minutos.
+
+```{r}
+
+
+
+```
+
+#### 3. Apresente na mesma tabela o lucro médio dos filmes com duracao menor que 60 minutos e o lucro médio dos filmes com duracao maior ou igual a 60 minutos.
+
+```{r}
+
+
+
+```
+
+#### 4. Retorne tabelas (tibbles) apenas com:
+
+#### a. a nota IMDB média dos filmes por tipo de classificacao;
+
+```{r}
+
+
+
+```
+
+#### b. a receita média e mediana dos filmes por ano;
+
+```{r}
+
+
+
+```
+
+#### c. apenas o nome dos diretores com mais de 10 filmes.
+
+```{r}
+
+
+
+```
+
+### Juntando duas bases
+
+#### a. Salve em um novo objeto uma tabela com a nota média dos filmes de cada diretor. Essa tabela deve conter duas colunas (diretor e nota_imdb_media) e cada linha deve ser um diretor diferente.
+
+```{r}
+
+
+
+```
+
+#### b. Use o left_join() para trazer a coluna nota_imdb_media da tabela do item anterior para a tabela imdb original.
+
+```{r}
+
+
+
+```
+
