@@ -20,139 +20,122 @@ Exercícios a seguir retirados de <https://livro.curso-r.com/7-2-dplyr.html>
 library(dplyr)
 ```
 
-Utilize a base imdb nos exercícios a seguir.
+Utilizaremos a base imdb nos exercícios a seguir.
 
 
 
 ```{r read}
 imdb <- readr::read_rds("imdb.rds")
-head(imdb)
 ```
 
-### Selecionando colunas
+# Selecionando colunas
 
-#### 1. Teste aplicar a função glimpse() do pacote {dplyr} à base imdb. O que ela faz?
-
-This is like a transposed version of print: columns run down the page, and data runs across. This makes it possible to see every column in a data frame.
+glimpse() printa uma versão transposta da base.
 
 ```{r glimpse}
 glimpse(imdb)
 ```
 
 
-#### 2. Crie uma tabela com apenas as colunas titulo, diretor, e orcamento. Salve em um objeto chamado imdb_simples.
+2. Crie uma tabela com apenas as colunas titulo, ano e nota_imdb. Salve em um objeto chamado imdb_simples.
 
 ```{r select}
-imdb_simples <- select(imdb,titulo,ano,nota_imdb)
+imdb_simples <- select(imdb, titulo, ano, nota_imdb)
+
 head(imdb_simples)
 ```
 
-#### 3. Selecione apenas as colunas ator_1, ator_2 e ator_3 usando o ajudante contains().
+3. Selecione apenas as colunas ator_1, ator_2 e ator_3 usando o ajudante contains().
 
-```{r contains}
-head(select(imdb,contains("ator")))
+```{r contains,results='hide'}
+select(imdb, contains("ator"))
 ```
 
-#### 4. Usando a função select() (e seus ajudantes), escreva códigos que retornem a base IMDB sem as colunas ator_1, ator_2 e ator_3. Escreva todas as soluções diferentes que você conseguir pensar.
+4. Usando a função select() (e seus ajudantes), escreva códigos que retornem a base IMDB sem as colunas ator_1, ator_2 e ator_3. Escreva todas as soluções diferentes que você conseguir pensar.
 
 ```{r ators,results='hide'}
 
-select(imdb,-ator_1,-ator_2,-ator_3)
+select(imdb, -ator_1, -ator_2, -ator_3)
 
-select(imdb,-(ator_1:ator_3))
+select(imdb, -(ator_1 : ator_3))
 
-select(imdb,-starts_with("ator"))
+select(imdb, -starts_with("ator"))
 
-select(imdb,-contains("ator"))
-
-```
-
-```{r ator,echo=FALSE}
-
-head(select(imdb,-contains("ator")))
+select(imdb, -contains("ator"))
 
 ```
 
-### Ordenando a base
+# Ordenando a base
 
-#### 1. Ordene os filmes em ordem crescente de ano e decrescente de receita e salve em um objeto chamado filmes_ordenados.
+1. Ordene os filmes em ordem decrescente de ano e crescente de duração e salve em um objeto chamado filmes_ordenados.
 
 ```{r}
 
-filmes_ordenados <- arrange(imdb,ano,desc(receita))
+filmes_ordenados <- arrange(imdb, desc(ano), duracao)
+
 head(filmes_ordenados)
 
 ```
 
-#### 2. Selecione apenas as colunas titulo e orcamento e então ordene de forma decrescente pelo orcamento.
+2. Selecione apenas as colunas titulo e orcamento e então ordene de forma decrescente pelo orcamento.
 
 ```{r}
 
-head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
+head(arrange(select(imdb, titulo, orcamento), desc(orcamento)))
 
 ```
 
-### O pipe em ação
+# O pipe em ação
 
-#### 1. Crie um objeto chamado filmes_pb apenas com filmes preto e branco.
+ 1. Crie um objeto chamado filmes_pb apenas com filmes preto e branco.
 
 ```{r}
 
+filmes_pb <- 
+  imdb %>% 
+    filter(cor == "Black and White")
 
+head(filmes_pb)
 
 ```
 
-#### 2. Crie um objeto chamado curtos_legais com filmes de 90 minutos ou menos de duração e nota no imdb maior do que 8.5.
+ 2. Crie um objeto chamado curtos_legais com filmes de 90 minutos ou menos de duração e nota no imdb maior do que 8.5.
 
 ```{r}
 
+curtos_legais <-
+  imdb %>%
+    filter(duracao <= 90, nota_imdb > 8.5)
 
+head(curtos_legais)
 
 ```
 
-#### 3. Retorne tabelas (tibbles) apenas com:
+ 3. Retorne tabelas (tibbles) apenas com:
 
-#### a. filmes coloridos anteriores a 1950;
+ a. filmes coloridos anteriores a 1950;
 
 ```{r}
 
-
+head(
+  imdb %>%
+    filter(cor == "Color", ano < 1950)
+  )
 
 ```
 
-#### b. filmes do “Woody Allen” ou do “Wes Anderson”;
+ b. filmes do “Woody Allen” ou do “Wes Anderson”;
 
 ```{r}
 
-
-
-```
-
-#### c. filmes do “Steven Spielberg” ordenados de forma decrescente por ano, mostrando apenas as colunas titulo e ano;
-
-```{r}
-
-
+head(
+  imdb %>%
+    filter(diretor %in% c("Woody Allen", "Wes Anderson"))
+  )
 
 ```
 
-#### d. filmes que tenham “Action” ou “Comedy” entre os seus gêneros;
-
-```{r}
-
-
-
-```
-
-#### e. filmes que tenham “Action” e “Comedy” entre os seus gêneros e tenha nota_imdb maior que 8;
-
-```{r}
-
-
-
-```
-
-#### f. filmes que não possuem informação tanto de receita quanto de orçamento (isto é, possuem NA em ambas as colunas).
+ c. filmes do “Steven Spielberg” ordenados de forma decrescente por ano, mostrando apenas as colunas titulo e ano;
 
 ```{r}
 
@@ -160,9 +143,15 @@ head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
 
 ```
 
-### Summarisando a base
+d. filmes que tenham “Action” ou “Comedy” entre os seus gêneros;
+a
+```{r}
 
-#### 1. Calcule a duração média e mediana dos filmes da base.
+
+
+```
+
+e. filmes que tenham “Action” e “Comedy” entre os seus gêneros e tenha nota_imdb maior que 8;
 
 ```{r}
 
@@ -170,7 +159,7 @@ head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
 
 ```
 
-#### 2. Calcule o lucro médio dos filmes com duração menor que 60 minutos.
+ f. filmes que não possuem informação tanto de receita quanto de orçamento (isto é, possuem NA em ambas as colunas).
 
 ```{r}
 
@@ -178,7 +167,9 @@ head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
 
 ```
 
-#### 3. Apresente na mesma tabela o lucro médio dos filmes com duracao menor que 60 minutos e o lucro médio dos filmes com duracao maior ou igual a 60 minutos.
+# Summarisando a base
+
+ 1. Calcule a duração média e mediana dos filmes da base.
 
 ```{r}
 
@@ -186,9 +177,7 @@ head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
 
 ```
 
-#### 4. Retorne tabelas (tibbles) apenas com:
-
-#### a. a nota IMDB média dos filmes por tipo de classificacao;
+ 2. Calcule o lucro médio dos filmes com duração menor que 60 minutos.
 
 ```{r}
 
@@ -196,7 +185,7 @@ head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
 
 ```
 
-#### b. a receita média e mediana dos filmes por ano;
+3. Apresente na mesma tabela o lucro médio dos filmes com duracao menor que 60 minutos e o lucro médio dos filmes com duracao maior ou igual a 60 minutos.
 
 ```{r}
 
@@ -204,7 +193,9 @@ head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
 
 ```
 
-#### c. apenas o nome dos diretores com mais de 10 filmes.
+ 4. Retorne tabelas (tibbles) apenas com:
+
+a. a nota IMDB média dos filmes por tipo de classificacao;
 
 ```{r}
 
@@ -212,9 +203,7 @@ head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
 
 ```
 
-### Juntando duas bases
-
-#### a. Salve em um novo objeto uma tabela com a nota média dos filmes de cada diretor. Essa tabela deve conter duas colunas (diretor e nota_imdb_media) e cada linha deve ser um diretor diferente.
+b. a receita média e mediana dos filmes por ano;
 
 ```{r}
 
@@ -222,7 +211,25 @@ head(arrange(select(imdb,titulo,orcamento),desc(orcamento)))
 
 ```
 
-#### b. Use o left_join() para trazer a coluna nota_imdb_media da tabela do item anterior para a tabela imdb original.
+ c. apenas o nome dos diretores com mais de 10 filmes.
+
+```{r}
+
+
+
+```
+
+# Juntando duas bases
+
+ a. Salve em um novo objeto uma tabela com a nota média dos filmes de cada diretor. Essa tabela deve conter duas colunas (diretor e nota_imdb_media) e cada linha deve ser um diretor diferente.
+
+```{r}
+
+
+
+```
+
+ b. Use o left_join() para trazer a coluna nota_imdb_media da tabela do item anterior para a tabela imdb original.
 
 ```{r}
 
