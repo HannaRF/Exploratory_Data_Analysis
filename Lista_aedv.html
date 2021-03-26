@@ -147,7 +147,7 @@ a.sourceLine {
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;imdb.rds&quot;</span>)</span></code></pre></div>
 <div id="selecionando-colunas" class="section level1">
 <h1>Selecionando colunas</h1>
-<p>glimpse() printa uma versão transposta da base.</p>
+<p>a função glimpse() do pacote dplyr printa uma versão transposta da base. É útil para ter uma visão geral das colunas e seus tipos de dados.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(imdb)</span></code></pre></div>
 <pre><code>## Rows: 3,807
 ## Columns: 15
@@ -166,9 +166,7 @@ a.sourceLine {
 ## $ ator_1         &lt;chr&gt; &quot;CCH Pounder&quot;, &quot;Johnny Depp&quot;, &quot;Tom Hardy&quot;, &quot;Daryl Sabar~
 ## $ ator_2         &lt;chr&gt; &quot;Joel David Moore&quot;, &quot;Orlando Bloom&quot;, &quot;Christian Bale&quot;, ~
 ## $ ator_3         &lt;chr&gt; &quot;Wes Studi&quot;, &quot;Jack Davenport&quot;, &quot;Joseph Gordon-Levitt&quot;, ~</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Crie uma tabela com apenas as colunas titulo, ano e nota_imdb. Salve em um objeto chamado imdb_simples.</li>
-</ol>
+<p>Podemos utilizar o select() para criar uma tabela alocada em imdb_simples com apenas as colunas titulo, ano e nota_imdb.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>imdb_simples <span class="ot">&lt;-</span> <span class="fu">select</span>(imdb, titulo, ano, nota_imdb)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(imdb_simples)</span></code></pre></div>
@@ -215,20 +213,21 @@ a.sourceLine {
 </tbody>
 </table>
 </div>
-<ol start="3" style="list-style-type: decimal">
-<li>Selecione apenas as colunas ator_1, ator_2 e ator_3 usando o ajudante contains().</li>
-</ol>
+<p>Com o ajudante contains() podemos selecionar as colunas que contém “ator” no nome, neste caso ator_1, ator_2 e ator_3.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="fu">contains</span>(<span class="st">&quot;ator&quot;</span>))</span></code></pre></div>
-<ol start="4" style="list-style-type: decimal">
-<li>Usando a função select() (e seus ajudantes), escreva códigos que retornem a base IMDB sem as colunas ator_1, ator_2 e ator_3. Escreva todas as soluções diferentes que você conseguir pensar.</li>
-</ol>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span>ator_1, <span class="sc">-</span>ator_2, <span class="sc">-</span>ator_3)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span>(ator_1 <span class="sc">:</span> ator_3))</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ator&quot;</span>))</span>
+<p>Com apenas o conhecimento da função select() e seus ajudantes temos diversas formas de retornar a base sem as colunas ator_1, ator_2 e ator_3.</p>
+<p>A seguir temos alguns exemplos:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># caso quiséssemos retirar muitas colunas, seria inviável</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span>ator_1, <span class="sc">-</span>ator_2, <span class="sc">-</span>ator_3)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># é útil mas devemos nos atentar que as colunas devem ser consecutivas</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span>(ator_1 <span class="sc">:</span> ator_3)) </span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;ator&quot;</span>))</span></code></pre></div>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># não funcionaria se quiséssemos retirar uma coluna &quot;idade_ator&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ator&quot;</span>)) </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># não funcionaria se quiséssemos manter uma coluna &quot;idade_ator&quot;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;ator&quot;</span>))</span></code></pre></div>
 </div>
 <div id="ordenando-a-base" class="section level1">
 <h1>Ordenando a base</h1>
