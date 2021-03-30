@@ -73,17 +73,17 @@ select(imdb, -contains("ator"))
 
 # Ordenando a base
 
-1. Ordene os filmes em ordem decrescente de ano e crescente de duração e salve em um objeto chamado filmes_ordenados.
+Podemos ordenar os filmes utilizando o arrange(), em ordem crescente de duração e decrescente de ano com o auxiliar desc().
 
 ```{r}
 
-filmes_ordenados <- arrange(imdb, desc(ano), duracao)
+filmes_ordenados <- arrange(imdb, duracao, desc(ano))
 
 head(filmes_ordenados)
 
 ```
 
-2. Selecione apenas as colunas titulo e orcamento e então ordene de forma decrescente pelo orcamento.
+É possível então, selecionar colunas e ordenar esta seleção, como mostra o exemplo:
 
 ```{r}
 
@@ -93,7 +93,7 @@ head(arrange(select(imdb, titulo, orcamento), desc(orcamento)))
 
 # O pipe em ação
 
- 1. Crie um objeto chamado filmes_pb apenas com filmes preto e branco.
+Podemos aplicar diversas função a um mesmo objeto utilizando o pipe %>%
 
 ```{r}
 
@@ -105,7 +105,9 @@ head(filmes_pb)
 
 ```
 
- 2. Crie um objeto chamado curtos_legais com filmes de 90 minutos ou menos de duração e nota no imdb maior do que 8.5.
+ Podemos utilizar a função filter() para filtrar as linhas, mantendo assim as que concordem com as condições de entrada.
+ 
+Tal como filmes com 90 minutos ou menos de duração e nota no imdb maior do que 8.5, como no exemplo a seguir:
 
 ```{r}
 
@@ -117,9 +119,7 @@ head(curtos_legais)
 
 ```
 
- 3. Retorne tabelas (tibbles) apenas com:
-
- a. filmes coloridos anteriores a 1950;
+filmes filmes coloridos anteriores a 1950:
 
 ```{r}
 
@@ -130,46 +130,62 @@ head(
 
 ```
 
- b. filmes do “Woody Allen” ou do “Wes Anderson”;
+filmes dirigidos por Stanley Kubrick ou por Quentin Tarantino:
 
 ```{r}
 
 head(
   imdb %>%
-    filter(diretor %in% c("Woody Allen", "Wes Anderson"))
+    filter(diretor %in% c("Stanley Kubrick", "Quentin Tarantino"))
   )
 
 ```
 
- c. filmes do “Steven Spielberg” ordenados de forma decrescente por ano, mostrando apenas as colunas titulo e ano;
+filmes do diretor Guillermo del Toro ou Francis Ford Coppola ordenados de forma decrescente por ano, mostrando apenas as colunas titulo, ano e diretor.
 
 ```{r}
 
 
+head( imdb %>%
+  filter(diretor %in% c("Guillermo del Toro","Francis Ford Coppola")) %>% 
+  select(titulo,ano,diretor) %>% 
+  arrange(desc(ano))
+  )
 
 ```
 
-d. filmes que tenham “Action” ou “Comedy” entre os seus gêneros;
-a
+filmes que tenham “Sci-Fi” ou “Musical” entre os seus gêneros, neste caso usaremos uma função do pacote stringr que procura padrões nas strings.
+
 ```{r}
 
+#install.packages("stringr")
+library(stringr)
 
+head( imdb %>%
+  filter(str_detect(string = generos, pattern = "Animation")
+         | str_detect(string = generos, pattern = "Musical"))
+  )
 
 ```
 
-e. filmes que tenham “Action” e “Comedy” entre os seus gêneros e tenha nota_imdb maior que 8;
+filmes que tenham “Musical” e “Sci-Fi” entre os seus gêneros e tenha nota_imdb maior que 5 :
 
 ```{r}
 
-
+imdb %>%
+  filter(str_detect(string = generos, pattern = "Musical"),
+  str_detect(string = generos, pattern = "Sci-Fi"),
+  nota_imdb > 5)
 
 ```
 
- f. filmes que não possuem informação tanto de receita quanto de orçamento (isto é, possuem NA em ambas as colunas).
+filmes que não possuem informação tanto de receita quanto de orçamento, isto é, possuem NA (not a number) nas colunas.
+
+Podemos utilizar o auxiliar is.na()
 
 ```{r}
 
-
+head( imdb %>% filter(is.na(orcamento),is.na(receita)) )
 
 ```
 

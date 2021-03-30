@@ -131,7 +131,7 @@ a.sourceLine {
 <div class="inner">
 <h1 class="title toc-ignore">Familiarização com o dplyr - Exercício 1</h1>
 <h3 class="author">Hanna Rodrigues Ferreira</h3>
-<h3 class="date">25 março 2021</h3>
+<h3 class="date">30 março 2021</h3>
 </div>
 </header>
 
@@ -231,30 +231,28 @@ a.sourceLine {
 </div>
 <div id="ordenando-a-base" class="section level1">
 <h1>Ordenando a base</h1>
-<ol style="list-style-type: decimal">
-<li>Ordene os filmes em ordem decrescente de ano e crescente de duração e salve em um objeto chamado filmes_ordenados.</li>
-</ol>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>filmes_ordenados <span class="ot">&lt;-</span> <span class="fu">arrange</span>(imdb, <span class="fu">desc</span>(ano), duracao)</span>
+<p>Podemos ordenar os filmes utilizando o arrange(), em ordem crescente de duração e decrescente de ano com o auxiliar desc().</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>filmes_ordenados <span class="ot">&lt;-</span> <span class="fu">arrange</span>(imdb, duracao, <span class="fu">desc</span>(ano))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(filmes_ordenados)</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
-<col width="11%" />
+<col width="16%" />
 <col width="2%" />
 <col width="7%" />
 <col width="3%" />
 <col width="2%" />
-<col width="18%" />
+<col width="19%" />
 <col width="2%" />
-<col width="8%" />
+<col width="6%" />
 <col width="4%" />
 <col width="3%" />
 <col width="4%" />
 <col width="6%" />
 <col width="7%" />
-<col width="10%" />
-<col width="7%" />
+<col width="8%" />
+<col width="6%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -277,113 +275,111 @@ a.sourceLine {
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Kicks</td>
-<td align="right">2016</td>
-<td align="left">Justin Tipping</td>
-<td align="right">80</td>
+<td align="left">The Touch</td>
+<td align="right">2007</td>
+<td align="left">Jane Clark</td>
+<td align="right">7</td>
 <td align="left">Color</td>
-<td align="left">Adventure</td>
+<td align="left">Romance|Short</td>
 <td align="left">USA</td>
-<td align="left">A partir de 18 anos</td>
+<td align="left">Outros</td>
+<td align="right">13000</td>
+<td align="right">NA</td>
+<td align="right">5.2</td>
+<td align="right">30</td>
+<td align="left">Necar Zadegan</td>
+<td align="left">Traci Dinwiddie</td>
+<td align="left">Elea Oberon</td>
+</tr>
+<tr class="even">
+<td align="left">Robot Chicken</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">11</td>
+<td align="left">Color</td>
+<td align="left">Animation|Comedy</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">7.8</td>
-<td align="right">240</td>
-<td align="left">Tina Gilton</td>
-<td align="left">Natalie Stephany Aguilar</td>
-<td align="left">Justin Hall</td>
-</tr>
-<tr class="even">
-<td align="left">Lights Out</td>
-<td align="right">2016</td>
-<td align="left">David F. Sandberg</td>
-<td align="right">81</td>
-<td align="left">Color</td>
-<td align="left">Horror</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">4.9e+06</td>
-<td align="right">56536016</td>
-<td align="right">6.9</td>
-<td align="right">0</td>
-<td align="left">Billy Burke</td>
-<td align="left">Amiah Miller</td>
-<td align="left">Gabriel Bateman</td>
+<td align="right">1000</td>
+<td align="left">Matthew Senreich</td>
+<td align="left">Seth Green</td>
+<td align="left">Breckin Meyer</td>
 </tr>
 <tr class="odd">
-<td align="left">The Little Ponderosa Zoo</td>
-<td align="right">2016</td>
-<td align="left">Luke Dye</td>
-<td align="right">84</td>
+<td align="left">Vessel</td>
+<td align="right">2012</td>
+<td align="left">Clark Baker</td>
+<td align="right">14</td>
 <td align="left">Color</td>
-<td align="left">Family</td>
+<td align="left">Horror|Sci-Fi|Short|Thriller</td>
 <td align="left">USA</td>
 <td align="left">Outros</td>
-<td align="right">5.0e+05</td>
 <td align="right">NA</td>
-<td align="right">5.2</td>
-<td align="right">9</td>
-<td align="left">Mike Stanley</td>
-<td align="left">Jeff Delaney</td>
-<td align="left">Jamison Stalsworth</td>
+<td align="right">NA</td>
+<td align="right">6.2</td>
+<td align="right">14</td>
+<td align="left">Taylor Pigeon</td>
+<td align="left">Alan Pietruszewski</td>
+<td align="left">Whit Spurgeon</td>
 </tr>
 <tr class="even">
-<td align="left">The Shallows</td>
-<td align="right">2016</td>
-<td align="left">Jaume Collet-Serra</td>
-<td align="right">86</td>
+<td align="left">Wal-Mart: The High Cost of Low Price</td>
+<td align="right">2005</td>
+<td align="left">Robert Greenwald</td>
+<td align="right">20</td>
 <td align="left">Color</td>
-<td align="left">Drama|Horror|Thriller</td>
+<td align="left">Documentary</td>
 <td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">1.7e+07</td>
-<td align="right">54257433</td>
+<td align="left">Outros</td>
+<td align="right">1500000</td>
+<td align="right">NA</td>
 <td align="right">6.8</td>
 <td align="right">0</td>
-<td align="left">Óscar Jaenada</td>
-<td align="left">Brett Cullen</td>
-<td align="left">Sedona Legge</td>
+<td align="left">Lee Scott</td>
+<td align="left">Jon Hunter</td>
+<td align="left">Matt Hunter</td>
 </tr>
 <tr class="odd">
-<td align="left">A Beginner’s Guide to Snuff</td>
-<td align="right">2016</td>
-<td align="left">Mitchell Altieri</td>
-<td align="right">87</td>
+<td align="left">Rules of Engagement</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">22</td>
 <td align="left">Color</td>
-<td align="left">Comedy|Horror|Thriller</td>
+<td align="left">Comedy|Romance</td>
 <td align="left">USA</td>
 <td align="left">Outros</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
-<td align="right">8.7</td>
-<td align="right">8</td>
-<td align="left">Kimberley Crossman</td>
-<td align="left">Luke Edwards</td>
-<td align="left">Bree Williamson</td>
+<td align="right">7.3</td>
+<td align="right">0</td>
+<td align="left">Bianca Kajlich</td>
+<td align="left">Oliver Hudson</td>
+<td align="left">Adhir Kalyan</td>
 </tr>
 <tr class="even">
-<td align="left">Yoga Hosers</td>
-<td align="right">2016</td>
-<td align="left">Kevin Smith</td>
-<td align="right">88</td>
-<td align="left">Color</td>
-<td align="left">Comedy|Fantasy|Horror|Thriller</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">5.0e+06</td>
+<td align="left">Sabrina, the Teenage Witch</td>
 <td align="right">NA</td>
-<td align="right">4.8</td>
-<td align="right">0</td>
-<td align="left">Johnny Depp</td>
-<td align="left">Haley Joel Osment</td>
-<td align="left">Natasha Lyonne</td>
+<td align="left">NA</td>
+<td align="right">22</td>
+<td align="left">Color</td>
+<td align="left">Comedy|Family|Fantasy</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">3000000</td>
+<td align="right">NA</td>
+<td align="right">6.6</td>
+<td align="right">990</td>
+<td align="left">Nate Richert</td>
+<td align="left">Soleil Moon Frye</td>
+<td align="left">Caroline Rhea</td>
 </tr>
 </tbody>
 </table>
 </div>
-<ol start="2" style="list-style-type: decimal">
-<li>Selecione apenas as colunas titulo e orcamento e então ordene de forma decrescente pelo orcamento.</li>
-</ol>
+<p>É possível então, selecionar colunas e ordenar esta seleção, como mostra o exemplo:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">arrange</span>(<span class="fu">select</span>(imdb, titulo, orcamento), <span class="fu">desc</span>(orcamento)))</span></code></pre></div>
 <div class="kable-table">
 <table>
@@ -424,9 +420,7 @@ a.sourceLine {
 </div>
 <div id="o-pipe-em-ação" class="section level1">
 <h1>O pipe em ação</h1>
-<ol style="list-style-type: decimal">
-<li>Crie um objeto chamado filmes_pb apenas com filmes preto e branco.</li>
-</ol>
+<p>Podemos aplicar diversas função a um mesmo objeto utilizando o pipe %&gt;%</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>filmes_pb <span class="ot">&lt;-</span> </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span> </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Black and White&quot;</span>)</span>
@@ -576,9 +570,8 @@ a.sourceLine {
 </tbody>
 </table>
 </div>
-<ol start="2" style="list-style-type: decimal">
-<li>Crie um objeto chamado curtos_legais com filmes de 90 minutos ou menos de duração e nota no imdb maior do que 8.5.</li>
-</ol>
+<p>Podemos utilizar a função filter() para filtrar as linhas, mantendo assim as que concordem com as condições de entrada.</p>
+<p>Tal como filmes com 90 minutos ou menos de duração e nota no imdb maior do que 8.5, como no exemplo a seguir:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>curtos_legais <span class="ot">&lt;-</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(duracao <span class="sc">&lt;=</span> <span class="dv">90</span>, nota_imdb <span class="sc">&gt;</span> <span class="fl">8.5</span>)</span>
@@ -728,12 +721,7 @@ a.sourceLine {
 </tbody>
 </table>
 </div>
-<ol start="3" style="list-style-type: decimal">
-<li>Retorne tabelas (tibbles) apenas com:</li>
-</ol>
-<ol style="list-style-type: lower-alpha">
-<li>filmes coloridos anteriores a 1950;</li>
-</ol>
+<p>filmes filmes coloridos anteriores a 1950:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Color&quot;</span>, ano <span class="sc">&lt;</span> <span class="dv">1950</span>)</span>
@@ -882,30 +870,378 @@ a.sourceLine {
 </tbody>
 </table>
 </div>
-<ol start="2" style="list-style-type: lower-alpha">
-<li>filmes do “Woody Allen” ou do “Wes Anderson”;</li>
-</ol>
+<p>filmes dirigidos por Stanley Kubrick ou por Quentin Tarantino:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Woody Allen&quot;</span>, <span class="st">&quot;Wes Anderson&quot;</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Stanley Kubrick&quot;</span>, <span class="st">&quot;Quentin Tarantino&quot;</span>))</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
-<col width="14%" />
-<col width="2%" />
+<col width="8%" />
+<col width="1%" />
+<col width="7%" />
+<col width="3%" />
+<col width="6%" />
+<col width="22%" />
+<col width="1%" />
+<col width="7%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="5%" />
+<col width="7%" />
+<col width="8%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">titulo</th>
+<th align="right">ano</th>
+<th align="left">diretor</th>
+<th align="right">duracao</th>
+<th align="left">cor</th>
+<th align="left">generos</th>
+<th align="left">pais</th>
+<th align="left">classificacao</th>
+<th align="right">orcamento</th>
+<th align="right">receita</th>
+<th align="right">nota_imdb</th>
+<th align="right">likes_facebook</th>
+<th align="left">ator_1</th>
+<th align="left">ator_2</th>
+<th align="left">ator_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Django Unchained</td>
+<td align="right">2012</td>
+<td align="left">Quentin Tarantino</td>
+<td align="right">165</td>
+<td align="left">Color</td>
+<td align="left">Drama|Western</td>
+<td align="left">USA</td>
+<td align="left">A partir de 18 anos</td>
+<td align="right">1.0e+08</td>
+<td align="right">162804648</td>
+<td align="right">8.5</td>
+<td align="right">199000</td>
+<td align="left">Leonardo DiCaprio</td>
+<td align="left">Christoph Waltz</td>
+<td align="left">Ato Essandoh</td>
+</tr>
+<tr class="even">
+<td align="left">Inglourious Basterds</td>
+<td align="right">2009</td>
+<td align="left">Quentin Tarantino</td>
+<td align="right">153</td>
+<td align="left">Color</td>
+<td align="left">Adventure|Drama|War</td>
+<td align="left">USA</td>
+<td align="left">A partir de 18 anos</td>
+<td align="right">7.5e+07</td>
+<td align="right">120523073</td>
+<td align="right">8.3</td>
+<td align="right">42000</td>
+<td align="left">Michael Fassbender</td>
+<td align="left">Brad Pitt</td>
+<td align="left">Christoph Waltz</td>
+</tr>
+<tr class="odd">
+<td align="left">The Hateful Eight</td>
+<td align="right">2015</td>
+<td align="left">Quentin Tarantino</td>
+<td align="right">187</td>
+<td align="left">Color</td>
+<td align="left">Crime|Drama|Mystery|Thriller|Western</td>
+<td align="left">USA</td>
+<td align="left">A partir de 18 anos</td>
+<td align="right">4.4e+07</td>
+<td align="right">54116191</td>
+<td align="right">7.9</td>
+<td align="right">114000</td>
+<td align="left">Craig Stark</td>
+<td align="left">Jennifer Jason Leigh</td>
+<td align="left">Zoë Bell</td>
+</tr>
+<tr class="even">
+<td align="left">Kill Bill: Vol. 1</td>
+<td align="right">2003</td>
+<td align="left">Quentin Tarantino</td>
+<td align="right">111</td>
+<td align="left">Black and White</td>
+<td align="left">Action</td>
+<td align="left">USA</td>
+<td align="left">A partir de 18 anos</td>
+<td align="right">3.0e+07</td>
+<td align="right">70098138</td>
+<td align="right">8.1</td>
+<td align="right">13000</td>
+<td align="left">David Carradine</td>
+<td align="left">Vivica A. Fox</td>
+<td align="left">Chiaki Kuriyama</td>
+</tr>
+<tr class="odd">
+<td align="left">Kill Bill: Vol. 2</td>
+<td align="right">2004</td>
+<td align="left">Quentin Tarantino</td>
+<td align="right">137</td>
+<td align="left">Black and White</td>
+<td align="left">Action|Crime|Drama|Thriller</td>
+<td align="left">USA</td>
+<td align="left">A partir de 18 anos</td>
+<td align="right">3.0e+07</td>
+<td align="right">66207920</td>
+<td align="right">8.0</td>
+<td align="right">0</td>
+<td align="left">Vivica A. Fox</td>
+<td align="left">Michael Parks</td>
+<td align="left">Michael Bowen</td>
+</tr>
+<tr class="even">
+<td align="left">The Shining</td>
+<td align="right">1980</td>
+<td align="left">Stanley Kubrick</td>
+<td align="right">146</td>
+<td align="left">Color</td>
+<td align="left">Drama|Horror</td>
+<td align="left">USA</td>
+<td align="left">A partir de 18 anos</td>
+<td align="right">1.9e+07</td>
+<td align="right">NA</td>
+<td align="right">8.4</td>
+<td align="right">37000</td>
+<td align="left">Scatman Crothers</td>
+<td align="left">Shelley Duvall</td>
+<td align="left">Joe Turkel</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>filmes do diretor Guillermo del Toro ou Francis Ford Coppola ordenados de forma decrescente por ano, mostrando apenas as colunas titulo, ano e diretor.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Guillermo del Toro&quot;</span>,<span class="st">&quot;Francis Ford Coppola&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(titulo,ano,diretor) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ano))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="left">titulo</th>
+<th align="right">ano</th>
+<th align="left">diretor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Pacific Rim</td>
+<td align="right">2013</td>
+<td align="left">Guillermo del Toro</td>
+</tr>
+<tr class="even">
+<td align="left">Twixt</td>
+<td align="right">2011</td>
+<td align="left">Francis Ford Coppola</td>
+</tr>
+<tr class="odd">
+<td align="left">Hellboy II: The Golden Army</td>
+<td align="right">2008</td>
+<td align="left">Guillermo del Toro</td>
+</tr>
+<tr class="even">
+<td align="left">Hellboy</td>
+<td align="right">2004</td>
+<td align="left">Guillermo del Toro</td>
+</tr>
+<tr class="odd">
+<td align="left">Blade II</td>
+<td align="right">2002</td>
+<td align="left">Guillermo del Toro</td>
+</tr>
+<tr class="even">
+<td align="left">The Rainmaker</td>
+<td align="right">1997</td>
+<td align="left">Francis Ford Coppola</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>filmes que tenham “Sci-Fi” ou “Musical” entre os seus gêneros, neste caso usaremos uma função do pacote stringr que procura padrões nas strings.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;stringr&quot;)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Animation&quot;</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>         <span class="sc">|</span> <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="kable-table">
+<table>
+<colgroup>
+<col width="7%" />
+<col width="1%" />
 <col width="5%" />
 <col width="3%" />
 <col width="2%" />
-<col width="24%" />
+<col width="34%" />
+<col width="1%" />
+<col width="5%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="5%" />
+<col width="6%" />
+<col width="7%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">titulo</th>
+<th align="right">ano</th>
+<th align="left">diretor</th>
+<th align="right">duracao</th>
+<th align="left">cor</th>
+<th align="left">generos</th>
+<th align="left">pais</th>
+<th align="left">classificacao</th>
+<th align="right">orcamento</th>
+<th align="right">receita</th>
+<th align="right">nota_imdb</th>
+<th align="right">likes_facebook</th>
+<th align="left">ator_1</th>
+<th align="left">ator_2</th>
+<th align="left">ator_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Tangled</td>
+<td align="right">2010</td>
+<td align="left">Nathan Greno</td>
+<td align="right">100</td>
+<td align="left">Color</td>
+<td align="left">Adventure|Animation|Comedy|Family|Fantasy|Musical|Romance</td>
+<td align="left">USA</td>
+<td align="left">Livre</td>
+<td align="right">2.60e+08</td>
+<td align="right">200807262</td>
+<td align="right">7.8</td>
+<td align="right">29000</td>
+<td align="left">Brad Garrett</td>
+<td align="left">Donna Murphy</td>
+<td align="left">M.C. Gainey</td>
+</tr>
+<tr class="even">
+<td align="left">Monsters University</td>
+<td align="right">2013</td>
+<td align="left">Dan Scanlon</td>
+<td align="right">104</td>
+<td align="left">Color</td>
+<td align="left">Adventure|Animation|Comedy|Family|Fantasy</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">2.00e+08</td>
+<td align="right">268488329</td>
+<td align="right">7.3</td>
+<td align="right">44000</td>
+<td align="left">Steve Buscemi</td>
+<td align="left">Tyler Labine</td>
+<td align="left">Sean Hayes</td>
+</tr>
+<tr class="odd">
+<td align="left">Cars 2</td>
+<td align="right">2011</td>
+<td align="left">John Lasseter</td>
+<td align="right">106</td>
+<td align="left">Color</td>
+<td align="left">Adventure|Animation|Comedy|Family|Sport</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">2.00e+08</td>
+<td align="right">191450875</td>
+<td align="right">6.3</td>
+<td align="right">10000</td>
+<td align="left">Joe Mantegna</td>
+<td align="left">Thomas Kretschmann</td>
+<td align="left">Eddie Izzard</td>
+</tr>
+<tr class="even">
+<td align="left">Toy Story 3</td>
+<td align="right">2010</td>
+<td align="left">Lee Unkrich</td>
+<td align="right">103</td>
+<td align="left">Color</td>
+<td align="left">Adventure|Animation|Comedy|Family|Fantasy</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">2.00e+08</td>
+<td align="right">414984497</td>
+<td align="right">8.3</td>
+<td align="right">30000</td>
+<td align="left">Tom Hanks</td>
+<td align="left">John Ratzenberger</td>
+<td align="left">Don Rickles</td>
+</tr>
+<tr class="odd">
+<td align="left">The Good Dinosaur</td>
+<td align="right">2015</td>
+<td align="left">Peter Sohn</td>
+<td align="right">93</td>
+<td align="left">Color</td>
+<td align="left">Adventure|Animation|Comedy|Family|Fantasy</td>
+<td align="left">USA</td>
+<td align="left">Livre</td>
+<td align="right">NA</td>
+<td align="right">123070338</td>
+<td align="right">6.8</td>
+<td align="right">20000</td>
+<td align="left">A.J. Buckley</td>
+<td align="left">Jack McGraw</td>
+<td align="left">Peter Sohn</td>
+</tr>
+<tr class="even">
+<td align="left">Brave</td>
+<td align="right">2012</td>
+<td align="left">Mark Andrews</td>
+<td align="right">93</td>
+<td align="left">Color</td>
+<td align="left">Adventure|Animation|Comedy|Family|Fantasy</td>
+<td align="left">USA</td>
+<td align="left">Livre</td>
+<td align="right">1.85e+08</td>
+<td align="right">237282182</td>
+<td align="right">7.2</td>
+<td align="right">39000</td>
+<td align="left">Kelly Macdonald</td>
+<td align="left">John Ratzenberger</td>
+<td align="left">Julie Walters</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>filmes que tenham “Musical” e “Sci-Fi” entre os seus gêneros e tenha nota_imdb maior que 5 :</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Sci-Fi&quot;</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  nota_imdb <span class="sc">&gt;</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="kable-table">
+<table>
+<colgroup>
+<col width="11%" />
+<col width="2%" />
+<col width="8%" />
+<col width="3%" />
+<col width="6%" />
+<col width="18%" />
 <col width="2%" />
 <col width="8%" />
 <col width="4%" />
 <col width="3%" />
 <col width="4%" />
 <col width="6%" />
-<col width="5%" />
-<col width="7%" />
+<col width="6%" />
+<col width="6%" />
 <col width="9%" />
 </colgroup>
 <thead>
@@ -929,116 +1265,206 @@ a.sourceLine {
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">The Life Aquatic with Steve Zissou</td>
-<td align="right">2004</td>
-<td align="left">Wes Anderson</td>
-<td align="right">119</td>
+<td align="left">Little Shop of Horrors</td>
+<td align="right">1986</td>
+<td align="left">Frank Oz</td>
+<td align="right">102</td>
 <td align="left">Color</td>
-<td align="left">Adventure|Comedy|Drama</td>
-<td align="left">USA</td>
-<td align="left">A partir de 18 anos</td>
-<td align="right">5.0e+07</td>
-<td align="right">24006726</td>
-<td align="right">7.3</td>
-<td align="right">0</td>
-<td align="left">Bill Murray</td>
-<td align="left">Anjelica Huston</td>
-<td align="left">Matthew Gray Gubler</td>
-</tr>
-<tr class="even">
-<td align="left">Fantastic Mr. Fox</td>
-<td align="right">2009</td>
-<td align="left">Wes Anderson</td>
-<td align="right">87</td>
-<td align="left">Color</td>
-<td align="left">Adventure|Animation|Comedy|Crime|Family</td>
-<td align="left">USA</td>
-<td align="left">Livre</td>
-<td align="right">4.0e+07</td>
-<td align="right">20999103</td>
-<td align="right">7.8</td>
-<td align="right">15000</td>
-<td align="left">Bill Murray</td>
-<td align="left">Meryl Streep</td>
-<td align="left">Helen McCrory</td>
-</tr>
-<tr class="odd">
-<td align="left">The Grand Budapest Hotel</td>
-<td align="right">2014</td>
-<td align="left">Wes Anderson</td>
-<td align="right">99</td>
-<td align="left">Color</td>
-<td align="left">Adventure|Comedy|Crime|Drama</td>
-<td align="left">USA</td>
-<td align="left">A partir de 18 anos</td>
-<td align="right">2.5e+07</td>
-<td align="right">59073773</td>
-<td align="right">8.1</td>
-<td align="right">149000</td>
-<td align="left">Bill Murray</td>
-<td align="left">Tom Wilkinson</td>
-<td align="left">F. Murray Abraham</td>
-</tr>
-<tr class="even">
-<td align="left">The Royal Tenenbaums</td>
-<td align="right">2001</td>
-<td align="left">Wes Anderson</td>
-<td align="right">110</td>
-<td align="left">Color</td>
-<td align="left">Comedy|Drama</td>
-<td align="left">USA</td>
-<td align="left">A partir de 18 anos</td>
-<td align="right">2.1e+07</td>
-<td align="right">52353636</td>
-<td align="right">7.6</td>
-<td align="right">0</td>
-<td align="left">Bill Murray</td>
-<td align="left">Anjelica Huston</td>
-<td align="left">Seymour Cassel</td>
-</tr>
-<tr class="odd">
-<td align="left">The Curse of the Jade Scorpion</td>
-<td align="right">2001</td>
-<td align="left">Woody Allen</td>
-<td align="right">103</td>
-<td align="left">Color</td>
-<td align="left">Comedy|Crime|Mystery|Romance</td>
+<td align="left">Comedy|Horror|Musical|Sci-Fi</td>
 <td align="left">USA</td>
 <td align="left">A partir de 13 anos</td>
-<td align="right">2.6e+07</td>
-<td align="right">7496522</td>
-<td align="right">6.8</td>
-<td align="right">826</td>
-<td align="left">Woody Allen</td>
-<td align="left">Elizabeth Berkley</td>
-<td align="left">Peter Gerety</td>
+<td align="right">2.5e+07</td>
+<td align="right">38747385</td>
+<td align="right">6.9</td>
+<td align="right">0</td>
+<td align="left">Bill Murray</td>
+<td align="left">Jim Belushi</td>
+<td align="left">Tisha Campbell-Martin</td>
 </tr>
 <tr class="even">
-<td align="left">To Rome with Love</td>
-<td align="right">2012</td>
-<td align="left">Woody Allen</td>
-<td align="right">112</td>
+<td align="left">Repo! The Genetic Opera</td>
+<td align="right">2008</td>
+<td align="left">Darren Lynn Bousman</td>
+<td align="right">150</td>
 <td align="left">Color</td>
-<td align="left">Comedy|Romance</td>
+<td align="left">Horror|Musical|Sci-Fi</td>
 <td align="left">USA</td>
 <td align="left">A partir de 18 anos</td>
-<td align="right">1.7e+07</td>
-<td align="right">16684352</td>
-<td align="right">6.3</td>
-<td align="right">18000</td>
-<td align="left">Ornella Muti</td>
-<td align="left">Judy Davis</td>
-<td align="left">Alessandra Mastronardi</td>
+<td align="right">8.5e+06</td>
+<td align="right">140244</td>
+<td align="right">6.7</td>
+<td align="right">8000</td>
+<td align="left">Alexa PenaVega</td>
+<td align="left">Paris Hilton</td>
+<td align="left">Paul Sorvino</td>
+</tr>
+<tr class="odd">
+<td align="left">The Ghastly Love of Johnny X</td>
+<td align="right">2012</td>
+<td align="left">Paul Bunnell</td>
+<td align="right">106</td>
+<td align="left">Black and White</td>
+<td align="left">Comedy|Fantasy|Musical|Sci-Fi</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">2.0e+06</td>
+<td align="right">2436</td>
+<td align="right">5.7</td>
+<td align="right">655</td>
+<td align="left">Kate Maberly</td>
+<td align="left">Kevin McCarthy</td>
+<td align="left">Paul Williams</td>
 </tr>
 </tbody>
 </table>
 </div>
-<ol start="3" style="list-style-type: lower-alpha">
-<li><p>filmes do “Steven Spielberg” ordenados de forma decrescente por ano, mostrando apenas as colunas titulo e ano;</p></li>
-<li><p>filmes que tenham “Action” ou “Comedy” entre os seus gêneros; a</p></li>
-<li><p>filmes que tenham “Action” e “Comedy” entre os seus gêneros e tenha nota_imdb maior que 8;</p></li>
-<li><p>filmes que não possuem informação tanto de receita quanto de orçamento (isto é, possuem NA em ambas as colunas).</p></li>
-</ol>
+<p>filmes que não possuem informação tanto de receita quanto de orçamento ,isto é, possuem NA (not a number) nas colunas.</p>
+<p>Podemos utilizar o auxiliar is.na()</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(orcamento),<span class="fu">is.na</span>(receita)) )</span></code></pre></div>
+<div class="kable-table">
+<table>
+<colgroup>
+<col width="5%" />
+<col width="1%" />
+<col width="7%" />
+<col width="3%" />
+<col width="6%" />
+<col width="27%" />
+<col width="1%" />
+<col width="7%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="5%" />
+<col width="8%" />
+<col width="6%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">titulo</th>
+<th align="right">ano</th>
+<th align="left">diretor</th>
+<th align="right">duracao</th>
+<th align="left">cor</th>
+<th align="left">generos</th>
+<th align="left">pais</th>
+<th align="left">classificacao</th>
+<th align="right">orcamento</th>
+<th align="right">receita</th>
+<th align="right">nota_imdb</th>
+<th align="right">likes_facebook</th>
+<th align="left">ator_1</th>
+<th align="left">ator_2</th>
+<th align="left">ator_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">The A-Team</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">60</td>
+<td align="left">Color</td>
+<td align="left">Action|Adventure|Crime</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7.6</td>
+<td align="right">0</td>
+<td align="left">George Peppard</td>
+<td align="left">Dirk Benedict</td>
+<td align="left">Dwight Schultz</td>
+</tr>
+<tr class="even">
+<td align="left">Ben-Hur</td>
+<td align="right">2016</td>
+<td align="left">Timur Bekmambetov</td>
+<td align="right">141</td>
+<td align="left">Color</td>
+<td align="left">Adventure|Drama|History</td>
+<td align="left">USA</td>
+<td align="left">A partir de 13 anos</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">6.1</td>
+<td align="right">0</td>
+<td align="left">Morgan Freeman</td>
+<td align="left">Ayelet Zurer</td>
+<td align="left">Moises Arias</td>
+</tr>
+<tr class="odd">
+<td align="left">Hannibal</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">44</td>
+<td align="left">Color</td>
+<td align="left">Crime|Drama|Horror|Mystery|Thriller</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">8.6</td>
+<td align="right">59000</td>
+<td align="left">Caroline Dhavernas</td>
+<td align="left">Scott Thompson</td>
+<td align="left">Hettienne Park</td>
+</tr>
+<tr class="even">
+<td align="left">All That Jazz</td>
+<td align="right">1979</td>
+<td align="left">Bob Fosse</td>
+<td align="right">123</td>
+<td align="left">Color</td>
+<td align="left">Comedy|Drama|Music|Musical</td>
+<td align="left">USA</td>
+<td align="left">A partir de 18 anos</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7.8</td>
+<td align="right">0</td>
+<td align="left">Roy Scheider</td>
+<td align="left">Ben Vereen</td>
+<td align="left">Max Wright</td>
+</tr>
+<tr class="odd">
+<td align="left">Daredevil</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">54</td>
+<td align="left">NA</td>
+<td align="left">Action|Adventure|Crime|Drama|Sci-Fi|Thriller</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">8.8</td>
+<td align="right">55000</td>
+<td align="left">Elden Henson</td>
+<td align="left">Royce Johnson</td>
+<td align="left">Charlie Cox</td>
+</tr>
+<tr class="even">
+<td align="left">Bewitched</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">25</td>
+<td align="left">Black and White</td>
+<td align="left">Comedy|Family|Fantasy</td>
+<td align="left">USA</td>
+<td align="left">Outros</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7.6</td>
+<td align="right">0</td>
+<td align="left">Elizabeth Montgomery</td>
+<td align="left">Agnes Moorehead</td>
+<td align="left">Dick York</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="summarisando-a-base" class="section level1">
 <h1>Summarisando a base</h1>
