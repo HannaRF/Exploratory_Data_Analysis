@@ -131,7 +131,7 @@ a.sourceLine {
 <div class="inner">
 <h1 class="title toc-ignore">Familiarização com o dplyr - Exercício 1</h1>
 <h3 class="author">Hanna Rodrigues Ferreira</h3>
-<h3 class="date">30 março 2021</h3>
+<h3 class="date">31 março 2021</h3>
 </div>
 </header>
 
@@ -169,72 +169,53 @@ a.sourceLine {
 <p>Podemos utilizar o select() para criar uma tabela alocada em imdb_simples com apenas as colunas titulo, ano e nota_imdb.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>imdb_simples <span class="ot">&lt;-</span> <span class="fu">select</span>(imdb, titulo, ano, nota_imdb)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(imdb_simples)</span></code></pre></div>
-<div class="kable-table">
-<table>
-<thead>
-<tr class="header">
-<th align="left">titulo</th>
-<th align="right">ano</th>
-<th align="right">nota_imdb</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Avatar</td>
-<td align="right">2009</td>
-<td align="right">7.9</td>
-</tr>
-<tr class="even">
-<td align="left">Pirates of the Caribbean: At World’s End</td>
-<td align="right">2007</td>
-<td align="right">7.1</td>
-</tr>
-<tr class="odd">
-<td align="left">The Dark Knight Rises</td>
-<td align="right">2012</td>
-<td align="right">8.5</td>
-</tr>
-<tr class="even">
-<td align="left">John Carter</td>
-<td align="right">2012</td>
-<td align="right">6.6</td>
-</tr>
-<tr class="odd">
-<td align="left">Spider-Man 3</td>
-<td align="right">2007</td>
-<td align="right">6.2</td>
-</tr>
-<tr class="even">
-<td align="left">Tangled</td>
-<td align="right">2010</td>
-<td align="right">7.8</td>
-</tr>
-</tbody>
-</table>
-</div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(imdb_simples)</span></code></pre></div>
+<pre><code>## Rows: 3,807
+## Columns: 3
+## $ titulo    &lt;chr&gt; &quot;Avatar &quot;, &quot;Pirates of the Caribbean: At World&#39;s End &quot;, &quot;The~
+## $ ano       &lt;int&gt; 2009, 2007, 2012, 2012, 2007, 2010, 2015, 2016, 2006, 2006, ~
+## $ nota_imdb &lt;dbl&gt; 7.9, 7.1, 8.5, 6.6, 6.2, 7.8, 7.5, 6.9, 6.1, 7.3, 6.5, 7.2, ~</code></pre>
 <p>Com o ajudante contains() podemos selecionar as colunas que contém “ator” no nome, neste caso ator_1, ator_2 e ator_3.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="fu">contains</span>(<span class="st">&quot;ator&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>( <span class="fu">select</span>(imdb, <span class="fu">contains</span>(<span class="st">&quot;ator&quot;</span>)) )</span></code></pre></div>
+<pre><code>## Rows: 3,807
+## Columns: 3
+## $ ator_1 &lt;chr&gt; &quot;CCH Pounder&quot;, &quot;Johnny Depp&quot;, &quot;Tom Hardy&quot;, &quot;Daryl Sabara&quot;, &quot;J.K~
+## $ ator_2 &lt;chr&gt; &quot;Joel David Moore&quot;, &quot;Orlando Bloom&quot;, &quot;Christian Bale&quot;, &quot;Samanth~
+## $ ator_3 &lt;chr&gt; &quot;Wes Studi&quot;, &quot;Jack Davenport&quot;, &quot;Joseph Gordon-Levitt&quot;, &quot;Polly W~</code></pre>
 <p>Com apenas o conhecimento da função select() e seus ajudantes temos diversas formas de retornar a base sem as colunas ator_1, ator_2 e ator_3.</p>
 <p>A seguir temos alguns exemplos:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># caso quiséssemos retirar muitas colunas, seria inviável</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span>ator_1, <span class="sc">-</span>ator_2, <span class="sc">-</span>ator_3)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># é útil mas devemos nos atentar que as colunas devem ser consecutivas</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span>(ator_1 <span class="sc">:</span> ator_3)) </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># não funcionaria se quiséssemos retirar uma coluna &quot;idade_ator&quot;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ator&quot;</span>)) </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># não funcionaria se quiséssemos manter uma coluna &quot;idade_ator&quot;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;ator&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># caso quiséssemos retirar muitas colunas, seria inviável</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span>ator_1, <span class="sc">-</span>ator_2, <span class="sc">-</span>ator_3)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># é útil mas devemos nos atentar que as colunas devem ser consecutivas</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span>(ator_1 <span class="sc">:</span> ator_3)) </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># não funcionaria se quiséssemos retirar uma coluna &quot;idade_ator&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;ator&quot;</span>)) </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># não funcionaria se quiséssemos manter uma coluna &quot;idade_ator&quot;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(imdb, <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;ator&quot;</span>))</span></code></pre></div>
+<pre><code>## Rows: 3,807
+## Columns: 12
+## $ titulo         &lt;chr&gt; &quot;Avatar &quot;, &quot;Pirates of the Caribbean: At World&#39;s End &quot;,~
+## $ ano            &lt;int&gt; 2009, 2007, 2012, 2012, 2007, 2010, 2015, 2016, 2006, 2~
+## $ diretor        &lt;chr&gt; &quot;James Cameron&quot;, &quot;Gore Verbinski&quot;, &quot;Christopher Nolan&quot;,~
+## $ duracao        &lt;int&gt; 178, 169, 164, 132, 156, 100, 141, 183, 169, 151, 150, ~
+## $ cor            &lt;chr&gt; &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;~
+## $ generos        &lt;chr&gt; &quot;Action|Adventure|Fantasy|Sci-Fi&quot;, &quot;Action|Adventure|Fa~
+## $ pais           &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;,~
+## $ classificacao  &lt;chr&gt; &quot;A partir de 13 anos&quot;, &quot;A partir de 13 anos&quot;, &quot;A partir~
+## $ orcamento      &lt;int&gt; 237000000, 300000000, 250000000, 263700000, 258000000, ~
+## $ receita        &lt;int&gt; 760505847, 309404152, 448130642, 73058679, 336530303, 2~
+## $ nota_imdb      &lt;dbl&gt; 7.9, 7.1, 8.5, 6.6, 6.2, 7.8, 7.5, 6.9, 6.1, 7.3, 6.5, ~
+## $ likes_facebook &lt;int&gt; 33000, 0, 164000, 24000, 0, 29000, 118000, 197000, 0, 5~</code></pre>
 </div>
 <div id="ordenando-a-base" class="section level1">
 <h1>Ordenando a base</h1>
 <p>Podemos ordenar os filmes utilizando o arrange(), em ordem crescente de duração e decrescente de ano com o auxiliar desc().</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>filmes_ordenados <span class="ot">&lt;-</span> <span class="fu">arrange</span>(imdb, duracao, <span class="fu">desc</span>(ano))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(filmes_ordenados)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>filmes_ordenados <span class="ot">&lt;-</span> <span class="fu">arrange</span>(imdb, duracao, <span class="fu">desc</span>(ano))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(filmes_ordenados)</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -380,7 +361,7 @@ a.sourceLine {
 </table>
 </div>
 <p>É possível então, selecionar colunas e ordenar esta seleção, como mostra o exemplo:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">arrange</span>(<span class="fu">select</span>(imdb, titulo, orcamento), <span class="fu">desc</span>(orcamento)))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( <span class="fu">arrange</span>(<span class="fu">select</span>(imdb, titulo, orcamento), <span class="fu">desc</span>(orcamento)) )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -421,11 +402,11 @@ a.sourceLine {
 <div id="o-pipe-em-ação" class="section level1">
 <h1>O pipe em ação</h1>
 <p>Podemos aplicar diversas função a um mesmo objeto utilizando o pipe %&gt;%</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>filmes_pb <span class="ot">&lt;-</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Black and White&quot;</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(filmes_pb)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>filmes_pb <span class="ot">&lt;-</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Black and White&quot;</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(filmes_pb)</span></code></pre></div>
 <div class="kable-table">
 <table style="width:100%;">
 <colgroup>
@@ -572,11 +553,11 @@ a.sourceLine {
 </div>
 <p>Podemos utilizar a função filter() para filtrar as linhas, mantendo assim as que concordem com as condições de entrada.</p>
 <p>Tal como filmes com 90 minutos ou menos de duração e nota no imdb maior do que 8.5, como no exemplo a seguir:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>curtos_legais <span class="ot">&lt;-</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(duracao <span class="sc">&lt;=</span> <span class="dv">90</span>, nota_imdb <span class="sc">&gt;</span> <span class="fl">8.5</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(curtos_legais)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>curtos_legais <span class="ot">&lt;-</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(duracao <span class="sc">&lt;=</span> <span class="dv">90</span>, nota_imdb <span class="sc">&gt;</span> <span class="fl">8.5</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(curtos_legais)</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -722,10 +703,10 @@ a.sourceLine {
 </table>
 </div>
 <p>filmes filmes coloridos anteriores a 1950:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Color&quot;</span>, ano <span class="sc">&lt;</span> <span class="dv">1950</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Color&quot;</span>, ano <span class="sc">&lt;</span> <span class="dv">1950</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="kable-table">
 <table style="width:100%;">
 <colgroup>
@@ -871,10 +852,10 @@ a.sourceLine {
 </table>
 </div>
 <p>filmes dirigidos por Stanley Kubrick ou por Quentin Tarantino:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Stanley Kubrick&quot;</span>, <span class="st">&quot;Quentin Tarantino&quot;</span>))</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Stanley Kubrick&quot;</span>, <span class="st">&quot;Quentin Tarantino&quot;</span>))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -1020,11 +1001,11 @@ a.sourceLine {
 </table>
 </div>
 <p>filmes do diretor Guillermo del Toro ou Francis Ford Coppola ordenados de forma decrescente por ano, mostrando apenas as colunas titulo, ano e diretor.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Guillermo del Toro&quot;</span>,<span class="st">&quot;Francis Ford Coppola&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(titulo,ano,diretor) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ano))</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Guillermo del Toro&quot;</span>,<span class="st">&quot;Francis Ford Coppola&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(titulo,ano,diretor) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ano))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -1069,13 +1050,13 @@ a.sourceLine {
 </table>
 </div>
 <p>filmes que tenham “Sci-Fi” ou “Musical” entre os seus gêneros, neste caso usaremos uma função do pacote stringr que procura padrões nas strings.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;stringr&quot;)</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Animation&quot;</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>         <span class="sc">|</span> <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>))</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;stringr&quot;)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Animation&quot;</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>         <span class="sc">|</span> <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>))</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -1221,10 +1202,10 @@ a.sourceLine {
 </table>
 </div>
 <p>filmes que tenham “Musical” e “Sci-Fi” entre os seus gêneros e tenha nota_imdb maior que 5 :</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Sci-Fi&quot;</span>),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  nota_imdb <span class="sc">&gt;</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Sci-Fi&quot;</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  nota_imdb <span class="sc">&gt;</span> <span class="dv">5</span>)</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -1320,7 +1301,7 @@ a.sourceLine {
 </div>
 <p>filmes que não possuem informação tanto de receita quanto de orçamento, isto é, possuem NA (not a number) nas colunas.</p>
 <p>Podemos utilizar o auxiliar is.na()</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(orcamento),<span class="fu">is.na</span>(receita)) )</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(orcamento),<span class="fu">is.na</span>(receita)) )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -1471,189 +1452,54 @@ a.sourceLine {
 <ol style="list-style-type: decimal">
 <li>Crie uma coluna chamada prejuizo (orcamento - receita) e salve a nova tabela em um objeto chamado imdb_prejuizo. Em seguida, filtre apenas os filmes que deram prejuízo e ordene a tabela por ordem decrescente de prejuízo.</li>
 </ol>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>imdb_prejuizo <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">prejuizo =</span> orcamento <span class="sc">-</span> receita)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  imdb_prejuizo <span class="sc">%&gt;%</span> </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(prejuizo <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(prejuizo))</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<div class="kable-table">
-<table>
-<colgroup>
-<col width="9%" />
-<col width="2%" />
-<col width="6%" />
-<col width="3%" />
-<col width="2%" />
-<col width="21%" />
-<col width="2%" />
-<col width="8%" />
-<col width="4%" />
-<col width="3%" />
-<col width="4%" />
-<col width="6%" />
-<col width="6%" />
-<col width="8%" />
-<col width="6%" />
-<col width="4%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">titulo</th>
-<th align="right">ano</th>
-<th align="left">diretor</th>
-<th align="right">duracao</th>
-<th align="left">cor</th>
-<th align="left">generos</th>
-<th align="left">pais</th>
-<th align="left">classificacao</th>
-<th align="right">orcamento</th>
-<th align="right">receita</th>
-<th align="right">nota_imdb</th>
-<th align="right">likes_facebook</th>
-<th align="left">ator_1</th>
-<th align="left">ator_2</th>
-<th align="left">ator_3</th>
-<th align="right">prejuizo</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">John Carter</td>
-<td align="right">2012</td>
-<td align="left">Andrew Stanton</td>
-<td align="right">132</td>
-<td align="left">Color</td>
-<td align="left">Action|Adventure|Sci-Fi</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">263700000</td>
-<td align="right">73058679</td>
-<td align="right">6.6</td>
-<td align="right">24000</td>
-<td align="left">Daryl Sabara</td>
-<td align="left">Samantha Morton</td>
-<td align="left">Polly Walker</td>
-<td align="right">190641321</td>
-</tr>
-<tr class="even">
-<td align="left">The Polar Express</td>
-<td align="right">2004</td>
-<td align="left">Robert Zemeckis</td>
-<td align="right">100</td>
-<td align="left">Color</td>
-<td align="left">Adventure|Animation|Family|Fantasy</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">165000000</td>
-<td align="right">665426</td>
-<td align="right">6.6</td>
-<td align="right">10000</td>
-<td align="left">Tom Hanks</td>
-<td align="left">Eddie Deezen</td>
-<td align="left">Peter Scolari</td>
-<td align="right">164334574</td>
-</tr>
-<tr class="odd">
-<td align="left">Battleship</td>
-<td align="right">2012</td>
-<td align="left">Peter Berg</td>
-<td align="right">131</td>
-<td align="left">Color</td>
-<td align="left">Action|Adventure|Sci-Fi|Thriller</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">209000000</td>
-<td align="right">65173160</td>
-<td align="right">5.9</td>
-<td align="right">44000</td>
-<td align="left">Liam Neeson</td>
-<td align="left">Alexander Skarsgård</td>
-<td align="left">Tadanobu Asano</td>
-<td align="right">143826840</td>
-</tr>
-<tr class="even">
-<td align="left">47 Ronin</td>
-<td align="right">2013</td>
-<td align="left">Carl Rinsch</td>
-<td align="right">128</td>
-<td align="left">Color</td>
-<td align="left">Action|Adventure|Drama|Fantasy</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">175000000</td>
-<td align="right">38297305</td>
-<td align="right">6.3</td>
-<td align="right">35000</td>
-<td align="left">Keanu Reeves</td>
-<td align="left">Cary-Hiroyuki Tagawa</td>
-<td align="left">Jin Akanishi</td>
-<td align="right">136702695</td>
-</tr>
-<tr class="odd">
-<td align="left">Jack the Giant Slayer</td>
-<td align="right">2013</td>
-<td align="left">Bryan Singer</td>
-<td align="right">114</td>
-<td align="left">Color</td>
-<td align="left">Adventure|Fantasy</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">195000000</td>
-<td align="right">65171860</td>
-<td align="right">6.3</td>
-<td align="right">22000</td>
-<td align="left">Eddie Marsan</td>
-<td align="left">Ewen Bremner</td>
-<td align="left">Ralph Brown</td>
-<td align="right">129828140</td>
-</tr>
-<tr class="even">
-<td align="left">Jupiter Ascending</td>
-<td align="right">2015</td>
-<td align="left">Lana Wachowski</td>
-<td align="right">127</td>
-<td align="left">Color</td>
-<td align="left">Action|Adventure|Sci-Fi</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">176000000</td>
-<td align="right">47375327</td>
-<td align="right">5.4</td>
-<td align="right">44000</td>
-<td align="left">Channing Tatum</td>
-<td align="left">Mila Kunis</td>
-<td align="left">Eddie Redmayne</td>
-<td align="right">128624673</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>imdb_prejuizo <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">prejuizo =</span> orcamento <span class="sc">-</span> receita)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  imdb_prejuizo <span class="sc">%&gt;%</span> </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(prejuizo <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(prejuizo))</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## Rows: 1,312
+## Columns: 16
+## $ titulo         &lt;chr&gt; &quot;John Carter &quot;, &quot;The Polar Express &quot;, &quot;Battleship &quot;, &quot;4~
+## $ ano            &lt;int&gt; 2012, 2004, 2012, 2013, 2013, 2015, 2011, 2013, 2015, 2~
+## $ diretor        &lt;chr&gt; &quot;Andrew Stanton&quot;, &quot;Robert Zemeckis&quot;, &quot;Peter Berg&quot;, &quot;Car~
+## $ duracao        &lt;int&gt; 132, 100, 131, 128, 114, 127, 88, 150, 111, 111, 111, 1~
+## $ cor            &lt;chr&gt; &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;~
+## $ generos        &lt;chr&gt; &quot;Action|Adventure|Sci-Fi&quot;, &quot;Adventure|Animation|Family|~
+## $ pais           &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;,~
+## $ classificacao  &lt;chr&gt; &quot;A partir de 13 anos&quot;, &quot;Outros&quot;, &quot;A partir de 13 anos&quot;,~
+## $ orcamento      &lt;int&gt; 263700000, 165000000, 209000000, 175000000, 195000000, ~
+## $ receita        &lt;int&gt; 73058679, 665426, 65173160, 38297305, 65171860, 4737532~
+## $ nota_imdb      &lt;dbl&gt; 6.6, 6.6, 5.9, 6.3, 6.3, 5.4, 5.4, 6.5, 5.8, 5.8, 5.8, ~
+## $ likes_facebook &lt;int&gt; 24000, 10000, 44000, 35000, 22000, 44000, 0, 48000, 240~
+## $ ator_1         &lt;chr&gt; &quot;Daryl Sabara&quot;, &quot;Tom Hanks&quot;, &quot;Liam Neeson&quot;, &quot;Keanu Reev~
+## $ ator_2         &lt;chr&gt; &quot;Samantha Morton&quot;, &quot;Eddie Deezen&quot;, &quot;Alexander Skarsgård~
+## $ ator_3         &lt;chr&gt; &quot;Polly Walker&quot;, &quot;Peter Scolari&quot;, &quot;Tadanobu Asano&quot;, &quot;Jin~
+## $ prejuizo       &lt;int&gt; 190641321, 164334574, 143826840, 136702695, 129828140, ~</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Fazendo apenas uma chamada da função mutate(), crie as seguintes colunas novas na base imdb:</li>
 </ol>
 <ol style="list-style-type: lower-alpha">
 <li>lucro = receita - orcamento</li>
 </ol>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro =</span> receita <span class="sc">-</span> orcamento)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro =</span> receita <span class="sc">-</span> orcamento)</span></code></pre></div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>lucro_medio</li>
 </ol>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro_medio =</span> <span class="fu">mean</span>(imdb <span class="sc">$</span> lucro) )</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro_medio =</span> <span class="fu">mean</span>(imdb <span class="sc">$</span> lucro) )</span></code></pre></div>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>lucro_relativo = (lucro - lucro_medio)/lucro_medio</li>
 </ol>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro_relativo =</span> (lucro <span class="sc">-</span> lucro_medio)<span class="sc">/</span>lucro_medio)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro_relativo =</span> (lucro <span class="sc">-</span> lucro_medio)<span class="sc">/</span>lucro_medio)</span></code></pre></div>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>houve_lucro = ifelse(lucro &gt; 0, “sim”, “não”)</li>
 </ol>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">houve_lucro =</span> <span class="fu">ifelse</span>(lucro <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">&quot;sim&quot;</span>, <span class="st">&quot;não&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">houve_lucro =</span> <span class="fu">ifelse</span>(lucro <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">&quot;sim&quot;</span>, <span class="st">&quot;não&quot;</span>))</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Crie uma nova coluna que classifique o filme em “recente” (posterior a 2000) e “antigo” (de 2000 para trás).</li>
 </ol>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>imdb  <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">antes_depois_2000 =</span> <span class="fu">ifelse</span>(ano <span class="sc">&gt;</span> <span class="dv">2000</span>, <span class="st">&quot;recente&quot;</span>, <span class="st">&quot;antigo&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(imdb)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>imdb  <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">antes_depois_2000 =</span> <span class="fu">ifelse</span>(ano <span class="sc">&gt;</span> <span class="dv">2000</span>, <span class="st">&quot;recente&quot;</span>, <span class="st">&quot;antigo&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 3,807
 ## Columns: 20
 ## $ titulo            &lt;chr&gt; &quot;Avatar &quot;, &quot;Pirates of the Caribbean: At World&#39;s End~
@@ -1680,7 +1526,29 @@ a.sourceLine {
 <div id="summarisando-a-base" class="section level1">
 <h1>Summarisando a base</h1>
 <ol style="list-style-type: decimal">
-<li><p>Calcule a duração média e mediana dos filmes da base.</p></li>
+<li>Calcule a duração média e mediana dos filmes da base.</li>
+</ol>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">media_duracao =</span> <span class="fu">mean</span>(duracao, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mediana_duracao =</span> <span class="fu">median</span>(duracao, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">media_duracao</th>
+<th align="right">mediana_duracao</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">106.4351</td>
+<td align="right">103</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol start="2" style="list-style-type: decimal">
 <li><p>Calcule o lucro médio dos filmes com duração menor que 60 minutos.</p></li>
 <li><p>Apresente na mesma tabela o lucro médio dos filmes com duracao menor que 60 minutos e o lucro médio dos filmes com duracao maior ou igual a 60 minutos.</p></li>
 <li><p>Retorne tabelas (tibbles) apenas com:</p></li>

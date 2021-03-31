@@ -32,30 +32,32 @@ imdb <- readr::read_rds("imdb.rds")
 
 a função glimpse() do pacote dplyr printa uma versão transposta da base. É útil para ter uma visão geral das colunas e seus tipos de dados. 
 
-```{r glimpse}
+```{r}
 glimpse(imdb)
 ```
 
 
 Podemos utilizar o select() para criar uma tabela alocada em imdb_simples com apenas as colunas titulo, ano e nota_imdb.
 
-```{r select}
+```{r}
 imdb_simples <- select(imdb, titulo, ano, nota_imdb)
 
-head(imdb_simples)
+glimpse(imdb_simples)
 ```
 
 Com o ajudante contains() podemos selecionar as colunas que contém "ator" no nome, neste caso ator_1, ator_2 e ator_3.
 
-```{r contains,results='hide'}
-select(imdb, contains("ator"))
+```{r}
+
+glimpse( select(imdb, contains("ator")) )
+
 ```
 
 Com apenas o conhecimento da função select() e seus ajudantes temos diversas formas de retornar a base sem as colunas ator_1, ator_2 e ator_3.
 
 A seguir temos alguns exemplos:
 
-```{r ators,results='hide'}
+```{r,results='hide'}
 
 # caso quiséssemos retirar muitas colunas, seria inviável
 select(imdb, -ator_1, -ator_2, -ator_3)
@@ -68,6 +70,12 @@ select(imdb, -starts_with("ator"))
 
 # não funcionaria se quiséssemos manter uma coluna "idade_ator"
 select(imdb, -contains("ator"))
+
+```
+
+```{r,echo=FALSE}
+
+glimpse(select(imdb, -contains("ator")))
 
 ```
 
@@ -87,7 +95,7 @@ head(filmes_ordenados)
 
 ```{r}
 
-head(arrange(select(imdb, titulo, orcamento), desc(orcamento)))
+head( arrange(select(imdb, titulo, orcamento), desc(orcamento)) )
 
 ```
 
@@ -198,7 +206,7 @@ head( imdb %>% filter(is.na(orcamento),is.na(receita)) )
 
 imdb_prejuizo = mutate(imdb, prejuizo = orcamento - receita)
 
-head(
+glimpse(
   imdb_prejuizo %>% 
     filter(prejuizo > 0) %>% 
     arrange(desc(prejuizo))
@@ -254,7 +262,7 @@ imdb  = mutate(imdb, antes_depois_2000 = ifelse(ano > 2000, "recente", "antigo")
 
 ```
 
-```{r}
+```{r,echo=FALSE}
 
 glimpse(imdb)
 
@@ -266,7 +274,10 @@ glimpse(imdb)
 
 ```{r}
 
-
+imdb %>% summarise(
+  media_duracao = mean(duracao, na.rm = TRUE),
+  mediana_duracao = median(duracao, na.rm = TRUE)
+)
 
 ```
 
