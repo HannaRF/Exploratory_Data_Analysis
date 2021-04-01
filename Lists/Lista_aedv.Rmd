@@ -1,6 +1,6 @@
 ---
 title: "Familiarização com o dplyr - Exercício 1"
-author: "Hanna Rodrigues Ferreira"
+author: "Hanna Rodrigues Ferreira e Marcos Antônio [completa aqui]"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
   prettydoc::html_pretty:
