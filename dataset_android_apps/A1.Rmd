@@ -1,0 +1,36 @@
+---
+title: "Trab_A1"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r,message=FALSE}
+
+library(dplyr)
+
+```
+
+```{r}
+
+apps <- read.csv("googleplaystore.csv")
+
+reviews <- read.csv("googleplaystore_user_reviews.csv")
+
+```
+
+```{r}
+
+glimpse(apps)
+glimpse(reviews)
+
+```
