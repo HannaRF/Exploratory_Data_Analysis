@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Hanna Rodrigues Ferreira e Marcos Antônio [completa aqui]" />
+<meta name="author" content="Hanna Rodrigues Ferreira" />
 
 
 <title>Familiarização com o dplyr - Exercício 1</title>
@@ -130,7 +130,7 @@ a.sourceLine {
 <header>
 <div class="inner">
 <h1 class="title toc-ignore">Familiarização com o dplyr - Exercício 1</h1>
-<h3 class="author">Hanna Rodrigues Ferreira e Marcos Antônio [completa aqui]</h3>
+<h3 class="author">Hanna Rodrigues Ferreira</h3>
 <h3 class="date">01 abril 2021</h3>
 </div>
 </header>
@@ -215,153 +215,26 @@ a.sourceLine {
 <p>Podemos ordenar os filmes utilizando o arrange(), em ordem crescente de duração e decrescente de ano com o auxiliar desc().</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>filmes_ordenados <span class="ot">&lt;-</span> <span class="fu">arrange</span>(imdb, duracao, <span class="fu">desc</span>(ano))</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(filmes_ordenados)</span></code></pre></div>
-<div class="kable-table">
-<table>
-<colgroup>
-<col width="16%" />
-<col width="2%" />
-<col width="7%" />
-<col width="3%" />
-<col width="2%" />
-<col width="19%" />
-<col width="2%" />
-<col width="6%" />
-<col width="4%" />
-<col width="3%" />
-<col width="4%" />
-<col width="6%" />
-<col width="7%" />
-<col width="8%" />
-<col width="6%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">titulo</th>
-<th align="right">ano</th>
-<th align="left">diretor</th>
-<th align="right">duracao</th>
-<th align="left">cor</th>
-<th align="left">generos</th>
-<th align="left">pais</th>
-<th align="left">classificacao</th>
-<th align="right">orcamento</th>
-<th align="right">receita</th>
-<th align="right">nota_imdb</th>
-<th align="right">likes_facebook</th>
-<th align="left">ator_1</th>
-<th align="left">ator_2</th>
-<th align="left">ator_3</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">The Touch</td>
-<td align="right">2007</td>
-<td align="left">Jane Clark</td>
-<td align="right">7</td>
-<td align="left">Color</td>
-<td align="left">Romance|Short</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">13000</td>
-<td align="right">NA</td>
-<td align="right">5.2</td>
-<td align="right">30</td>
-<td align="left">Necar Zadegan</td>
-<td align="left">Traci Dinwiddie</td>
-<td align="left">Elea Oberon</td>
-</tr>
-<tr class="even">
-<td align="left">Robot Chicken</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">11</td>
-<td align="left">Color</td>
-<td align="left">Animation|Comedy</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">7.8</td>
-<td align="right">1000</td>
-<td align="left">Matthew Senreich</td>
-<td align="left">Seth Green</td>
-<td align="left">Breckin Meyer</td>
-</tr>
-<tr class="odd">
-<td align="left">Vessel</td>
-<td align="right">2012</td>
-<td align="left">Clark Baker</td>
-<td align="right">14</td>
-<td align="left">Color</td>
-<td align="left">Horror|Sci-Fi|Short|Thriller</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">6.2</td>
-<td align="right">14</td>
-<td align="left">Taylor Pigeon</td>
-<td align="left">Alan Pietruszewski</td>
-<td align="left">Whit Spurgeon</td>
-</tr>
-<tr class="even">
-<td align="left">Wal-Mart: The High Cost of Low Price</td>
-<td align="right">2005</td>
-<td align="left">Robert Greenwald</td>
-<td align="right">20</td>
-<td align="left">Color</td>
-<td align="left">Documentary</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">1500000</td>
-<td align="right">NA</td>
-<td align="right">6.8</td>
-<td align="right">0</td>
-<td align="left">Lee Scott</td>
-<td align="left">Jon Hunter</td>
-<td align="left">Matt Hunter</td>
-</tr>
-<tr class="odd">
-<td align="left">Rules of Engagement</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">22</td>
-<td align="left">Color</td>
-<td align="left">Comedy|Romance</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">7.3</td>
-<td align="right">0</td>
-<td align="left">Bianca Kajlich</td>
-<td align="left">Oliver Hudson</td>
-<td align="left">Adhir Kalyan</td>
-</tr>
-<tr class="even">
-<td align="left">Sabrina, the Teenage Witch</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">22</td>
-<td align="left">Color</td>
-<td align="left">Comedy|Family|Fantasy</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">3000000</td>
-<td align="right">NA</td>
-<td align="right">6.6</td>
-<td align="right">990</td>
-<td align="left">Nate Richert</td>
-<td align="left">Soleil Moon Frye</td>
-<td align="left">Caroline Rhea</td>
-</tr>
-</tbody>
-</table>
-</div>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(filmes_ordenados)</span></code></pre></div>
+<pre><code>## Rows: 3,807
+## Columns: 15
+## $ titulo         &lt;chr&gt; &quot;The Touch &quot;, &quot;Robot Chicken &quot;, &quot;Vessel &quot;, &quot;Wal-Mart: T~
+## $ ano            &lt;int&gt; 2007, NA, 2012, 2005, NA, NA, NA, NA, NA, NA, NA, NA, 1~
+## $ diretor        &lt;chr&gt; &quot;Jane Clark&quot;, NA, &quot;Clark Baker&quot;, &quot;Robert Greenwald&quot;, NA~
+## $ duracao        &lt;int&gt; 7, 11, 14, 20, 22, 22, 22, 22, 22, 22, 23, 23, 25, 25, ~
+## $ cor            &lt;chr&gt; &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;~
+## $ generos        &lt;chr&gt; &quot;Romance|Short&quot;, &quot;Animation|Comedy&quot;, &quot;Horror|Sci-Fi|Sho~
+## $ pais           &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;,~
+## $ classificacao  &lt;chr&gt; &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outr~
+## $ orcamento      &lt;int&gt; 13000, NA, NA, 1500000, NA, 3000000, NA, NA, NA, NA, NA~
+## $ receita        &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,~
+## $ nota_imdb      &lt;dbl&gt; 5.2, 7.8, 6.2, 6.8, 7.3, 6.6, 6.7, 8.8, 8.1, 8.2, 7.9, ~
+## $ likes_facebook &lt;int&gt; 30, 1000, 14, 0, 0, 990, 0, 0, 558, 526, 2000, 325, 0, ~
+## $ ator_1         &lt;chr&gt; &quot;Necar Zadegan&quot;, &quot;Matthew Senreich&quot;, &quot;Taylor Pigeon&quot;, &quot;~
+## $ ator_2         &lt;chr&gt; &quot;Traci Dinwiddie&quot;, &quot;Seth Green&quot;, &quot;Alan Pietruszewski&quot;, ~
+## $ ator_3         &lt;chr&gt; &quot;Elea Oberon&quot;, &quot;Breckin Meyer&quot;, &quot;Whit Spurgeon&quot;, &quot;Matt ~</code></pre>
 <p>É possível então, selecionar colunas e ordenar esta seleção, como mostra o exemplo:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( <span class="fu">arrange</span>(<span class="fu">select</span>(imdb, titulo, orcamento), <span class="fu">desc</span>(orcamento)) )</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( <span class="fu">arrange</span>(<span class="fu">select</span>(imdb, titulo, orcamento), <span class="fu">desc</span>(orcamento)) )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -402,460 +275,79 @@ a.sourceLine {
 <div id="o-pipe-em-ação" class="section level1">
 <h1>O pipe em ação</h1>
 <p>Podemos aplicar diversas função a um mesmo objeto utilizando o pipe %&gt;%</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>filmes_pb <span class="ot">&lt;-</span> </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span> </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Black and White&quot;</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(filmes_pb)</span></code></pre></div>
-<div class="kable-table">
-<table style="width:100%;">
-<colgroup>
-<col width="5%" />
-<col width="2%" />
-<col width="7%" />
-<col width="3%" />
-<col width="6%" />
-<col width="22%" />
-<col width="2%" />
-<col width="8%" />
-<col width="4%" />
-<col width="4%" />
-<col width="4%" />
-<col width="6%" />
-<col width="8%" />
-<col width="7%" />
-<col width="6%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">titulo</th>
-<th align="right">ano</th>
-<th align="left">diretor</th>
-<th align="right">duracao</th>
-<th align="left">cor</th>
-<th align="left">generos</th>
-<th align="left">pais</th>
-<th align="left">classificacao</th>
-<th align="right">orcamento</th>
-<th align="right">receita</th>
-<th align="right">nota_imdb</th>
-<th align="right">likes_facebook</th>
-<th align="left">ator_1</th>
-<th align="left">ator_2</th>
-<th align="left">ator_3</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Pearl Harbor</td>
-<td align="right">2001</td>
-<td align="left">Michael Bay</td>
-<td align="right">184</td>
-<td align="left">Black and White</td>
-<td align="left">Action|Drama|History|Romance|War</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">1.40e+08</td>
-<td align="right">198539855</td>
-<td align="right">6.1</td>
-<td align="right">0</td>
-<td align="left">Jennifer Garner</td>
-<td align="left">Jaime King</td>
-<td align="left">Mako</td>
-</tr>
-<tr class="even">
-<td align="left">The Aviator</td>
-<td align="right">2004</td>
-<td align="left">Martin Scorsese</td>
-<td align="right">170</td>
-<td align="left">Black and White</td>
-<td align="left">Biography|Drama</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">1.10e+08</td>
-<td align="right">102608827</td>
-<td align="right">7.5</td>
-<td align="right">0</td>
-<td align="left">Leonardo DiCaprio</td>
-<td align="left">Adam Scott</td>
-<td align="left">Frances Conroy</td>
-</tr>
-<tr class="odd">
-<td align="left">Ali</td>
-<td align="right">2001</td>
-<td align="left">Michael Mann</td>
-<td align="right">165</td>
-<td align="left">Black and White</td>
-<td align="left">Biography|Drama|Sport</td>
-<td align="left">USA</td>
-<td align="left">A partir de 18 anos</td>
-<td align="right">1.07e+08</td>
-<td align="right">58183966</td>
-<td align="right">6.8</td>
-<td align="right">0</td>
-<td align="left">Will Smith</td>
-<td align="left">Jada Pinkett Smith</td>
-<td align="left">Joe Morton</td>
-</tr>
-<tr class="even">
-<td align="left">Eragon</td>
-<td align="right">2006</td>
-<td align="left">Stefen Fangmeier</td>
-<td align="right">104</td>
-<td align="left">Black and White</td>
-<td align="left">Action|Adventure|Family|Fantasy</td>
-<td align="left">USA</td>
-<td align="left">Livre</td>
-<td align="right">1.00e+08</td>
-<td align="right">75030163</td>
-<td align="right">5.1</td>
-<td align="right">0</td>
-<td align="left">Djimon Hounsou</td>
-<td align="left">Ed Speleers</td>
-<td align="left">Gary Lewis</td>
-</tr>
-<tr class="odd">
-<td align="left">Seabiscuit</td>
-<td align="right">2003</td>
-<td align="left">Gary Ross</td>
-<td align="right">140</td>
-<td align="left">Black and White</td>
-<td align="left">Drama|History|Sport</td>
-<td align="left">USA</td>
-<td align="left">A partir de 13 anos</td>
-<td align="right">8.70e+07</td>
-<td align="right">120147445</td>
-<td align="right">7.3</td>
-<td align="right">0</td>
-<td align="left">Jeff Bridges</td>
-<td align="left">Michael Angarano</td>
-<td align="left">Michael O’Neill</td>
-</tr>
-<tr class="even">
-<td align="left">Bewitched</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">25</td>
-<td align="left">Black and White</td>
-<td align="left">Comedy|Family|Fantasy</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">7.6</td>
-<td align="right">0</td>
-<td align="left">Elizabeth Montgomery</td>
-<td align="left">Agnes Moorehead</td>
-<td align="left">Dick York</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>filmes_pb <span class="ot">&lt;-</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Black and White&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(filmes_pb)</span></code></pre></div>
+<pre><code>## Rows: 149
+## Columns: 15
+## $ titulo         &lt;chr&gt; &quot;Pearl Harbor &quot;, &quot;The Aviator &quot;, &quot;Ali &quot;, &quot;Eragon &quot;, &quot;Se~
+## $ ano            &lt;int&gt; 2001, 2004, 2001, 2006, 2003, NA, 2009, 2003, 2011, 200~
+## $ diretor        &lt;chr&gt; &quot;Michael Bay&quot;, &quot;Martin Scorsese&quot;, &quot;Michael Mann&quot;, &quot;Stef~
+## $ duracao        &lt;int&gt; 184, 170, 165, 104, 140, 25, 118, 110, 146, 130, 102, 1~
+## $ cor            &lt;chr&gt; &quot;Black and White&quot;, &quot;Black and White&quot;, &quot;Black and White&quot;~
+## $ generos        &lt;chr&gt; &quot;Action|Drama|History|Romance|War&quot;, &quot;Biography|Drama&quot;, ~
+## $ pais           &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;,~
+## $ classificacao  &lt;chr&gt; &quot;A partir de 13 anos&quot;, &quot;A partir de 13 anos&quot;, &quot;A partir~
+## $ orcamento      &lt;int&gt; 140000000, 110000000, 107000000, 100000000, 87000000, N~
+## $ receita        &lt;int&gt; 198539855, 102608827, 58183966, 75030163, 120147445, NA~
+## $ nota_imdb      &lt;dbl&gt; 6.1, 7.5, 6.8, 5.1, 7.3, 7.6, 5.8, 5.8, 7.2, 6.4, 6.5, ~
+## $ likes_facebook &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 28000, 0, 32000, 10000, 0, 5900~
+## $ ator_1         &lt;chr&gt; &quot;Jennifer Garner&quot;, &quot;Leonardo DiCaprio&quot;, &quot;Will Smith&quot;, &quot;~
+## $ ator_2         &lt;chr&gt; &quot;Jaime King&quot;, &quot;Adam Scott&quot;, &quot;Jada Pinkett Smith&quot;, &quot;Ed S~
+## $ ator_3         &lt;chr&gt; &quot;Mako&quot;, &quot;Frances Conroy&quot;, &quot;Joe Morton&quot;, &quot;Gary Lewis&quot;, &quot;~</code></pre>
 <p>Podemos utilizar a função filter() para filtrar as linhas, mantendo assim as que concordem com as condições de entrada.</p>
 <p>Tal como filmes com 90 minutos ou menos de duração e nota no imdb maior do que 8.5, como no exemplo a seguir:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>curtos_legais <span class="ot">&lt;-</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(duracao <span class="sc">&lt;=</span> <span class="dv">90</span>, nota_imdb <span class="sc">&gt;</span> <span class="fl">8.5</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(curtos_legais)</span></code></pre></div>
-<div class="kable-table">
-<table>
-<colgroup>
-<col width="13%" />
-<col width="1%" />
-<col width="3%" />
-<col width="3%" />
-<col width="6%" />
-<col width="27%" />
-<col width="1%" />
-<col width="5%" />
-<col width="3%" />
-<col width="3%" />
-<col width="3%" />
-<col width="5%" />
-<col width="7%" />
-<col width="6%" />
-<col width="5%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">titulo</th>
-<th align="right">ano</th>
-<th align="left">diretor</th>
-<th align="right">duracao</th>
-<th align="left">cor</th>
-<th align="left">generos</th>
-<th align="left">pais</th>
-<th align="left">classificacao</th>
-<th align="right">orcamento</th>
-<th align="right">receita</th>
-<th align="right">nota_imdb</th>
-<th align="right">likes_facebook</th>
-<th align="left">ator_1</th>
-<th align="left">ator_2</th>
-<th align="left">ator_3</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Hannibal</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">44</td>
-<td align="left">Color</td>
-<td align="left">Crime|Drama|Horror|Mystery|Thriller</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">8.6</td>
-<td align="right">59000</td>
-<td align="left">Caroline Dhavernas</td>
-<td align="left">Scott Thompson</td>
-<td align="left">Hettienne Park</td>
-</tr>
-<tr class="even">
-<td align="left">Daredevil</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">54</td>
-<td align="left">NA</td>
-<td align="left">Action|Adventure|Crime|Drama|Sci-Fi|Thriller</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">8.8</td>
-<td align="right">55000</td>
-<td align="left">Elden Henson</td>
-<td align="left">Royce Johnson</td>
-<td align="left">Charlie Cox</td>
-</tr>
-<tr class="odd">
-<td align="left">Friday Night Lights</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">44</td>
-<td align="left">Color</td>
-<td align="left">Drama|Sport</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">8.7</td>
-<td align="right">0</td>
-<td align="left">Zach Gilford</td>
-<td align="left">Aimee Teegarden</td>
-<td align="left">Scott Porter</td>
-</tr>
-<tr class="even">
-<td align="left">The Honeymooners</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">30</td>
-<td align="left">Black and White</td>
-<td align="left">Comedy|Family</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">8.7</td>
-<td align="right">459</td>
-<td align="left">Jackie Gleason</td>
-<td align="left">Art Carney</td>
-<td align="left">Joyce Randolph</td>
-</tr>
-<tr class="odd">
-<td align="left">It’s Always Sunny in Philadelphia</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">22</td>
-<td align="left">Color</td>
-<td align="left">Comedy</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">8.8</td>
-<td align="right">0</td>
-<td align="left">Rob McElhenney</td>
-<td align="left">Kaitlin Olson</td>
-<td align="left">Glenn Howerton</td>
-</tr>
-<tr class="even">
-<td align="left">Spartacus: War of the Damned</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
-<td align="right">55</td>
-<td align="left">Color</td>
-<td align="left">Action|Adventure|Biography|Drama|History</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">8.6</td>
-<td align="right">31000</td>
-<td align="left">Peter Mensah</td>
-<td align="left">Kelvin Taylor</td>
-<td align="left">Viva Bianca</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>filmes filmes coloridos anteriores a 1950:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Color&quot;</span>, ano <span class="sc">&lt;</span> <span class="dv">1950</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<div class="kable-table">
-<table style="width:100%;">
-<colgroup>
-<col width="8%" />
-<col width="2%" />
-<col width="8%" />
-<col width="3%" />
-<col width="2%" />
-<col width="22%" />
-<col width="2%" />
-<col width="6%" />
-<col width="4%" />
-<col width="4%" />
-<col width="4%" />
-<col width="7%" />
-<col width="7%" />
-<col width="6%" />
-<col width="7%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">titulo</th>
-<th align="right">ano</th>
-<th align="left">diretor</th>
-<th align="right">duracao</th>
-<th align="left">cor</th>
-<th align="left">generos</th>
-<th align="left">pais</th>
-<th align="left">classificacao</th>
-<th align="right">orcamento</th>
-<th align="right">receita</th>
-<th align="right">nota_imdb</th>
-<th align="right">likes_facebook</th>
-<th align="left">ator_1</th>
-<th align="left">ator_2</th>
-<th align="left">ator_3</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Pinocchio</td>
-<td align="right">1940</td>
-<td align="left">Norman Ferguson</td>
-<td align="right">88</td>
-<td align="left">Color</td>
-<td align="left">Animation|Family|Fantasy|Musical</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">2600000</td>
-<td align="right">84300000</td>
-<td align="right">7.5</td>
-<td align="right">0</td>
-<td align="left">Mel Blanc</td>
-<td align="left">Dickie Jones</td>
-<td align="left">Cliff Edwards</td>
-</tr>
-<tr class="even">
-<td align="left">Duel in the Sun</td>
-<td align="right">1946</td>
-<td align="left">King Vidor</td>
-<td align="right">144</td>
-<td align="left">Color</td>
-<td align="left">Drama|Romance|Western</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">8000000</td>
-<td align="right">20400000</td>
-<td align="right">6.9</td>
-<td align="right">403</td>
-<td align="left">Joseph Cotten</td>
-<td align="left">Lillian Gish</td>
-<td align="left">Jennifer Jones</td>
-</tr>
-<tr class="odd">
-<td align="left">Tycoon</td>
-<td align="right">1947</td>
-<td align="left">Richard Wallace</td>
-<td align="right">95</td>
-<td align="left">Color</td>
-<td align="left">Adventure|Drama|Romance</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">3209000</td>
-<td align="right">NA</td>
-<td align="right">6.2</td>
-<td align="right">44</td>
-<td align="left">Judith Anderson</td>
-<td align="left">Paul Fix</td>
-<td align="left">Laraine Day</td>
-</tr>
-<tr class="even">
-<td align="left">State Fair</td>
-<td align="right">1945</td>
-<td align="left">Walter Lang</td>
-<td align="right">100</td>
-<td align="left">Color</td>
-<td align="left">Musical|Romance</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">7.1</td>
-<td align="right">501</td>
-<td align="left">Dana Andrews</td>
-<td align="left">Jeanne Crain</td>
-<td align="left">Frank McHugh</td>
-</tr>
-<tr class="odd">
-<td align="left">Gone with the Wind</td>
-<td align="right">1939</td>
-<td align="left">Victor Fleming</td>
-<td align="right">226</td>
-<td align="left">Color</td>
-<td align="left">Drama|History|Romance|War</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">3977000</td>
-<td align="right">198655278</td>
-<td align="right">8.2</td>
-<td align="right">16000</td>
-<td align="left">Hattie McDaniel</td>
-<td align="left">George Reeves</td>
-<td align="left">Thomas Mitchell</td>
-</tr>
-<tr class="even">
-<td align="left">The Pirate</td>
-<td align="right">1948</td>
-<td align="left">Vincente Minnelli</td>
-<td align="right">102</td>
-<td align="left">Color</td>
-<td align="left">Adventure|Comedy|Musical|Romance</td>
-<td align="left">USA</td>
-<td align="left">Outros</td>
-<td align="right">3700000</td>
-<td align="right">2956000</td>
-<td align="right">7.1</td>
-<td align="right">359</td>
-<td align="left">Gladys Cooper</td>
-<td align="left">Reginald Owen</td>
-<td align="left">Ellen Ross</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>filmes dirigidos por Stanley Kubrick ou por Quentin Tarantino:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>curtos_legais <span class="ot">&lt;-</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Stanley Kubrick&quot;</span>, <span class="st">&quot;Quentin Tarantino&quot;</span>))</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(duracao <span class="sc">&lt;=</span> <span class="dv">90</span>, nota_imdb <span class="sc">&gt;</span> <span class="fl">8.5</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(curtos_legais)</span></code></pre></div>
+<pre><code>## Rows: 13
+## Columns: 15
+## $ titulo         &lt;chr&gt; &quot;Hannibal &quot;, &quot;Daredevil &quot;, &quot;Friday Night Lights &quot;, &quot;The~
+## $ ano            &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, 2015, 2016, 2016, 1936, 194~
+## $ diretor        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, &quot;Mike Mayhall&quot;, &quot;Mitchell A~
+## $ duracao        &lt;int&gt; 44, 54, 44, 30, 22, 55, 53, 88, 87, 90, 87, 82, 78
+## $ cor            &lt;chr&gt; &quot;Color&quot;, NA, &quot;Color&quot;, &quot;Black and White&quot;, &quot;Color&quot;, &quot;Colo~
+## $ generos        &lt;chr&gt; &quot;Crime|Drama|Horror|Mystery|Thriller&quot;, &quot;Action|Adventur~
+## $ pais           &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;,~
+## $ classificacao  &lt;chr&gt; &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outr~
+## $ orcamento      &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, 5000000, NA, 17000000, 1500~
+## $ receita        &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 163245, NA, NA
+## $ nota_imdb      &lt;dbl&gt; 8.6, 8.8, 8.7, 8.7, 8.8, 8.6, 9.0, 8.6, 8.7, 9.1, 8.6, ~
+## $ likes_facebook &lt;int&gt; 59000, 55000, 0, 459, 0, 31000, 61000, 49, 8, 0, 0, 230~
+## $ ator_1         &lt;chr&gt; &quot;Caroline Dhavernas&quot;, &quot;Elden Henson&quot;, &quot;Zach Gilford&quot;, &quot;~
+## $ ator_2         &lt;chr&gt; &quot;Scott Thompson&quot;, &quot;Royce Johnson&quot;, &quot;Aimee Teegarden&quot;, &quot;~
+## $ ator_3         &lt;chr&gt; &quot;Hettienne Park&quot;, &quot;Charlie Cox&quot;, &quot;Scott Porter&quot;, &quot;Joyce~</code></pre>
+<p>filmes filmes coloridos anteriores a 1950:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(cor <span class="sc">==</span> <span class="st">&quot;Color&quot;</span>, ano <span class="sc">&lt;</span> <span class="dv">1950</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## Rows: 14
+## Columns: 15
+## $ titulo         &lt;chr&gt; &quot;Pinocchio &quot;, &quot;Duel in the Sun &quot;, &quot;Tycoon &quot;, &quot;State Fai~
+## $ ano            &lt;int&gt; 1940, 1946, 1947, 1945, 1939, 1948, 1946, 1944, 1940, 1~
+## $ diretor        &lt;chr&gt; &quot;Norman Ferguson&quot;, &quot;King Vidor&quot;, &quot;Richard Wallace&quot;, &quot;Wa~
+## $ duracao        &lt;int&gt; 88, 144, 95, 100, 226, 102, 118, 101, 120, 103, 95, 83,~
+## $ cor            &lt;chr&gt; &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;~
+## $ generos        &lt;chr&gt; &quot;Animation|Family|Fantasy|Musical&quot;, &quot;Drama|Romance|West~
+## $ pais           &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;,~
+## $ classificacao  &lt;chr&gt; &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outros&quot;, &quot;Outr~
+## $ orcamento      &lt;int&gt; 2600000, 8000000, 3209000, NA, 3977000, 3700000, 318000~
+## $ receita        &lt;int&gt; 84300000, 20400000, NA, NA, 198655278, 2956000, NA, NA,~
+## $ nota_imdb      &lt;dbl&gt; 7.5, 6.9, 6.2, 7.1, 8.2, 7.1, 8.6, 6.5, 7.8, 7.4, 7.6, ~
+## $ likes_facebook &lt;int&gt; 0, 403, 44, 501, 16000, 359, 41000, 144, 3000, 721, 0, ~
+## $ ator_1         &lt;chr&gt; &quot;Mel Blanc&quot;, &quot;Joseph Cotten&quot;, &quot;Judith Anderson&quot;, &quot;Dana ~
+## $ ator_2         &lt;chr&gt; &quot;Dickie Jones&quot;, &quot;Lillian Gish&quot;, &quot;Paul Fix&quot;, &quot;Jeanne Cra~
+## $ ator_3         &lt;chr&gt; &quot;Cliff Edwards&quot;, &quot;Jennifer Jones&quot;, &quot;Laraine Day&quot;, &quot;Fran~</code></pre>
+<p>filmes dirigidos por Stanley Kubrick ou por Quentin Tarantino:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  imdb <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Stanley Kubrick&quot;</span>, <span class="st">&quot;Quentin Tarantino&quot;</span>))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -1001,11 +493,11 @@ a.sourceLine {
 </table>
 </div>
 <p>filmes do diretor Guillermo del Toro ou Francis Ford Coppola ordenados de forma decrescente por ano, mostrando apenas as colunas titulo, ano e diretor.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Guillermo del Toro&quot;</span>,<span class="st">&quot;Francis Ford Coppola&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(titulo,ano,diretor) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ano))</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(diretor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Guillermo del Toro&quot;</span>,<span class="st">&quot;Francis Ford Coppola&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(titulo,ano,diretor) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ano))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -1050,13 +542,13 @@ a.sourceLine {
 </table>
 </div>
 <p>filmes que tenham “Sci-Fi” ou “Musical” entre os seus gêneros, neste caso usaremos uma função do pacote stringr que procura padrões nas strings.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;stringr&quot;)</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Animation&quot;</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>         <span class="sc">|</span> <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>))</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;stringr&quot;)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Animation&quot;</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>         <span class="sc">|</span> <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>))</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -1202,10 +694,10 @@ a.sourceLine {
 </table>
 </div>
 <p>filmes que tenham “Musical” e “Sci-Fi” entre os seus gêneros e tenha nota_imdb maior que 5 :</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>),</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Sci-Fi&quot;</span>),</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  nota_imdb <span class="sc">&gt;</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Musical&quot;</span>),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(<span class="at">string =</span> generos, <span class="at">pattern =</span> <span class="st">&quot;Sci-Fi&quot;</span>),</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  nota_imdb <span class="sc">&gt;</span> <span class="dv">5</span>)</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -1301,7 +793,7 @@ a.sourceLine {
 </div>
 <p>filmes que não possuem informação tanto de receita quanto de orçamento, isto é, possuem NA (not a number) nas colunas.</p>
 <p>Podemos utilizar o auxiliar is.na()</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(orcamento),<span class="fu">is.na</span>(receita)) )</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( imdb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(orcamento),<span class="fu">is.na</span>(receita)) )</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
@@ -1452,13 +944,13 @@ a.sourceLine {
 <ol style="list-style-type: decimal">
 <li>Crie uma coluna chamada prejuizo (orcamento - receita) e salve a nova tabela em um objeto chamado imdb_prejuizo. Em seguida, filtre apenas os filmes que deram prejuízo e ordene a tabela por ordem decrescente de prejuízo.</li>
 </ol>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>imdb_prejuizo <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">prejuizo =</span> orcamento <span class="sc">-</span> receita)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  imdb_prejuizo <span class="sc">%&gt;%</span> </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(prejuizo <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(prejuizo))</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>imdb_prejuizo <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">prejuizo =</span> orcamento <span class="sc">-</span> receita)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  imdb_prejuizo <span class="sc">%&gt;%</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(prejuizo <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(prejuizo))</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>## Rows: 1,312
 ## Columns: 16
 ## $ titulo         &lt;chr&gt; &quot;John Carter &quot;, &quot;The Polar Express &quot;, &quot;Battleship &quot;, &quot;4~
@@ -1483,23 +975,23 @@ a.sourceLine {
 <ol style="list-style-type: lower-alpha">
 <li>lucro = receita - orcamento</li>
 </ol>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro =</span> receita <span class="sc">-</span> orcamento)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro =</span> receita <span class="sc">-</span> orcamento)</span></code></pre></div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>lucro_medio</li>
 </ol>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro_medio =</span> <span class="fu">mean</span>(imdb <span class="sc">$</span> lucro) )</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro_medio =</span> <span class="fu">mean</span>(imdb <span class="sc">$</span> lucro) )</span></code></pre></div>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>lucro_relativo = (lucro - lucro_medio)/lucro_medio</li>
 </ol>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro_relativo =</span> (lucro <span class="sc">-</span> lucro_medio)<span class="sc">/</span>lucro_medio)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">lucro_relativo =</span> (lucro <span class="sc">-</span> lucro_medio)<span class="sc">/</span>lucro_medio)</span></code></pre></div>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>houve_lucro = ifelse(lucro &gt; 0, “sim”, “não”)</li>
 </ol>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">houve_lucro =</span> <span class="fu">ifelse</span>(lucro <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">&quot;sim&quot;</span>, <span class="st">&quot;não&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">houve_lucro =</span> <span class="fu">ifelse</span>(lucro <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">&quot;sim&quot;</span>, <span class="st">&quot;não&quot;</span>))</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Crie uma nova coluna que classifique o filme em “recente” (posterior a 2000) e “antigo” (de 2000 para trás).</li>
 </ol>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>imdb  <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">antes_depois_2000 =</span> <span class="fu">ifelse</span>(ano <span class="sc">&gt;</span> <span class="dv">2000</span>, <span class="st">&quot;recente&quot;</span>, <span class="st">&quot;antigo&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>imdb  <span class="ot">=</span> <span class="fu">mutate</span>(imdb, <span class="at">antes_depois_2000 =</span> <span class="fu">ifelse</span>(ano <span class="sc">&gt;</span> <span class="dv">2000</span>, <span class="st">&quot;recente&quot;</span>, <span class="st">&quot;antigo&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 3,807
 ## Columns: 20
 ## $ titulo            &lt;chr&gt; &quot;Avatar &quot;, &quot;Pirates of the Caribbean: At World&#39;s End~
@@ -1528,10 +1020,10 @@ a.sourceLine {
 <ol style="list-style-type: decimal">
 <li>Calcule a duração média e mediana dos filmes da base.</li>
 </ol>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">media_duracao =</span> <span class="fu">mean</span>(duracao, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mediana_duracao =</span> <span class="fu">median</span>(duracao, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">media_duracao =</span> <span class="fu">mean</span>(duracao, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mediana_duracao =</span> <span class="fu">median</span>(duracao, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -1549,22 +1041,267 @@ a.sourceLine {
 </table>
 </div>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Calcule o lucro médio dos filmes com duração menor que 60 minutos.</p></li>
-<li><p>Apresente na mesma tabela o lucro médio dos filmes com duracao menor que 60 minutos e o lucro médio dos filmes com duracao maior ou igual a 60 minutos.</p></li>
-<li><p>Retorne tabelas (tibbles) apenas com:</p></li>
+<li>Calcule o lucro médio dos filmes com duração menor que 60 minutos.</li>
+</ol>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(duracao <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>( <span class="at">lucro_medio =</span> <span class="fu">mean</span>(lucro, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">lucro_medio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">632454.3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>Apresente na mesma tabela o lucro médio dos filmes com duracao menor que 60 minutos e o lucro médio dos filmes com duracao maior ou igual a 60 minutos.</li>
+</ol>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">&lt;-</span> imdb <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">duracao_60 =</span> <span class="fu">ifelse</span>(duracao<span class="sc">&lt;</span><span class="dv">60</span>,<span class="st">&quot;&gt; 60 min&quot;</span>,<span class="st">&quot;&lt;= 60 min&quot;</span>))</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span> </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(duracao_60) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>( <span class="at">lucro_medio =</span> <span class="fu">mean</span>(lucro, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="left">duracao_60</th>
+<th align="right">lucro_medio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">&lt;= 60 min</td>
+<td align="right">17274471.8</td>
+</tr>
+<tr class="even">
+<td align="left">&gt; 60 min</td>
+<td align="right">632454.3</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">NaN</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">&lt;-</span> <span class="fu">select</span>(imdb, <span class="sc">-</span>duracao_60)</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Retorne tabelas (tibbles) apenas com:</li>
 </ol>
 <ol style="list-style-type: lower-alpha">
-<li><p>a nota IMDB média dos filmes por tipo de classificacao;</p></li>
-<li><p>a receita média e mediana dos filmes por ano;</p></li>
-<li><p>apenas o nome dos diretores com mais de 10 filmes.</p></li>
+<li>a nota IMDB média dos filmes por tipo de classificacao;</li>
 </ol>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(classificacao) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>( <span class="at">nota_media =</span> <span class="fu">mean</span>(nota_imdb,  <span class="at">na.rm =</span> <span class="cn">TRUE</span>) )</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="left">classificacao</th>
+<th align="right">nota_media</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A partir de 13 anos</td>
+<td align="right">6.180133</td>
+</tr>
+<tr class="even">
+<td align="left">A partir de 18 anos</td>
+<td align="right">6.466688</td>
+</tr>
+<tr class="odd">
+<td align="left">Livre</td>
+<td align="right">6.260932</td>
+</tr>
+<tr class="even">
+<td align="left">Outros</td>
+<td align="right">6.645376</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>a receita média e mediana dos filmes por ano;</li>
+</ol>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(imdb <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ano) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>( <span class="at">receita_media =</span> <span class="fu">mean</span>(receita,  <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">receita_mediana =</span> <span class="fu">median</span>(receita,  <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">ano</th>
+<th align="right">receita_media</th>
+<th align="right">receita_mediana</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1916</td>
+<td align="right">NaN</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="right">1920</td>
+<td align="right">3000000</td>
+<td align="right">3000000</td>
+</tr>
+<tr class="odd">
+<td align="right">1925</td>
+<td align="right">NaN</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="right">1929</td>
+<td align="right">2808000</td>
+<td align="right">2808000</td>
+</tr>
+<tr class="odd">
+<td align="right">1930</td>
+<td align="right">NaN</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="right">1932</td>
+<td align="right">NaN</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>apenas o nome dos diretores com mais de 10 filmes.</li>
+</ol>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(imdb <span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(diretor) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_filmes =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_filmes <span class="sc">&gt;</span> <span class="dv">10</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="left">diretor</th>
+<th align="right">n_filmes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Barry Levinson</td>
+<td align="right">13</td>
+</tr>
+<tr class="even">
+<td align="left">Clint Eastwood</td>
+<td align="right">20</td>
+</tr>
+<tr class="odd">
+<td align="left">Francis Ford Coppola</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">John Carpenter</td>
+<td align="right">12</td>
+</tr>
+<tr class="odd">
+<td align="left">Kevin Smith</td>
+<td align="right">12</td>
+</tr>
+<tr class="even">
+<td align="left">Martin Scorsese</td>
+<td align="right">20</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="juntando-duas-bases" class="section level1">
 <h1>Juntando duas bases</h1>
 <ol style="list-style-type: lower-alpha">
-<li><p>Salve em um novo objeto uma tabela com a nota média dos filmes de cada diretor. Essa tabela deve conter duas colunas (diretor e nota_imdb_media) e cada linha deve ser um diretor diferente.</p></li>
-<li><p>Use o left_join() para trazer a coluna nota_imdb_media da tabela do item anterior para a tabela imdb original.</p></li>
+<li>Salve em um novo objeto uma tabela com a nota média dos filmes de cada diretor. Essa tabela deve conter duas colunas (diretor e nota_imdb_media) e cada linha deve ser um diretor diferente.</li>
 </ol>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>tab_nota_media <span class="ot">&lt;-</span> imdb <span class="sc">%&gt;%</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(diretor) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>( <span class="at">nota_imdb_media =</span> <span class="fu">mean</span>(nota_imdb) )</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tab_nota_media)</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="left">diretor</th>
+<th align="right">nota_imdb_media</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A. Raven Cruz</td>
+<td align="right">1.9</td>
+</tr>
+<tr class="even">
+<td align="left">Aaron Hann</td>
+<td align="right">6.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Aaron Schneider</td>
+<td align="right">7.1</td>
+</tr>
+<tr class="even">
+<td align="left">Aaron Seltzer</td>
+<td align="right">2.7</td>
+</tr>
+<tr class="odd">
+<td align="left">Abel Ferrara</td>
+<td align="right">6.6</td>
+</tr>
+<tr class="even">
+<td align="left">Adam Carolla</td>
+<td align="right">6.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Use o left_join() para trazer a coluna nota_imdb_media da tabela do item anterior para a tabela imdb original.</li>
+</ol>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>imdb <span class="ot">&lt;-</span> <span class="fu">left_join</span>(imdb, tab_nota_media, <span class="at">by =</span> <span class="st">&quot;diretor&quot;</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(imdb)</span></code></pre></div>
+<pre><code>## Rows: 3,807
+## Columns: 21
+## $ titulo            &lt;chr&gt; &quot;Avatar &quot;, &quot;Pirates of the Caribbean: At World&#39;s End~
+## $ ano               &lt;int&gt; 2009, 2007, 2012, 2012, 2007, 2010, 2015, 2016, 2006~
+## $ diretor           &lt;chr&gt; &quot;James Cameron&quot;, &quot;Gore Verbinski&quot;, &quot;Christopher Nola~
+## $ duracao           &lt;int&gt; 178, 169, 164, 132, 156, 100, 141, 183, 169, 151, 15~
+## $ cor               &lt;chr&gt; &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;~
+## $ generos           &lt;chr&gt; &quot;Action|Adventure|Fantasy|Sci-Fi&quot;, &quot;Action|Adventure~
+## $ pais              &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;US~
+## $ classificacao     &lt;chr&gt; &quot;A partir de 13 anos&quot;, &quot;A partir de 13 anos&quot;, &quot;A par~
+## $ orcamento         &lt;int&gt; 237000000, 300000000, 250000000, 263700000, 25800000~
+## $ receita           &lt;int&gt; 760505847, 309404152, 448130642, 73058679, 336530303~
+## $ nota_imdb         &lt;dbl&gt; 7.9, 7.1, 8.5, 6.6, 6.2, 7.8, 7.5, 6.9, 6.1, 7.3, 6.~
+## $ likes_facebook    &lt;int&gt; 33000, 0, 164000, 24000, 0, 29000, 118000, 197000, 0~
+## $ ator_1            &lt;chr&gt; &quot;CCH Pounder&quot;, &quot;Johnny Depp&quot;, &quot;Tom Hardy&quot;, &quot;Daryl Sa~
+## $ ator_2            &lt;chr&gt; &quot;Joel David Moore&quot;, &quot;Orlando Bloom&quot;, &quot;Christian Bale~
+## $ ator_3            &lt;chr&gt; &quot;Wes Studi&quot;, &quot;Jack Davenport&quot;, &quot;Joseph Gordon-Levitt~
+## $ lucro             &lt;int&gt; 523505847, 9404152, 198130642, -190641321, 78530303,~
+## $ lucro_medio       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ~
+## $ lucro_relativo    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ~
+## $ houve_lucro       &lt;chr&gt; &quot;sim&quot;, &quot;sim&quot;, &quot;sim&quot;, &quot;não&quot;, &quot;sim&quot;, &quot;não&quot;, &quot;sim&quot;, &quot;si~
+## $ antes_depois_2000 &lt;chr&gt; &quot;recente&quot;, &quot;recente&quot;, &quot;recente&quot;, &quot;recente&quot;, &quot;recente~
+## $ nota_imdb_media   &lt;dbl&gt; 7.883333, 6.985714, 8.425000, 7.733333, 6.900000, 7.~</code></pre>
 </div>
     </section>
   </div>

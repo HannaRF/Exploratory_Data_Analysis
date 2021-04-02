@@ -1,6 +1,6 @@
 ---
 title: "Familiarização com o dplyr - Exercício 1"
-author: "Hanna Rodrigues Ferreira e Marcos Antônio [completa aqui]"
+author: "Hanna Rodrigues Ferreira"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
   prettydoc::html_pretty:
@@ -87,7 +87,7 @@ Podemos ordenar os filmes utilizando o arrange(), em ordem crescente de duraçã
 
 filmes_ordenados <- arrange(imdb, duracao, desc(ano))
 
-head(filmes_ordenados)
+glimpse(filmes_ordenados)
 
 ```
 
@@ -109,7 +109,7 @@ filmes_pb <-
   imdb %>% 
     filter(cor == "Black and White")
 
-head(filmes_pb)
+glimpse(filmes_pb)
 
 ```
 
@@ -123,7 +123,7 @@ curtos_legais <-
   imdb %>%
     filter(duracao <= 90, nota_imdb > 8.5)
 
-head(curtos_legais)
+glimpse(curtos_legais)
 
 ```
 
@@ -131,7 +131,7 @@ filmes filmes coloridos anteriores a 1950:
 
 ```{r}
 
-head(
+glimpse(
   imdb %>%
     filter(cor == "Color", ano < 1950)
   )
@@ -285,7 +285,10 @@ imdb %>% summarise(
 
 ```{r}
 
-
+imdb %>% 
+  filter(duracao < 60) %>% 
+  summarise( lucro_medio = mean(lucro, na.rm = TRUE))
+  
 
 ```
 
@@ -293,7 +296,14 @@ imdb %>% summarise(
 
 ```{r}
 
+imdb <- imdb %>%
+  mutate(duracao_60 = ifelse(duracao<60,"> 60 min","<= 60 min"))
 
+imdb %>% 
+  group_by(duracao_60) %>% 
+  summarise( lucro_medio = mean(lucro, na.rm = TRUE))
+
+imdb <- select(imdb, -duracao_60)
 
 ```
 
@@ -303,7 +313,9 @@ a. a nota IMDB média dos filmes por tipo de classificacao;
 
 ```{r}
 
-
+imdb %>% 
+  group_by(classificacao) %>% 
+  summarise( nota_media = mean(nota_imdb,  na.rm = TRUE) )
 
 ```
 
@@ -311,7 +323,11 @@ b. a receita média e mediana dos filmes por ano;
 
 ```{r}
 
-
+head(imdb %>% 
+  group_by(ano) %>% 
+  summarise( receita_media = mean(receita,  na.rm = TRUE),
+             receita_mediana = median(receita,  na.rm = TRUE))
+  )
 
 ```
 
@@ -319,7 +335,11 @@ b. a receita média e mediana dos filmes por ano;
 
 ```{r}
 
-
+head(imdb %>%
+  group_by(diretor) %>% 
+  summarise(n_filmes = n()) %>% 
+  filter(n_filmes > 10)
+  )
 
 ```
 
@@ -329,7 +349,11 @@ b. a receita média e mediana dos filmes por ano;
 
 ```{r}
 
+tab_nota_media <- imdb %>% 
+  group_by(diretor) %>% 
+  summarise( nota_imdb_media = mean(nota_imdb) )
 
+head(tab_nota_media)
 
 ```
 
@@ -337,7 +361,9 @@ b. a receita média e mediana dos filmes por ano;
 
 ```{r}
 
+imdb <- left_join(imdb, tab_nota_media, by = "diretor")
 
+glimpse(imdb)
 
 ```
 
