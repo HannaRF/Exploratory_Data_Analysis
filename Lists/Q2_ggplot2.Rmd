@@ -17,6 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 
+library("ggplot2")
+
+pesq_prof <- read.csv("pesq_prof.csv")
 
 ```
 
@@ -24,6 +27,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 
+ggplot(pesq_prof, aes(x = Área)) + geom_histogram(stat = 'count')
+
+
+graf <- ggplot(pesq_prof, aes(x = Área)) + geom_histogram(stat = 'count')
+
+
+graf <- graf + geom_histogram(data = subset(pesq_prof, Área == "Geometria"), stat = "count", fill = "darkblue")
+
+
+print(graf)
+
+
+ggsave("graf.png")
 
 ```
+
+
+
 
