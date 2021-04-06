@@ -1,0 +1,190 @@
+---
+title: "Casas para Alugar"
+author: "Hanna e Marcos Antônio"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output: 
+    html_document:
+        highlight: textmate 
+        includes:
+          in_header: "cabecalho.html"
+        theme: flatly 
+        toc: yes 
+        number_sections: no
+        toc_float:
+            collapsed: yes
+            smooth_scroll: yes
+---  
+  
+  
+
+
+# Introdução
+
+Utilizamos uma base de dados do kaggle, carregada pelo usuário Rubens Júnior[^2] informando detalhes de casas para alugar no Brasil  
+Link para página [Aqui](https://www.kaggle.com/rubenssjr/brasilian-houses-to-rent).  
+Escolhemos esta base por conter dados diversificados e pela simplicidade do conteúdo.  
+Utilizamos somente as 1000 primeiras linhas da base.  
+
+[^2]: Link para a página do usuário que carregou a base [aqui](http://www.rubenssjr.com.br/)  
+  
+
+<br>  
+
+# Limpeza dos dados  
+
+<br>  
+
+Carregando pacotes  
+
+```{r, warning = FALSE, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(stringr)
+library(knitr)
+library(rmarkdown)
+library(forcats)
+library(patchwork)
+```  
+
+Limpeza dos dados  
+
+```{r, warning = FALSE, message = FALSE}
+Path = 'Moradia/houses_to_rent.csv'
+Tabela = read.csv(Path)
+Tabela <- Tabela[1:1000,]
+Tabela <- Tabela %>% select(-X)
+Tabela <- Tabela %>% mutate(city = as.factor(city))
+Tabela <- Tabela %>% mutate(floor = as.numeric(as.character(floor)))
+Tabela <- Tabela %>% mutate(hoa = str_replace(as.character(hoa),",",""))
+Tabela <- Tabela %>% mutate(hoa = as.numeric(str_remove(as.character(hoa),"R\\$")))
+
+Tabela <- Tabela %>% mutate(rent.amount = str_replace(as.character(rent.amount),",",""))
+Tabela <- Tabela %>% mutate(rent.amount = floor(as.numeric(str_remove(as.character(rent.amount),"R\\$"))))
+
+Tabela <- Tabela %>% mutate(property.tax = str_replace(as.character(property.tax),",",""))
+Tabela <- Tabela %>% mutate(property.tax = floor(as.numeric(str_remove(as.character(property.tax),"R\\$"))))
+
+Tabela <- Tabela %>% mutate(fire.insurance = str_replace(as.character(fire.insurance),",",""))
+Tabela <- Tabela %>% mutate(fire.insurance= floor(as.numeric(str_remove(as.character(fire.insurance),"R\\$"))))
+
+Tabela <- Tabela %>% mutate(total = str_replace(as.character(total),",",""))
+Tabela <- Tabela %>% mutate(total = floor(as.numeric(str_remove(as.character(total),"R\\$"))))
+write.csv(Tabela,"Moradia/Dados limpos")
+paged_table(head(Tabela,100))
+
+
+```  
+
+<br>  
+<br>  
+
+# Medidas de Resumo  
+
+
+```{r, warning = FALSE, message = FALSE}
+paged_table(Tabela %>% count(floor) %>% arrange(desc(floor)))
+Tabela %>% ggplot(aes(floor)) + geom_point(stat = 'count', size = 2)  +
+  coord_cartesian(xlim = c(0, 40)) +
+  scale_x_continuous(breaks = seq(0, 40, 2)) +
+  labs(x = "Andar", y = "Nº casas", title = "Contagem de casas por andar") + 
+    theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.title = element_text(color = "purple"),
+    panel.background = element_rect(fill = "grey"),
+    panel.grid = element_blank())
+```  
+<br>  
+Quanto maior o andar menos imóveis para alugar, o que era esperado.  
+<br>  
+Vamos verificar as frequências dae algumas variáveis categóricas  
+
+```{r, warning = FALSE, message = FALSE}
+paged_table(data.frame(Tabela %>% count(animal),Tabela %>% count(furniture), Tabela %>% count(city)))
+```  
+<br>  
+
+### Agora a frequência conjunta {.tabset} 
+
+####  Animais x Mobiliária
+
+```{r, warning = FALSE, message = FALSE}
+kable(prop.table(table(Tabela$animal,Tabela$furniture)))
+```  
+  
+Geralmente casas por imobiliária barram pets.  
+
+####  Animais x Cidade
+
+```{r, warning = FALSE, message = FALSE}
+kable(prop.table(table(Tabela$animal,Tabela$city)))
+```  
+
+####  Cidade x Mobiliária
+
+```{r, warning = FALSE, message = FALSE}
+kable(prop.table(table(Tabela$city,Tabela$furniture)))
+```  
+  
+
+<br>  
+
+#  Gráficos para entradas unidimensionais.  
+
+
+Vamos a algumas estatísticas de valores  
+
+abaixo o boxplot com as variáveis numéricas nos darão uma ideia de dispersão, média e quantis.  
+
+```{r, warning = FALSE, message = FALSE}
+p1 <- Tabela %>% ggplot(aes(y = hoa)) + geom_boxplot()
+p2 <- Tabela %>% ggplot(aes(y = rent.amount)) + geom_boxplot()
+p3 <- Tabela %>% ggplot(aes(y = property.tax)) + geom_boxplot()
+p4 <- Tabela %>% ggplot(aes(y = fire.insurance)) + geom_boxplot()
+p1+p2+p3+p4
+```  
+Percebe-se que o valor do aluguel tende a ser mais bem distribuído que as outras cobranças.  
+
+
+Vamos criar uma nova coluna "preço_ relativo_m2" obtida pela razão entre o total em valor e a área. Vejamos os que possuemo $m^2$ acima de R$200,00.  
+
+```{r, warning = FALSE, message = FALSE}
+Tabela <- Tabela %>% mutate(preço_m2 = total/area)
+paged_table(head(Tabela))
+Tabela %>% filter(preço_m2 >=150) %>% ggplot(aes(preço_m2))  + geom_point(stat = 'count')
+```  
+<br>  
+
+vejamos se opreço por $m^2$ tem alguma relação com a cidade.  
+
+```{r, warning = FALSE, message = FALSE}
+Tabela %>% group_by(city) %>% ggplot(aes(x = city, y = preço_m2)) + geom_boxplot(color = "blue") +
+  coord_cartesian(ylim = c(0, 200)) +
+  labs(x = "Cidade", y = "R$/m2", title = "Preço por Metro Quadrado") + 
+    theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.title = element_text(color = "red"),
+    panel.background = element_rect(fill = "grey"),
+    panel.grid = element_blank())
+```  
+  
+A cidade 1 tem o $m^2$ mais caro que a cidade 0, no entanto a cidade 0 tem uma distribuição de preços mais regular.  
+
+<br>  
+<br>  
+<br>  
+
+# Bibliotecas utilizadas  
+
+Grande parte dos comandos foram feitos utilizando `ggplot2`,`dplyr`. `stringr` auxiliou na limpeza dos dados, `forcats`,`knitr` e `rmarkdown` foram usadas para a construção de
+estruturas de dados categŕicos.Usei `patchwork` para juntar gráficos distintos.  
+
+ 
+<br>  
+<br>  
+
+# Referências  
+*    Livro de R [consultado](https://livro.curso-r.com/). 
+*    Livro de auxílio com para [tabelas](https://www.ime.usp.br/~pam/scriptsR.html). 
+
+
+
