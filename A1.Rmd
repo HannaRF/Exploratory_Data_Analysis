@@ -5,8 +5,9 @@ date: "`r format(Sys.time(), '%d %B,%Y')`"
 output: 
     html_document:
         highlight: textmate 
-        includes:
-          in_header: "cabecalho.html"
+        includes: 
+          before_body: "cabecalho.html"
+          #in_header: "cabecalho.html"
         theme: flatly 
         toc: yes 
         number_sections: no
@@ -44,6 +45,7 @@ library(knitr)
 library(rmarkdown)
 library(forcats)
 library(patchwork)
+library(ggExtra)
 ```  
 
 Limpeza dos dados  
@@ -76,13 +78,20 @@ paged_table(head(Tabela,100))
 ```  
 
 <br>  
+
+#  Exploração dos dados
+
 <br>  
 
-# Medidas de Resumo  
 
 
+
+```{r,warning = FALSE, message = FALSE}
+paged_table( Tabela %>% count(floor) %>% arrange(desc(floor)),
+             options = list(rows.print = 5))
+
+```
 ```{r, warning = FALSE, message = FALSE}
-paged_table(Tabela %>% count(floor) %>% arrange(desc(floor)))
 Tabela %>% ggplot(aes(floor)) + geom_point(stat = 'count', size = 2)  +
   coord_cartesian(xlim = c(0, 40)) +
   scale_x_continuous(breaks = seq(0, 40, 2)) +
@@ -96,7 +105,7 @@ Tabela %>% ggplot(aes(floor)) + geom_point(stat = 'count', size = 2)  +
 <br>  
 Quanto maior o andar menos imóveis para alugar, o que era esperado.  
 <br>  
-Vamos verificar as frequências dae algumas variáveis categóricas  
+Vamos verificar as frequências de algumas variáveis categóricas:
 
 ```{r, warning = FALSE, message = FALSE}
 paged_table(data.frame(Tabela %>% count(animal),Tabela %>% count(furniture), Tabela %>% count(city)))
@@ -124,12 +133,10 @@ kable(prop.table(table(Tabela$animal,Tabela$city)))
 ```{r, warning = FALSE, message = FALSE}
 kable(prop.table(table(Tabela$city,Tabela$furniture)))
 ```  
-  
 
-<br>  
-
-#  Gráficos para entradas unidimensionais.  
-
+## {-}
+<br>
+<br>
 
 Vamos a algumas estatísticas de valores  
 
@@ -145,11 +152,15 @@ p1+p2+p3+p4
 Percebe-se que o valor do aluguel tende a ser mais bem distribuído que as outras cobranças.  
 
 
-Vamos criar uma nova coluna "preço_ relativo_m2" obtida pela razão entre o total em valor e a área. Vejamos os que possuemo $m^2$ acima de R$200,00.  
+Vamos criar uma nova coluna "preço_ relativo_m2" obtida pela razão entre o total em valor e a área. Vejamos os que possuem o $m^2$ acima de R$200,00.  
 
 ```{r, warning = FALSE, message = FALSE}
+
 Tabela <- Tabela %>% mutate(preço_m2 = total/area)
-paged_table(head(Tabela))
+paged_table( head(Tabela) )
+
+
+
 Tabela %>% filter(preço_m2 >=150) %>% ggplot(aes(preço_m2))  + geom_point(stat = 'count')
 ```  
 <br>  
@@ -169,14 +180,74 @@ Tabela %>% group_by(city) %>% ggplot(aes(x = city, y = preço_m2)) + geom_boxplo
   
 A cidade 1 tem o $m^2$ mais caro que a cidade 0, no entanto a cidade 0 tem uma distribuição de preços mais regular.  
 
-<br>  
+```{r, warning = FALSE, message = FALSE}
+
+graf <- Tabela %>%
+  filter( !is.na(Tabela) ) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = area, y = total, color = total)) +
+  scale_color_gradient(low = "orange", high = "red") +
+  theme(legend.position="none")
+
+graf <- ggMarginal(graf, type="histogram",fill = "darkorange") 
+
+
+show(graf)
+
+```
+
+<br>
+
+
+
+```{r, warning = FALSE, message = FALSE}
+
+
+
+```
+
+
+
+```{r, warning = FALSE, message = FALSE}
+
+vagas <- Tabela %>% ggplot( aes(x = parking.spaces, fill = city ) ) +
+  geom_bar(show.legend = FALSE) +
+  labs(x = "vagas de garagem") + 
+  theme(axis.title.y = element_blank()) 
+
+quartos <- Tabela %>% ggplot( aes(x = rooms, fill = city ) ) +
+  geom_bar(show.legend = FALSE) +
+  labs(x = "número de quartos") + 
+  theme(axis.title.y = element_blank())
+
+banheiros <- Tabela %>% ggplot( aes(x = bathroom, fill = city ) ) +
+  geom_bar() +
+  labs(x = "número de banheiros",fill = "é na cidade") + 
+  theme(axis.title.y = element_blank())
+
+vagas + quartos + banheiros 
+
+# mudar as cores!
+
+```
+
+
+```{r, warning = FALSE, message = FALSE}
+
+#Tabela %>%  stat_qq() + stat_qq_line()
+
+```
+
+
+
 <br>  
 <br>  
 
 # Bibliotecas utilizadas  
 
+
 Grande parte dos comandos foram feitos utilizando `ggplot2`,`dplyr`. `stringr` auxiliou na limpeza dos dados, `forcats`,`knitr` e `rmarkdown` foram usadas para a construção de
-estruturas de dados categŕicos.Usei `patchwork` para juntar gráficos distintos.  
+estruturas de dados categóricos.Usei `patchwork` para juntar gráficos distintos.E `ggExtra` para plotar gráficos marginais.
 
  
 <br>  
