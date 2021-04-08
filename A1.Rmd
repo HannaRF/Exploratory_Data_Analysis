@@ -112,7 +112,7 @@ paged_table(data.frame(Tabela %>% count(animal),Tabela %>% count(furniture), Tab
 ```  
 <br>  
 
-### Agora a frequência conjunta {.tabset} 
+### Agora a proporção {.tabset} 
 
 ####  Animais x Mobiliária
 
@@ -120,7 +120,7 @@ paged_table(data.frame(Tabela %>% count(animal),Tabela %>% count(furniture), Tab
 kable(prop.table(table(Tabela$animal,Tabela$furniture)))
 ```  
   
-Geralmente casas por imobiliária barram pets.  
+Geralmente casas que não são por imobiliária barram pets.  
 
 ####  Animais x Cidade
 
@@ -149,10 +149,11 @@ p3 <- Tabela %>% ggplot(aes(y = property.tax)) + geom_boxplot()
 p4 <- Tabela %>% ggplot(aes(y = fire.insurance)) + geom_boxplot()
 p1+p2+p3+p4
 ```  
+<br>  
 Percebe-se que o valor do aluguel tende a ser mais bem distribuído que as outras cobranças.  
 
 
-Vamos criar uma nova coluna "preço_ relativo_m2" obtida pela razão entre o total em valor e a área. Vejamos os que possuem o $m^2$ acima de R$200,00.  
+Vamos criar uma nova coluna "preço_ relativo_m2" obtida pela razão entre o total em valor e a área. Vejamos os que possuem o $m^2$ acima de R$100,00.  
 
 ```{r, warning = FALSE, message = FALSE}
 
@@ -161,11 +162,11 @@ paged_table( head(Tabela) )
 
 
 
-Tabela %>% filter(preço_m2 >=150) %>% ggplot(aes(preço_m2))  + geom_point(stat = 'count')
+Tabela %>% filter(preço_m2 >=100) %>% ggplot(aes(preço_m2))  + geom_point(stat = 'count')
 ```  
 <br>  
 
-vejamos se opreço por $m^2$ tem alguma relação com a cidade.  
+vejamos se o preço por $m^2$ tem alguma relação com a cidade.  
 
 ```{r, warning = FALSE, message = FALSE}
 Tabela %>% group_by(city) %>% ggplot(aes(x = city, y = preço_m2)) + geom_boxplot(color = "blue") +
@@ -179,6 +180,20 @@ Tabela %>% group_by(city) %>% ggplot(aes(x = city, y = preço_m2)) + geom_boxplo
 ```  
   
 A cidade 1 tem o $m^2$ mais caro que a cidade 0, no entanto a cidade 0 tem uma distribuição de preços mais regular.  
+<br>  
+
+Vejamos a relação entre preço do aluguel, área e número de quartos.  
+
+```{r, warning = FALSE, message = FALSE}
+Tabela %>% count(animal)
+Tabela %>% filter(rent.amount > 12000) %>% count(animal)
+Tabela %>% filter(rent.amount > 12000) %>% 
+  ggplot(aes(x = area, y = rent.amount, colour = animal)) + geom_point()
+``` 
+<br>  
+ Casas maiores e mais caras tendem a ter mais tolerância com pets uma vez que no total essa proporção é de 0.78 e para casas com aluguel acima de R$12000,00 é de 0.87.  
+ <br>  
+ 
 
 ```{r, warning = FALSE, message = FALSE}
 
@@ -199,12 +214,6 @@ show(graf)
 <br>
 
 
-
-```{r, warning = FALSE, message = FALSE}
-
-
-
-```
 
 
 
