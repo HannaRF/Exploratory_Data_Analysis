@@ -79,7 +79,99 @@ paged_table(head(Tabela,100))
 
 <br>  
 
-#  Exploração dos dados
+# Medidas
+
+
+
+## frequência {.tabset} 
+
+Vamos verificar as frequências de algumas variáveis categóricas:
+
+<br>
+
+### Animais
+
+```{r, warning = FALSE, message = FALSE}
+
+kable( data.frame( Tabela %>% count(animal)) )
+
+```
+
+### Mobília 
+
+```{r, warning = FALSE, message = FALSE}
+
+kable( data.frame( Tabela %>% count(furniture)) )
+
+``` 
+
+### Cidade
+
+
+```{r, warning = FALSE, message = FALSE}
+
+
+kable( data.frame( Tabela %>% count(city)) )
+
+``` 
+
+## {-}
+
+
+## proporção {.tabset} 
+
+###  Animais x Mobiliária
+
+```{r, warning = FALSE, message = FALSE}
+kable(prop.table(table(Tabela$animal,Tabela$furniture)))
+```  
+  
+Geralmente casas que não são por imobiliária barram pets.  
+
+###  Animais x Cidade
+
+```{r, warning = FALSE, message = FALSE}
+kable(prop.table(table(Tabela$animal,Tabela$city)))
+```  
+
+###  Cidade x Mobiliária
+
+```{r, warning = FALSE, message = FALSE}
+kable(prop.table(table(Tabela$city,Tabela$furniture)))
+```  
+
+## {-}
+
+<br>
+
+```{r, warning = FALSE, message = FALSE}
+
+
+
+``` 
+
+
+
+```{r, warning = FALSE, message = FALSE}
+
+
+
+``` 
+<br>  
+
+```{r, warning = FALSE, message = FALSE}
+
+kable( data.frame( Tabela %>% count(rooms)) )
+
+kable( data.frame( Tabela %>% count(bathroom)) )
+
+kable( data.frame( Tabela %>% count(parking.spaces)) )
+
+``` 
+
+<br>
+
+# Visualizações
 
 <br>  
 
@@ -104,38 +196,9 @@ Tabela %>% ggplot(aes(floor)) + geom_point(stat = 'count', size = 2)  +
 ```  
 <br>  
 Quanto maior o andar menos imóveis para alugar, o que era esperado.  
-<br>  
-Vamos verificar as frequências de algumas variáveis categóricas:
 
-```{r, warning = FALSE, message = FALSE}
-paged_table(data.frame(Tabela %>% count(animal),Tabela %>% count(furniture), Tabela %>% count(city)))
-```  
-<br>  
 
-### Agora a proporção {.tabset} 
 
-####  Animais x Mobiliária
-
-```{r, warning = FALSE, message = FALSE}
-kable(prop.table(table(Tabela$animal,Tabela$furniture)))
-```  
-  
-Geralmente casas que não são por imobiliária barram pets.  
-
-####  Animais x Cidade
-
-```{r, warning = FALSE, message = FALSE}
-kable(prop.table(table(Tabela$animal,Tabela$city)))
-```  
-
-####  Cidade x Mobiliária
-
-```{r, warning = FALSE, message = FALSE}
-kable(prop.table(table(Tabela$city,Tabela$furniture)))
-```  
-
-## {-}
-<br>
 <br>
 
 Vamos a algumas estatísticas de valores  
@@ -184,18 +247,22 @@ A cidade 1 tem o $m^2$ mais caro que a cidade 0, no entanto a cidade 0 tem uma d
 
 Vejamos a relação entre preço do aluguel, área e número de quartos.  
 
-```{r, warning = FALSE, message = FALSE}
-Tabela %>% count(animal)
-Tabela %>% filter(rent.amount > 12000) %>% count(animal)
+```{r , warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>% count(animal))
+
+paged_table(Tabela %>% filter(rent.amount > 12000) %>% count(animal))
+
 Tabela %>% filter(rent.amount > 12000) %>% 
   ggplot(aes(x = area, y = rent.amount, colour = animal)) + geom_point()
+
 ``` 
 <br>  
  Casas maiores e mais caras tendem a ter mais tolerância com pets uma vez que no total essa proporção é de 0.78 e para casas com aluguel acima de R$12000,00 é de 0.87.  
  <br>  
  
 
-```{r, warning = FALSE, message = FALSE}
+```{r marginal , warning = FALSE, message = FALSE}
 
 graf <- Tabela %>%
   filter( !is.na(Tabela) ) %>% 
@@ -217,35 +284,51 @@ show(graf)
 
 
 
-```{r, warning = FALSE, message = FALSE}
+```{r barras, warning = FALSE, message = FALSE}
+
+colors = c("darkgray","steelblue")
 
 vagas <- Tabela %>% ggplot( aes(x = parking.spaces, fill = city ) ) +
   geom_bar(show.legend = FALSE) +
-  labs(x = "vagas de garagem") + 
-  theme(axis.title.y = element_blank()) 
+  labs(x = "vagas de garagem", y = "número de imóveis") + 
+  scale_fill_manual(values = colors) 
 
 quartos <- Tabela %>% ggplot( aes(x = rooms, fill = city ) ) +
-  geom_bar(show.legend = FALSE) +
-  labs(x = "número de quartos") + 
-  theme(axis.title.y = element_blank())
+  geom_bar() +
+  labs(x = "número de quartos") +
+  scale_fill_manual(values = colors,
+                    name = "na cidade",
+                    labels = c("não", "sim")) +
+  theme(axis.title.y = element_blank(),
+        legend.position="top")
 
 banheiros <- Tabela %>% ggplot( aes(x = bathroom, fill = city ) ) +
-  geom_bar() +
-  labs(x = "número de banheiros",fill = "é na cidade") + 
-  theme(axis.title.y = element_blank())
+  geom_bar(show.legend = FALSE) +
+  labs(x = "número de banheiros") + 
+  scale_fill_manual(values = colors) +
+  theme(axis.title.y = element_blank() )
 
 vagas + quartos + banheiros 
 
-# mudar as cores!
-
 ```
 
 
-```{r, warning = FALSE, message = FALSE}
+```{r quantis, warning = FALSE, message = FALSE}
 
-#Tabela %>%  stat_qq() + stat_qq_line()
+Tabela %>%
+  ggplot(aes(sample = total) ) +
+  stat_qq(color = "black",
+          fill = "gray",
+          alpha = 1/5,
+          size = 2) +
+  stat_qq_line(color = "red") +
+  labs(title = "Gráfico quantil x quantil do valor total dos imóveis",
+       x = "quantis teóricos",
+       y = "quantis amostrais")
+
 
 ```
+
 
 
 
