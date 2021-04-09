@@ -46,6 +46,7 @@ library(rmarkdown)
 library(forcats)
 library(patchwork)
 library(ggExtra)
+library(janitor)
 ```  
 
 Limpeza dos dados  
@@ -82,10 +83,7 @@ paged_table(head(Tabela,100))
 # Medidas
 
 
-
-## frequência {.tabset} 
-
-Vamos verificar as frequências de algumas variáveis categóricas:
+## {.tabset} 
 
 <br>
 
@@ -93,88 +91,329 @@ Vamos verificar as frequências de algumas variáveis categóricas:
 
 ```{r, warning = FALSE, message = FALSE}
 
-kable( data.frame( Tabela %>% count(animal)) )
+paged_table(Tabela %>% 
+  tabyl(animal) %>%
+  adorn_totals(where = c("row")) %>% 
+  adorn_percentages(denominator = "col") %>% 
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns(position = "front"))
 
 ```
 
-### Mobília 
+### Cidade
 
 ```{r, warning = FALSE, message = FALSE}
 
-kable( data.frame( Tabela %>% count(furniture)) )
+paged_table(Tabela %>% 
+  tabyl(city) %>%
+  adorn_totals(where = c("row")) %>% 
+  adorn_percentages(denominator = "col") %>% 
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns(position = "front"))
 
 ``` 
 
-### Cidade
+### Mobília
 
 
 ```{r, warning = FALSE, message = FALSE}
 
-
-kable( data.frame( Tabela %>% count(city)) )
+paged_table(Tabela %>% 
+  tabyl(furniture) %>%
+  adorn_totals(where = c("row")) %>% 
+  adorn_percentages(denominator = "col") %>% 
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns(position = "front"))
 
 ``` 
 
 ## {-}
 
 
-## proporção {.tabset} 
+## {.tabset} 
 
-###  Animais x Mobiliária
+<br>
+
+### Animais x Mobília
 
 ```{r, warning = FALSE, message = FALSE}
-kable(prop.table(table(Tabela$animal,Tabela$furniture)))
-```  
+
+paged_table(Tabela %>% 
+  tabyl(animal,furniture) %>%
+  adorn_totals(where = c("row","col")) %>% 
+  adorn_percentages(denominator = "col") %>% 
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns(position = "front"))
   
-Geralmente casas que não são por imobiliária barram pets.  
 
-###  Animais x Cidade
+```
 
-```{r, warning = FALSE, message = FALSE}
-kable(prop.table(table(Tabela$animal,Tabela$city)))
-```  
-
-###  Cidade x Mobiliária
+### Animais x Cidade
 
 ```{r, warning = FALSE, message = FALSE}
-kable(prop.table(table(Tabela$city,Tabela$furniture)))
+
+paged_table(Tabela %>% 
+  tabyl(animal,city) %>%
+  adorn_totals(where = c("row","col")) %>% 
+  adorn_percentages(denominator = "col") %>% 
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns(position = "front"))
+
+``` 
+
+### Cidade x Mobília
+
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>% 
+  tabyl(city,furniture) %>%
+  adorn_totals(where = c("row","col")) %>% 
+  adorn_percentages(denominator = "col") %>% 
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns(position = "front"))
+
+``` 
+
+## {-}
+
+
+## {.tabset} 
+
+
+
+###  Quartos
+
+
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>%
+              mutate(rooms = ifelse(rooms >= 5,"5+",rooms) ) %>% 
+              tabyl(rooms) %>%
+              adorn_totals(where = c("row")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+summary(Tabela$rooms)
+var(Tabela$rooms)
+
 ```  
+
+###  Banheiros
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>%
+              mutate(bathroom = ifelse(bathroom >= 5,"5+",bathroom) ) %>% 
+              tabyl(bathroom) %>%
+              adorn_totals(where = c("row")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+summary(Tabela$bathroom)
+var(Tabela$bathroom)
+
+```  
+
+###  vagas de garagem
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>%
+              mutate(parking.spaces = ifelse(parking.spaces >= 5,"5+",parking.spaces) ) %>% 
+              tabyl(parking.spaces) %>%
+              adorn_totals(where = c("row")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+summary(Tabela$parking.spaces)
+var(Tabela$parking.spaces)
+
+```  
+
+###  andar
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>%
+              mutate(floor = cut(Tabela$floor,
+                                 breaks = c(0,5,10,15,85) ) ) %>% 
+              tabyl(floor) %>%
+              adorn_totals(where = c("row")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+summary(Tabela$floor)
+var(!is.na(Tabela$floor) )
+
+```  
+
+
+###  metragem
+
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>%
+              mutate(area = cut(Tabela$area,
+                                 breaks = c(0,50,100,150,200,250,900) ) ) %>% 
+              tabyl(area) %>%
+              adorn_totals(where = c("row")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+summary(Tabela$area)
+var(Tabela$area)
+
+```  
+
+
+###  valor total 
+
+
+```{r, warning = FALSE, message = FALSE}
+
+# Corrigir notação científica de "total"
+
+paged_table(Tabela %>%
+              mutate(total = cut(Tabela$total,breaks = c(500,1500,3000,4500,6000,9000,12000,25000)) ) %>% 
+              tabyl(total) %>%
+              adorn_totals(where = c("row")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+summary(Tabela$total)
+var(Tabela$total)
+
+```  
+
+## {-}
+
+
+##  {.tabset} 
+
+###  valor total x area
+
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>%
+              mutate(area = cut(Tabela$area,
+                                 breaks = c(0,50,100,150,200,250,900) ),
+                     total = cut(Tabela$total,breaks = c(500,1500,3000,4500,6000,9000,12000,25000)) ) %>%  
+              tabyl(total,area) %>%
+              adorn_totals(where = c("row","col")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+
+
+
+Covariance <- cov(Tabela$total,Tabela$area)/( sd(Tabela$total) * sd(Tabela$area) ) 
+
+Covariance
+
+```  
+
+
+0.5 a 0.7 positivo ou negativo indica uma correlação moderada.
+
+
+
+###  vagas de garagem x metragem
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>%
+              mutate(parking.spaces = ifelse(parking.spaces >= 5,
+                                             "5+",parking.spaces),
+                     area = cut(Tabela$area,
+                                 breaks = c(0,50,100,150,200,250,900) ) ) %>% 
+              tabyl(parking.spaces,area) %>%
+              adorn_totals(where = c("row","col")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+
+
+
+Covariance <- cov(Tabela$parking.spaces,Tabela$area)/( sd(Tabela$parking.spaces) * sd(Tabela$area) ) 
+
+Covariance
+
+
+```  
+
+
+0.7 a 0.9 positivo ou negativo indica uma correlação forte.
+
+
+###  valor total x andar
+
+```{r, warning = FALSE, message = FALSE}
+
+paged_table(Tabela %>%
+              mutate(floor = cut(Tabela$floor,
+                                 breaks = c(0,5,10,15,85) ),
+                     total = cut(Tabela$total,
+                                          breaks = c(500,1500,3000,4500,6000,9000,12000,25000))) %>% 
+              tabyl(total,floor) %>%
+              adorn_totals(where = c("row","col")) %>%
+              adorn_percentages(denominator = "col") %>% 
+              adorn_pct_formatting(digits = 2) %>% 
+              adorn_ns(position = "front"))
+
+
+Covariance <- cov(Tabela$total, !is.na(Tabela$floor) )/( sd(Tabela$total) * sd( !is.na(Tabela$floor) ) ) 
+
+Covariance
+
+```  
+
+
+0 a 0.3 positivo ou negativo indica uma correlação desprezível.
+
 
 ## {-}
 
 <br>
 
-```{r, warning = FALSE, message = FALSE}
-
-
-
-``` 
-
 
 
 ```{r, warning = FALSE, message = FALSE}
 
+Covariance <- cov(Tabela$area, !is.na(Tabela$floor) )/( sd(Tabela$area) * sd( !is.na(Tabela$floor) ) ) 
 
+Covariance
 
 ``` 
 <br>  
 
 ```{r, warning = FALSE, message = FALSE}
 
-kable( data.frame( Tabela %>% count(rooms)) )
+Covariance <- cov(Tabela$rooms, !is.na(Tabela$floor) )/( sd(Tabela$rooms) * sd( !is.na(Tabela$floor) ) ) 
 
-kable( data.frame( Tabela %>% count(bathroom)) )
-
-kable( data.frame( Tabela %>% count(parking.spaces)) )
+Covariance
 
 ``` 
+
+
+
 
 <br>
 
 # Visualizações
 
 <br>  
-
 
 
 
@@ -193,6 +432,7 @@ Tabela %>% ggplot(aes(floor)) + geom_point(stat = 'count', size = 2)  +
     axis.title = element_text(color = "purple"),
     panel.background = element_rect(fill = "grey"),
     panel.grid = element_blank())
+
 ```  
 <br>  
 Quanto maior o andar menos imóveis para alugar, o que era esperado.  
@@ -339,7 +579,7 @@ Tabela %>%
 
 
 Grande parte dos comandos foram feitos utilizando `ggplot2`,`dplyr`. `stringr` auxiliou na limpeza dos dados, `forcats`,`knitr` e `rmarkdown` foram usadas para a construção de
-estruturas de dados categóricos.Usei `patchwork` para juntar gráficos distintos.E `ggExtra` para plotar gráficos marginais.
+estruturas de dados categóricos.Usei `patchwork` para juntar gráficos distintos.E `ggExtra` para plotar gráficos marginais.E `janitor` para tabelas de frequência.
 
  
 <br>  
