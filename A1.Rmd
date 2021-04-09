@@ -10,7 +10,7 @@ output:
           #in_header: "cabecalho.html"
         theme: flatly 
         toc: yes 
-        number_sections: no
+        number_sections: yes
         toc_float:
             collapsed: yes
             smooth_scroll: yes
@@ -321,6 +321,14 @@ Covariance <- cov(Tabela$total,Tabela$area)/( sd(Tabela$total) * sd(Tabela$area)
 
 Covariance
 
+Tabela %>% ggplot(aes(x = total, y = area)) + geom_point() + 
+    labs(x = "Total", y = "Área", title = "") + 
+    theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.title = element_text(color = "red"),
+    panel.background = element_rect(fill = "grey"),
+    panel.grid = element_blank())
+
 ```  
 
 
@@ -350,6 +358,15 @@ Covariance <- cov(Tabela$parking.spaces,Tabela$area)/( sd(Tabela$parking.spaces)
 
 Covariance
 
+Tabela %>% ggplot(aes(x = parking.spaces, y = area)) + geom_point() + 
+    labs(x = "Vagas", y = "Área", title = "") + 
+    theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.title = element_text(color = "red"),
+    panel.background = element_rect(fill = "grey"),
+    panel.grid = element_blank())
+
+
 
 ```  
 
@@ -377,7 +394,18 @@ Covariance <- cov(Tabela$total, !is.na(Tabela$floor) )/( sd(Tabela$total) * sd( 
 
 Covariance
 
+Tabela %>% ggplot(aes(x = floor, y = total)) + geom_point() + 
+    labs(x = "Andar", y = "Total", title = "") + 
+    theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.title = element_text(color = "red"),
+    panel.background = element_rect(fill = "grey"),
+    panel.grid = element_blank())
+
+
 ```  
+
+<br>  
 
 
 0 a 0.3 positivo ou negativo indica uma correlação desprezível.
