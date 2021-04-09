@@ -80,7 +80,10 @@ paged_table(head(Tabela,100))
 
 <br>  
 
-# Medidas {.tabset} 
+# Medidas
+
+
+## Contagem {.tabset} 
 
 <br>
 
@@ -127,7 +130,7 @@ paged_table(Tabela %>%
 ## {-}
 
 
-## {.tabset} 
+## Proporção conjunta {.tabset} 
 
 <br>
 
@@ -175,7 +178,7 @@ paged_table(Tabela %>%
 ## {-}
 
 
-## {.tabset} 
+## Proporções unidimensionais {.tabset} 
 
 
 
@@ -294,7 +297,7 @@ var(Tabela$total)
 ## {-}
 
 
-##  {.tabset} 
+## Correlação {.tabset} 
 
 ###  valor total x area
 

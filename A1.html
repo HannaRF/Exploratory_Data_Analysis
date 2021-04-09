@@ -2846,8 +2846,10 @@ paged_table(head(Tabela,100))</code></pre>
 </div>
 <p><br></p>
 </div>
-<div id="medidas" class="section level1 tabset">
+<div id="medidas" class="section level1">
 <h1>Medidas</h1>
+<div id="contagem" class="section level2 tabset">
+<h2>Contagem</h2>
 <p><br></p>
 <div id="animais" class="section level3">
 <h3>Animais</h3>
@@ -2891,11 +2893,12 @@ paged_table(head(Tabela,100))</code></pre>
   </script>
 </div>
 </div>
+</div>
 <div id="section" class="section level2 unnumbered">
 <h2></h2>
 </div>
-<div id="section-1" class="section level2 tabset">
-<h2></h2>
+<div id="proporção-conjunta" class="section level2 tabset">
+<h2>Proporção conjunta</h2>
 <p><br></p>
 <div id="animais-x-mobília" class="section level3">
 <h3>Animais x Mobília</h3>
@@ -2940,11 +2943,11 @@ paged_table(head(Tabela,100))</code></pre>
 </div>
 </div>
 </div>
-<div id="section-2" class="section level2 unnumbered">
+<div id="section-1" class="section level2 unnumbered">
 <h2></h2>
 </div>
-<div id="section-3" class="section level2 tabset">
-<h2></h2>
+<div id="proporções-unidimensionais" class="section level2 tabset">
+<h2>Proporções unidimensionais</h2>
 <div id="quartos" class="section level3">
 <h3>Quartos</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
@@ -3070,11 +3073,11 @@ paged_table(Tabela %&gt;%
 <pre><code>## [1] 22836097</code></pre>
 </div>
 </div>
-<div id="section-4" class="section level2 unnumbered">
+<div id="section-2" class="section level2 unnumbered">
 <h2></h2>
 </div>
-<div id="section-5" class="section level2 tabset">
-<h2></h2>
+<div id="correlação" class="section level2 tabset">
+<h2>Correlação</h2>
 <div id="valor-total-x-area" class="section level3">
 <h3>valor total x area</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
@@ -3169,7 +3172,7 @@ Covariance</code></pre>
 <p>0 a 0.3 positivo ou negativo indica uma correlação desprezível.</p>
 </div>
 </div>
-<div id="section-6" class="section level2 unnumbered">
+<div id="section-3" class="section level2 unnumbered">
 <h2></h2>
 <p><br></p>
 <pre class="r"><code>Covariance &lt;- cov(Tabela$area, !is.na(Tabela$floor) )/( sd(Tabela$area) * sd( !is.na(Tabela$floor) ) ) 
