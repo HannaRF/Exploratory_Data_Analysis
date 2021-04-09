@@ -10,7 +10,7 @@ output:
           #in_header: "cabecalho.html"
         theme: flatly 
         toc: yes 
-        number_sections: no
+        number_sections: yes
         toc_float:
             collapsed: yes
             smooth_scroll: yes
@@ -80,10 +80,14 @@ paged_table(head(Tabela,100))
 
 <br>  
 
-# Medidas
+Fizemos algumas alterações em células numéricas que estavam em formato `factor` por conter cifrão e outros elementos.
+
+# Medidas  
+<br>  
+O imóvel médio da nossa base aceita animais, é da cidade 1 e não vem com mobília.  
 
 
-## Contagem {.tabset} 
+## Frequências {.tabset} 
 
 <br>
 
@@ -127,10 +131,12 @@ paged_table(Tabela %>%
 
 ``` 
 
-## {-}
 
 
-## Proporção conjunta {.tabset} 
+## Proporções conjuntas {.tabset}  
+<br> 
+Casas sem mobília geralmente são mais tolerantes com animais, o que é razoável de se pensar, pois animais podem arranhar e danificar a mobília.  
+
 
 <br>
 
@@ -178,9 +184,9 @@ paged_table(Tabela %>%
 ## {-}
 
 
-## Proporções unidimensionais {.tabset} 
-
-
+## Resumo e dispersão {.tabset} 
+<br>  
+Algumas variáveis apresentam uma variância relativamente alta como vagas de garagem, quatos e aluguel. Número de quartos no entanto teve uma variância relativamente baixa indicando maior regularidade.  
 
 ###  Quartos
 
@@ -249,7 +255,7 @@ paged_table(Tabela %>%
               adorn_ns(position = "front"))
 
 summary(Tabela$floor)
-var(!is.na(Tabela$floor) )
+var(Tabela$floor, na.rm = TRUE)
 
 ```  
 
@@ -297,7 +303,9 @@ var(Tabela$total)
 ## {-}
 
 
-## Correlação {.tabset} 
+## Variáveis correlacionadas {.tabset}  
+<br>  
+Como era esperado, valor total e área estão positivamente correlacionados, isto é, quanto maior a área, maior é o valor esperado. No entanto, os dados nos mostram que andar e preço não estão bem correlacionados, isto é, a correlação está relativamente próxima de 0 (0.001).  
 
 ###  valor total x area
 
@@ -390,7 +398,7 @@ paged_table(Tabela %>%
               adorn_ns(position = "front"))
 
 
-Covariance <- cov(Tabela$total, !is.na(Tabela$floor) )/( sd(Tabela$total) * sd( !is.na(Tabela$floor) ) ) 
+Covariance <- cov(Tabela$total, !is.na(Tabela$floor) )/( sd(Tabela$total) * sd( Tabela$floor, na.rm = TRUE))
 
 Covariance
 
@@ -417,9 +425,10 @@ Tabela %>% ggplot(aes(x = floor, y = total)) + geom_point() +
 
 
 
+
 ```{r, warning = FALSE, message = FALSE}
 
-Covariance <- cov(Tabela$area, !is.na(Tabela$floor) )/( sd(Tabela$area) * sd( !is.na(Tabela$floor) ) ) 
+Covariance <- cov(Tabela$area,Tabela$floor, use = 'na.or')/( sd(Tabela$area) * sd( Tabela$floor, na.rm = TRUE ) ) 
 
 Covariance
 
@@ -428,7 +437,7 @@ Covariance
 
 ```{r, warning = FALSE, message = FALSE}
 
-Covariance <- cov(Tabela$rooms, !is.na(Tabela$floor) )/( sd(Tabela$rooms) * sd( !is.na(Tabela$floor) ) ) 
+Covariance <- cov(Tabela$rooms, Tabela$floor, use = 'na.or')/( sd(Tabela$rooms) * sd( Tabela$floor, na.rm = TRUE ) ) 
 
 Covariance
 
@@ -616,6 +625,7 @@ estruturas de dados categóricos.Usei `patchwork` para juntar gráficos distinto
 # Referências  
 *    Livro de R [consultado](https://livro.curso-r.com/). 
 *    Livro de auxílio com para [tabelas](https://www.ime.usp.br/~pam/scriptsR.html). 
+*    Imagem do cabeçalho https://image.freepik.com/vetores-gratis/uma-casa-de-dois-andares_1308-16176.jpg.
 
 
 
