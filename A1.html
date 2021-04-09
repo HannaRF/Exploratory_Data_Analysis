@@ -2796,7 +2796,7 @@ div.tocify {
 
 
 <div id="introdução" class="section level1">
-<h1><span class="header-section-number">1</span> Introdução</h1>
+<h1>Introdução</h1>
 <p>Utilizamos uma base de dados do kaggle, carregada pelo usuário Rubens Júnior<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> informando detalhes de casas para alugar no Brasil<br />
 Link para página <a href="https://www.kaggle.com/rubenssjr/brasilian-houses-to-rent">Aqui</a>.<br />
 Escolhemos esta base por conter dados diversificados e pela simplicidade do conteúdo.<br />
@@ -2804,7 +2804,7 @@ Utilizamos somente as 1000 primeiras linhas da base.</p>
 <p><br></p>
 </div>
 <div id="limpeza-dos-dados" class="section level1">
-<h1><span class="header-section-number">2</span> Limpeza dos dados</h1>
+<h1>Limpeza dos dados</h1>
 <p><br></p>
 <p>Carregando pacotes</p>
 <pre class="r"><code>library(ggplot2)
@@ -2846,13 +2846,11 @@ paged_table(head(Tabela,100))</code></pre>
 </div>
 <p><br></p>
 </div>
-<div id="medidas" class="section level1">
-<h1><span class="header-section-number">3</span> Medidas</h1>
-<div id="section" class="section level2 tabset">
-<h2><span class="header-section-number">3.1</span> </h2>
+<div id="medidas" class="section level1 tabset">
+<h1>Medidas</h1>
 <p><br></p>
 <div id="animais" class="section level3">
-<h3><span class="header-section-number">3.1.1</span> Animais</h3>
+<h3>Animais</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;% 
   tabyl(animal) %&gt;%
   adorn_totals(where = c(&quot;row&quot;)) %&gt;% 
@@ -2866,7 +2864,7 @@ paged_table(head(Tabela,100))</code></pre>
 </div>
 </div>
 <div id="cidade" class="section level3">
-<h3><span class="header-section-number">3.1.2</span> Cidade</h3>
+<h3>Cidade</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;% 
   tabyl(city) %&gt;%
   adorn_totals(where = c(&quot;row&quot;)) %&gt;% 
@@ -2880,7 +2878,7 @@ paged_table(head(Tabela,100))</code></pre>
 </div>
 </div>
 <div id="mobília" class="section level3">
-<h3><span class="header-section-number">3.1.3</span> Mobília</h3>
+<h3>Mobília</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;% 
   tabyl(furniture) %&gt;%
   adorn_totals(where = c(&quot;row&quot;)) %&gt;% 
@@ -2893,15 +2891,14 @@ paged_table(head(Tabela,100))</code></pre>
   </script>
 </div>
 </div>
-</div>
-<div id="section-1" class="section level2 unnumbered">
+<div id="section" class="section level2 unnumbered">
 <h2></h2>
 </div>
-<div id="section-2" class="section level2 tabset">
-<h2><span class="header-section-number">3.2</span> </h2>
+<div id="section-1" class="section level2 tabset">
+<h2></h2>
 <p><br></p>
 <div id="animais-x-mobília" class="section level3">
-<h3><span class="header-section-number">3.2.1</span> Animais x Mobília</h3>
+<h3>Animais x Mobília</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;% 
   tabyl(animal,furniture) %&gt;%
   adorn_totals(where = c(&quot;row&quot;,&quot;col&quot;)) %&gt;% 
@@ -2915,7 +2912,7 @@ paged_table(head(Tabela,100))</code></pre>
 </div>
 </div>
 <div id="animais-x-cidade" class="section level3">
-<h3><span class="header-section-number">3.2.2</span> Animais x Cidade</h3>
+<h3>Animais x Cidade</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;% 
   tabyl(animal,city) %&gt;%
   adorn_totals(where = c(&quot;row&quot;,&quot;col&quot;)) %&gt;% 
@@ -2929,7 +2926,7 @@ paged_table(head(Tabela,100))</code></pre>
 </div>
 </div>
 <div id="cidade-x-mobília" class="section level3">
-<h3><span class="header-section-number">3.2.3</span> Cidade x Mobília</h3>
+<h3>Cidade x Mobília</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;% 
   tabyl(city,furniture) %&gt;%
   adorn_totals(where = c(&quot;row&quot;,&quot;col&quot;)) %&gt;% 
@@ -2943,13 +2940,13 @@ paged_table(head(Tabela,100))</code></pre>
 </div>
 </div>
 </div>
-<div id="section-3" class="section level2 unnumbered">
+<div id="section-2" class="section level2 unnumbered">
 <h2></h2>
 </div>
-<div id="section-4" class="section level2 tabset">
-<h2><span class="header-section-number">3.3</span> </h2>
+<div id="section-3" class="section level2 tabset">
+<h2></h2>
 <div id="quartos" class="section level3">
-<h3><span class="header-section-number">3.3.1</span> Quartos</h3>
+<h3>Quartos</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
               mutate(rooms = ifelse(rooms &gt;= 5,&quot;5+&quot;,rooms) ) %&gt;% 
               tabyl(rooms) %&gt;%
@@ -2969,7 +2966,7 @@ paged_table(head(Tabela,100))</code></pre>
 <pre><code>## [1] 1.276877</code></pre>
 </div>
 <div id="banheiros" class="section level3">
-<h3><span class="header-section-number">3.3.2</span> Banheiros</h3>
+<h3>Banheiros</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
               mutate(bathroom = ifelse(bathroom &gt;= 5,&quot;5+&quot;,bathroom) ) %&gt;% 
               tabyl(bathroom) %&gt;%
@@ -2989,7 +2986,7 @@ paged_table(head(Tabela,100))</code></pre>
 <pre><code>## [1] 2.085349</code></pre>
 </div>
 <div id="vagas-de-garagem" class="section level3">
-<h3><span class="header-section-number">3.3.3</span> vagas de garagem</h3>
+<h3>vagas de garagem</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
               mutate(parking.spaces = ifelse(parking.spaces &gt;= 5,&quot;5+&quot;,parking.spaces) ) %&gt;% 
               tabyl(parking.spaces) %&gt;%
@@ -3009,7 +3006,7 @@ paged_table(head(Tabela,100))</code></pre>
 <pre><code>## [1] 2.525241</code></pre>
 </div>
 <div id="andar" class="section level3">
-<h3><span class="header-section-number">3.3.4</span> andar</h3>
+<h3>andar</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
               mutate(floor = cut(Tabela$floor,
                                  breaks = c(0,5,10,15,85) ) ) %&gt;% 
@@ -3030,7 +3027,7 @@ paged_table(head(Tabela,100))</code></pre>
 <pre><code>## [1] 0.1856697</code></pre>
 </div>
 <div id="metragem" class="section level3">
-<h3><span class="header-section-number">3.3.5</span> metragem</h3>
+<h3>metragem</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
               mutate(area = cut(Tabela$area,
                                  breaks = c(0,50,100,150,200,250,900) ) ) %&gt;% 
@@ -3051,7 +3048,7 @@ paged_table(head(Tabela,100))</code></pre>
 <pre><code>## [1] 17498.37</code></pre>
 </div>
 <div id="valor-total" class="section level3">
-<h3><span class="header-section-number">3.3.6</span> valor total</h3>
+<h3>valor total</h3>
 <pre class="r"><code># Corrigir notação científica de &quot;total&quot;
 
 paged_table(Tabela %&gt;%
@@ -3073,13 +3070,13 @@ paged_table(Tabela %&gt;%
 <pre><code>## [1] 22836097</code></pre>
 </div>
 </div>
-<div id="section-5" class="section level2 unnumbered">
+<div id="section-4" class="section level2 unnumbered">
 <h2></h2>
 </div>
-<div id="section-6" class="section level2 tabset">
-<h2><span class="header-section-number">3.4</span> </h2>
+<div id="section-5" class="section level2 tabset">
+<h2></h2>
 <div id="valor-total-x-area" class="section level3">
-<h3><span class="header-section-number">3.4.1</span> valor total x area</h3>
+<h3>valor total x area</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
               mutate(area = cut(Tabela$area,
                                  breaks = c(0,50,100,150,200,250,900) ),
@@ -3109,7 +3106,7 @@ Covariance</code></pre>
 <p>0.5 a 0.7 positivo ou negativo indica uma correlação moderada.</p>
 </div>
 <div id="vagas-de-garagem-x-metragem" class="section level3">
-<h3><span class="header-section-number">3.4.2</span> vagas de garagem x metragem</h3>
+<h3>vagas de garagem x metragem</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
               mutate(parking.spaces = ifelse(parking.spaces &gt;= 5,
                                              &quot;5+&quot;,parking.spaces),
@@ -3140,7 +3137,7 @@ Covariance</code></pre>
 <p>0.7 a 0.9 positivo ou negativo indica uma correlação forte.</p>
 </div>
 <div id="valor-total-x-andar" class="section level3">
-<h3><span class="header-section-number">3.4.3</span> valor total x andar</h3>
+<h3>valor total x andar</h3>
 <pre class="r"><code>paged_table(Tabela %&gt;%
               mutate(floor = cut(Tabela$floor,
                                  breaks = c(0,5,10,15,85) ),
@@ -3172,7 +3169,7 @@ Covariance</code></pre>
 <p>0 a 0.3 positivo ou negativo indica uma correlação desprezível.</p>
 </div>
 </div>
-<div id="section-7" class="section level2 unnumbered">
+<div id="section-6" class="section level2 unnumbered">
 <h2></h2>
 <p><br></p>
 <pre class="r"><code>Covariance &lt;- cov(Tabela$area, !is.na(Tabela$floor) )/( sd(Tabela$area) * sd( !is.na(Tabela$floor) ) ) 
@@ -3188,7 +3185,7 @@ Covariance</code></pre>
 </div>
 </div>
 <div id="visualizações" class="section level1">
-<h1><span class="header-section-number">4</span> Visualizações</h1>
+<h1>Visualizações</h1>
 <p><br></p>
 <pre class="r"><code>paged_table( Tabela %&gt;% count(floor) %&gt;% arrange(desc(floor)),
              options = list(rows.print = 5))</code></pre>
@@ -3310,13 +3307,13 @@ vagas + quartos + banheiros </code></pre>
 <br></p>
 </div>
 <div id="bibliotecas-utilizadas" class="section level1">
-<h1><span class="header-section-number">5</span> Bibliotecas utilizadas</h1>
+<h1>Bibliotecas utilizadas</h1>
 <p>Grande parte dos comandos foram feitos utilizando <code>ggplot2</code>,<code>dplyr</code>. <code>stringr</code> auxiliou na limpeza dos dados, <code>forcats</code>,<code>knitr</code> e <code>rmarkdown</code> foram usadas para a construção de estruturas de dados categóricos.Usei <code>patchwork</code> para juntar gráficos distintos.E <code>ggExtra</code> para plotar gráficos marginais.E <code>janitor</code> para tabelas de frequência.</p>
 <p><br><br />
 <br></p>
 </div>
 <div id="referências" class="section level1">
-<h1><span class="header-section-number">6</span> Referências</h1>
+<h1>Referências</h1>
 <ul>
 <li>Livro de R <a href="https://livro.curso-r.com/">consultado</a>.</li>
 <li>Livro de auxílio com para <a href="https://www.ime.usp.br/~pam/scriptsR.html">tabelas</a>.</li>
