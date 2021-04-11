@@ -84,11 +84,13 @@ Fizemos algumas alterações em células numéricas que estavam em formato `fact
 
 # Medidas  
 <br>  
-O imóvel médio da nossa base aceita animais, é da cidade 1 e não vem com mobília.  
+Analisaremos a seguir nossa amostra via tabelas de frequência e medidas tanto de resumo quanto de dispersão.
+<br>
 
+## Analisando dados categóricos {.tabset} 
 
-## Frequências {.tabset} 
-
+<br>
+Através da análise individual das variáveis categóricas podemos inferir que um imóvel em nossa amostra muito provavelmente aceita animais, não vem com mobília e é da cidade 1.
 <br>
 
 ### Animais
@@ -133,12 +135,9 @@ paged_table(Tabela %>%
 
 
 
-## Proporções conjuntas {.tabset}  
-<br> 
-Casas sem mobília geralmente são mais tolerantes com animais, o que é razoável de se pensar, pois animais podem arranhar e danificar a mobília.  
+## relação entre as variáveis categóricas {.tabset}  
 
-
-<br>
+Analisaremos a seguir as relações entre as variáveis categóricas em nossa amostra.
 
 ### Animais x Mobília
 
@@ -154,6 +153,11 @@ paged_table(Tabela %>%
 
 ```
 
+<br> 
+Casas sem mobília geralmente são mais tolerantes com animais, o que é razoável de se pensar, pois animais podem arranhar e danificar a mobília do locador. 
+<br>
+
+
 ### Animais x Cidade
 
 ```{r, warning = FALSE, message = FALSE}
@@ -166,6 +170,10 @@ paged_table(Tabela %>%
   adorn_ns(position = "front"))
 
 ``` 
+
+<br>
+Observe que a tolerância aos animais é indiferente à qual cidade o imóvel pertence.
+<br>
 
 ### Cidade x Mobília
 
@@ -181,12 +189,17 @@ paged_table(Tabela %>%
 
 ``` 
 
+<br>
+Desta forma concluímos que a proporção de imóveis mobiliados na cidade 1 é consideravelmente superior ao da cidade 0.
+<br>
+
 ## {-}
 
 
-## Resumo e dispersão {.tabset} 
+## Analisando dados numéricos {.tabset} 
+
 <br>  
-Algumas variáveis apresentam uma variância relativamente alta como vagas de garagem, quatos e aluguel. Número de quartos no entanto teve uma variância relativamente baixa indicando maior regularidade.  
+Algumas variáveis apresentam uma variabilidade dos dados alta como metragem e o valor total para alugar. Outras variáveis apesar de variância alta, por apresentarem outliers apresentam-se menos dispersas.
 
 ###  Quartos
 
@@ -207,6 +220,10 @@ var(Tabela$rooms)
 
 ```  
 
+<br>
+Observe que mais de 80% dos imóveis da amostra possuem até 3 quartos.Indicando uma baixa variabilidade dos dados.
+<br>
+
 ###  Banheiros
 
 ```{r, warning = FALSE, message = FALSE}
@@ -223,6 +240,12 @@ summary(Tabela$bathroom)
 var(Tabela$bathroom)
 
 ```  
+
+
+<br>
+Por mais que tenham imóveis com até 10 banheiros em nossa amostra, observe que mais de 90% se concentram nos imóveis com até 4 banheiros. Podemos perceber a presença desses outliers pela magnitude da variância.
+<br>
+
 
 ###  vagas de garagem
 
@@ -241,6 +264,10 @@ var(Tabela$parking.spaces)
 
 ```  
 
+<br>
+Um imóvel sem vagas de garagem representa 19% da amostra. Considerando apenas os imóveis com vagas de garagem 70% destes possuem 1 ou 2 vagas.Pelo mesmo argumento dos outliers, a  variância está razoavelmente alta, dando uma errada impressão de variabilidade dos dados.
+<br>
+
 ###  andar
 
 ```{r, warning = FALSE, message = FALSE}
@@ -258,6 +285,10 @@ summary(Tabela$floor)
 var(Tabela$floor, na.rm = TRUE)
 
 ```  
+
+<br>
+O exemplo mais marcante na falha da variância em lidar com outliers pode ser conferida neste exemplo. Além disso é interessante resaltar que os imóveis da amostra com andar "NA" serão tratados como casas. Desta forma, quase 25% dos imóveis para alugar são casas. Considerando apenas o apartamentos, quase 90% estão entre o primeiro e o 15º andar.
+<br>
 
 
 ###  metragem
@@ -278,6 +309,10 @@ summary(Tabela$area)
 var(Tabela$area)
 
 ```  
+
+<br>
+
+<br>
 
 
 ###  valor total 
@@ -556,10 +591,8 @@ show(graf)
 ```
 
 <br>
-
-
-
-
+Observe que existe um ponto de concentração de imóveis na faixa de valor total para alugar até 5 mil e área de até 150 m^2 .
+<br>
 
 ```{r barras, warning = FALSE, message = FALSE}
 
@@ -574,8 +607,8 @@ quartos <- Tabela %>% ggplot( aes(x = rooms, fill = city ) ) +
   geom_bar() +
   labs(x = "número de quartos") +
   scale_fill_manual(values = colors,
-                    name = "na cidade",
-                    labels = c("não", "sim")) +
+                    name = "cidade",
+                    labels = c("0", "1")) +
   theme(axis.title.y = element_blank(),
         legend.position="top")
 
@@ -589,6 +622,9 @@ vagas + quartos + banheiros
 
 ```
 
+<br>
+Podemos observar nos gráficos que por mais que o número de imóveis para alugar da cidade 0 seja bem menor do que o número de imóveis da cidade 1, as variáveis observadas aparentam ser indiferentes quanto a qual cidade pertencem.
+<br>
 
 ```{r quantis, warning = FALSE, message = FALSE}
 
@@ -606,20 +642,15 @@ Tabela %>%
 
 ```
 
-
-
-
-<br>  
+<br>
+Note que a distância inicial dos dados à reta teórica demonstra que existe uma concentração de imóveis a valores inferiores. Portanto existe uma acentuada assimetria dos dados para a esquerda.
 <br>  
 
 # Bibliotecas utilizadas  
 
-
+<br>
 Grande parte dos comandos foram feitos utilizando `ggplot2`,`dplyr`. `stringr` auxiliou na limpeza dos dados, `forcats`,`knitr` e `rmarkdown` foram usadas para a construção de
-estruturas de dados categóricos.Usei `patchwork` para juntar gráficos distintos.E `ggExtra` para plotar gráficos marginais.E `janitor` para tabelas de frequência.
-
- 
-<br>  
+estruturas de dados categóricos. `patchwork` para juntar gráficos distintos. `ggExtra` para plotar gráficos marginais. `janitor` para as tabelas de frequência.
 <br>  
 
 # Referências  
