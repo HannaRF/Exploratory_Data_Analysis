@@ -29,8 +29,6 @@ Utilizamos somente as 1000 primeiras linhas da base.
 [^2]: Link para a página do usuário que carregou a base [aqui](http://www.rubenssjr.com.br/)  
   
 
-<br>  
-
 # Limpeza dos dados  
 
 <br>  
@@ -652,6 +650,19 @@ Note que a distância inicial dos dados à reta teórica demonstra que existe um
 Grande parte dos comandos foram feitos utilizando `ggplot2`,`dplyr`. `stringr` auxiliou na limpeza dos dados, `forcats`,`knitr` e `rmarkdown` foram usadas para a construção de
 estruturas de dados categóricos. `patchwork` para juntar gráficos distintos. `ggExtra` para plotar gráficos marginais. `janitor` para as tabelas de frequência.
 <br>  
+
+# Divisão do Trabalho e Curva de Aprendizado
+
+
+*   Limpeza de dados : Marcos
+*   Medidas : análises 3.1, 3.2, 3.3 Hanna e 3.4 Marcos
+*   Visualizações : 6 primeiras Marcos e 3 últimas Hanna
+
+Hanna: "Foi interessante no sentido de aplicabilidade de cada medida e tipo de gráfico em cada contexto a ser analisado, ao mesmo tempo que produtivo do ponto de vista de familiarização com as possibilidades de customização do ggplot2 e de usabilidade do pacote janitor para as tabelas de frequência"
+
+Marcos : "Familiarização com o tidyverse ggplot e rbase. Além disso foi inportante pro aprendizado de Rmarkdown e para a exploração de dados" 
+
+Github: <https://github.com/HannaRF/Exploratory_Data_Analysis>
 
 # Referências  
 *    Livro de R [consultado](https://livro.curso-r.com/). 
