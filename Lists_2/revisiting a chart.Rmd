@@ -1,0 +1,78 @@
+---
+title: "Títulos e anotações"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output: 
+    html_document:
+        highlight: textmate 
+        includes: 
+          #before_body: "cabecalho.html"
+          #in_header: "cabecalho.html"
+        theme: flatly 
+        toc: yes 
+        number_sections: yes
+        toc_float:
+            collapsed: yes
+            smooth_scroll: yes
+---
+
+# Adicionando Títulos e fazendo anotações
+
+Vamos reproduzir os resultados do capítulo 5 do livro "Data Visualization - A pratical Introduction" de Kieran Healy. Os dados utilizados foram retirados de <https://github.com/kjhealy/socviz>.
+
+```{r setup, message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(gapminder)
+library(tidyverse)
+library(socviz) # dataset : gss_sm
+library(rmarkdown)
+
+```
+
+```{r}
+
+paged_table(head(gss_sm))
+
+```
+
+```{r, message=FALSE}
+
+rel_by_region <- gss_sm %>% 
+    group_by(bigregion, religion) %>% 
+    summarize(N = n()) %>% 
+    mutate(freq = N/sum(N),
+           pct = round((freq*100), 0))
+
+paged_table(rel_by_region)
+
+```
+
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```
+
+# Revisitando um Gráfico
+
+Vamos agora aplicar o que foi discutido no capítulo revisitando o gráfico ... e enriquecendo-o com as técnicas propostas
+
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```
+
