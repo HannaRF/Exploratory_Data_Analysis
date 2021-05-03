@@ -3,11 +3,11 @@ title: "Títulos e anotações"
 author: "Hanna Rodrigues Ferreira"
 date: "`r format(Sys.time(), '%d %B,%Y')`"
 output:
-  pdf_document:
   html_document:
     highlight: textmate
     includes: null
     theme: flatly
+  pdf_document:
 always_allow_html: true
 ---
 
@@ -133,7 +133,7 @@ organdata %>%
 ```
 
 
-
+Vamos plotar a taxa de doação de órgãos por milhão de população, donors, pelo tempo para começar a analisar os dados.
 
 
 ```{r}
@@ -148,6 +148,7 @@ p + geom_point()
 ```
 
 
+Não muito informativo por enquanto. Podemos plotar a série histórica da taxa de doação de cada país utilizando **geom_line()**:
 
 
 ```{r}
@@ -156,11 +157,13 @@ p <- ggplot(data = organdata,
             mapping = aes(x = year, y = donors))
 
 p + geom_line(aes(group = country)) +
-    facet_wrap(~country)
-
+  facet_wrap(~country) +
+  theme(axis.text.x = element_text(size=6)) 
 
 ```
 
+
+Focando agora não no tempo mas na variação da taxa de doação, plotaremos o boxplot de taxa de doação por país:
 
 
 
@@ -169,19 +172,13 @@ p + geom_line(aes(group = country)) +
 p <- ggplot(data = organdata,
             mapping = aes(x = country, y = donors))
 
-p + geom_boxplot()
+p + geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 45)) 
 
 ```
 
 
-
-
-```{r}
-
-# correct x axis
-
-```
-
+Observe que os países se sobrepoem, uma alternativa é deitar o gráfico usando **coord_flip()**:
 
 
 
@@ -196,12 +193,15 @@ p + geom_boxplot() +
 ```
 
 
+Mesmo mais legível, ele parece a priori pouco informativo, porque os países estão por ordem alfabética. Podemos reordená-los pela taxa de doações médias através da função **reorder()**
 
 
 ```{r}
 
 p <- ggplot(data = organdata,
-            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+            mapping = aes(x = reorder(country,
+                                      donors,
+                                      na.rm = TRUE),
                           y = donors) )
 
 p + geom_boxplot() +
@@ -211,6 +211,30 @@ p + geom_boxplot() +
 
 ```
 
+
+
+Podemos alternativamente fazer violin plot através da função **geom_violin()**
+
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country,
+                                      donors,
+                                      na.rm = TRUE),
+                          y = donors) )
+
+p + geom_violin() +
+    labs(x = NULL) +
+    coord_flip()
+
+
+```
+
+
+
+Podemos também colorir os boxplots de acordo com a categoria **world**
 
 
 
@@ -513,8 +537,7 @@ p + geom_point() +
 
 Vamos agora aplicar o que foi discutido no capítulo revisitando o gráfico ... e enriquecendo-o com as técnicas apresentadas anteriormente.
 
-```{r}
-
+```{r, echo = FALSE}
 
 
 ```
