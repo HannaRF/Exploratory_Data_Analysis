@@ -213,7 +213,7 @@ p + geom_boxplot() +
 
 
 
-Podemos alternativamente fazer violin plot através da função **geom_violin()**
+Podemos alternativamente fazer o **Violin plot** através da função **geom_violin()**
 
 
 
@@ -234,7 +234,7 @@ p + geom_violin() +
 
 
 
-Podemos também colorir os boxplots de acordo com a categoria **world**
+Podemos também colorir os boxplots de acordo com a variável categórica **world**:
 
 
 
@@ -255,6 +255,9 @@ p + geom_boxplot() +
 ```
 
 
+Colocando variáveis categóricas na vertical para comparar as distribuições é um bom recurso para resumir muitos pontos.Entretanto quando a quantidade de pontos por categoria é relativamente pequena, podemos simplismente plotar as observações.
+
+Vamos utilizar a função **geom_point()** em vez de **geom_boxplot()** fazendo os devidos ajustes de parâmetros:
 
 
 ```{r}
@@ -274,6 +277,7 @@ p + geom_point() +
 ```
 
 
+Perceba que desta forma, existe sobreposição de observações, nestes casos podemos perturbar os dados para evitar esta sobreposição através da função **geom_jitter()**:
 
 
 ```{r}
@@ -293,9 +297,31 @@ p + geom_jitter() +
 ```
 
 
+Podemos regular o grau de pertubação de dados com o parâmetros **width** e **height**:
 
 
+```{r}
 
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors,
+                          color = world) )
+
+p + geom_jitter(position = position_jitter(width = 0,
+                                           height = 0.5) ) +
+    labs(x = NULL) +
+    coord_flip() +
+    theme(legend.position = 'top')
+
+
+```
+
+
+ Dado o formato do gráfico, usaremos apenas o **width**, pois o **heigh** altera o eixo y (não esqueça que deitamos o gráfico), ou seja, altera a distribuição das observações.
+ 
+ 
+ 
 ```{r}
 
 
@@ -313,31 +339,47 @@ p + geom_jitter(position = position_jitter(width = 0.15) ) +
 ```
 
 
-```{r summarize}
-by_country <- organdata %>% group_by(consent_law, country) %>%
-    summarize(donors_mean= mean(donors, na.rm = TRUE),
-              donors_sd = sd(donors, na.rm = TRUE),
-              gdp_mean = mean(gdp, na.rm = TRUE),
-              health_mean = mean(health, na.rm = TRUE),
-              roads_mean = mean(roads, na.rm = TRUE),
-              cerebvas_mean = mean(cerebvas, na.rm = TRUE))
+Quando queremos resumir uma variável categórica com apenas um valor por catergoria, como a taxa média de doações por país, podemos usar o **Cleverland plot**. 
+
+
+Vamos fazer um pipeline para agregar e resumir nosso dataframe, podemos escolher manualmente as variáveis e usar repetidamente as funções de resumo **mean()** e **std()**:
+
+
+```{r}
+
+by_country <- organdata %>%
+  group_by(consent_law, country) %>%
+  summarize(donors_mean = mean(donors, na.rm = TRUE),
+            donors_sd = sd(donors, na.rm = TRUE),
+            gdp_mean = mean(gdp, na.rm = TRUE),
+            health_mean = mean(health, na.rm = TRUE),
+            roads_mean = mean(roads, na.rm = TRUE),
+            cerebvas_mean = mean(cerebvas, na.rm = TRUE))
 
 by_country
+
 ```
 
 
-```{r better_summarize}
+Ou alternativamente podemos fazer esta tarefa iterando através de recursos de programação funcional do R:
+
+
+```{r}
+
 by_country <- organdata %>% 
   group_by(consent_law, country) %>%
-    summarize_if(is.numeric, 
-                 list(~ mean(., na.rm = TRUE), 
-                      ~ sd(., na.rm = TRUE))) %>%
+    summarize_if(is.numeric, funs(mean, sd), na.rm = TRUE) %>%
     ungroup()
 
 by_country
+
 ```
 
-```{r 05-tables-and-labels-12 }
+
+Com os dado resumidos por país, podemos fazer um **Cleveland dotplot** com os pontos coloridos conforme a variável categórica **consent_law**.
+
+
+```{r}
 p <- ggplot(data = by_country,
             mapping = aes(x = donors_mean, 
                           y = reorder(country, donors_mean),
@@ -349,7 +391,25 @@ p + geom_point(size=3) +
 ```
 
 
-```{r 05-tables-and-labels-13 }
+Alternativamente podemos plotar separadamente pela categoria **consent_law** em vez de colorir. Colocaremos os gráficos empilhados, **ncol = 1**, para melhor compará-los dado que são da mesma escala.
+
+
+```{r}
+p <- ggplot(data = by_country,
+            mapping = aes(x = donors_mean,
+                          y = reorder(country, donors_mean)))
+
+p + geom_point(size=3) +
+    facet_wrap(~ consent_law, ncol = 1) +
+    labs(x= "Donor Procurement Rate",
+         y= "")       
+```
+
+
+Note que pelo eixo y ser categórico, ele vai plotar o nome todos os países nos 2 plots, então para evitar isso colocaremos **scales = "free_y"**.
+
+
+```{r}
 p <- ggplot(data = by_country,
             mapping = aes(x = donors_mean,
                           y = reorder(country, donors_mean)))
@@ -360,22 +420,41 @@ p + geom_point(size=3) +
          y= "")       
 ```
 
-```{r 05-tables-and-labels-14 }
-p <- ggplot(data = by_country, mapping = aes(x = reorder(country,
-              donors_mean), y = donors_mean))
+
+**Cleverland plots** é um ótimo recurso de resumir resultados de dados que possuem erros de range. Para extender este tipo de plot e incluir medidas de variância ou erro utilizamos o **geom_pointrange**.
+
+
+Este precisa do range em que se encontram os dados, **ymin** e **ymax**:
+
+
+```{r}
+
+p <- ggplot(data = by_country,
+            mapping = aes(x = reorder(country,donors_mean),
+                          y = donors_mean))
 
 p + geom_pointrange(mapping = aes(ymin = donors_mean - donors_sd,
-       ymax = donors_mean + donors_sd)) +
-     labs(x= "", y= "Donor Procurement Rate") + coord_flip()      
+                                  ymax = donors_mean + donors_sd)) +
+  labs(x= "", y= "Donor Procurement Rate") +
+  coord_flip()   
+
 ```
 
 ## Adicionar texto
 
-```{r 05-tables-and-labels-15 }
+
+...
+
+
+```{r}
+
 p <- ggplot(data = by_country,
-            mapping = aes(x = roads_mean, y = donors_mean))
-p + geom_point() + geom_text(mapping = aes(label = country))
-      
+            mapping = aes(x = roads_mean,
+                          y = donors_mean))
+
+p + geom_point() +
+  geom_text(mapping = aes(label = country))
+
 ```
 
 
