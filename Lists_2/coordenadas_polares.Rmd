@@ -1,0 +1,117 @@
+---
+title: "coordenadas polares"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output:
+  html_document:
+    highlight: textmate
+    includes: null
+    theme: flatly
+  pdf_document:
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+
+library(tidyverse)
+library(janitor)
+library(patchwork)
+
+```
+
+
+```{r}
+
+Tabela <- read.csv('Dados limpos')
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
+city <- Tabela %>% tabyl(city)
+
+
+city %>% ggplot(aes(x="", y=percent, fill = as.factor(city))) +
+  geom_bar(width = 1, stat = "identity") +
+  labs(x = NULL, y = NULL, fill = "city") +
+  coord_polar("y", start=0)
+
+
+```
+
+```{r}
+
+b0 <- Tabela %>%
+  filter(city == 0) %>% 
+  mutate(bathroom = ifelse(bathroom>=6, "6+", bathroom)) %>%
+  tabyl(bathroom)
+
+b1 <- Tabela %>%
+  filter(city == 1) %>% 
+  mutate(bathroom = ifelse(bathroom>=6, "6+", bathroom)) %>%
+  tabyl(bathroom)
+
+bathroom_0 <- b0 %>%
+  ggplot(aes(x="", y=percent, fill = as.factor(bathroom))) +
+  geom_bar(width = 1, stat = "identity") +
+  labs(x = NULL, y = "city 0", fill = NULL) +
+  theme(legend.position="none") +
+  coord_polar("y", start=0)
+
+bathroom_1 <- b1 %>%
+  ggplot(aes(x="", y=percent, fill = as.factor(bathroom))) +
+  geom_bar(width = 1, stat = "identity") +
+  labs(x = NULL, y = "city 1", fill = "bathroom") +
+  theme(legend.position="right") +
+  coord_polar("y", start=0)
+
+
+
+bathroom_0 + bathroom_1
+
+
+```
+
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```
