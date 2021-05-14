@@ -1,0 +1,165 @@
+---
+title: "Minard em ggplot2"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output:
+  pdf_document:
+  html_document:
+    highlight: textmate
+    includes: null
+    theme: flatly
+always_allow_html: true
+---
+
+Código de referência [aqui](http://euclid.psych.yorku.ca/www/psy6135/tutorials/Minard.html).
+
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(scales)        
+library(grid)          
+library(gridExtra)     
+library(dplyr)         
+library(ggrepel)
+
+```
+
+
+```{r ,include=FALSE}
+
+data(Minard.troops, package="HistData")
+data(Minard.cities, package="HistData")
+data(Minard.temp, package="HistData")
+
+```
+
+
+```{r include=FALSE}
+
+breaks <- c(1, 2, 3) * 10^5 
+
+plot_troops <- ggplot(Minard.troops, aes(long, lat)) +
+        geom_path(aes(size = survivors, colour = direction, group = group),
+                  lineend="round") +
+    scale_size("Survivors", range = c(1,10), #c(0.5, 15),
+               breaks=breaks, labels=scales::comma(breaks)) +
+    scale_color_manual("Direction", 
+                       values = c("#E8CBAB", "#1F1A1B"), 
+                       labels=c("Advance", "Retreat")) 
+
+
+
+plot_troops_cities <- plot_troops +
+    geom_point(data = Minard.cities) +
+    geom_text_repel(data = Minard.cities, aes(label = city))
+
+```
+
+Para melhor entender as perdas das tropas devemos inserir os rios presentes na visualização original, utilizamos a função annotate para desenhar segmentos para sinalizar de modo simplificado os rios.
+
+
+```{r}
+
+plot_troops_cities <- plot_troops_cities +
+  annotate(geom = "segment",
+           x = 23.8, xend = 24.2,
+           y = 55, yend = 54.3,
+           colour = "navy",
+           size = 1.1) +
+  annotate(geom = "text",
+           x = 24.35, y = 54.2,
+           label = "Nimen River",
+           colour = "navy") +
+  annotate(geom = "segment",
+           x = 34, xend = 35.2,
+           y = 55.8, yend = 55.48,
+           colour = "navy",
+           size = 1.1) +
+  annotate(geom = "text",
+           x = 33, y = 55.7,
+           label = "Moskva River",
+           colour = "navy") +
+  annotate(geom = "segment",
+           x = 30.55, xend = 30.05,
+           y = 54.5, yend = 54.2,
+           colour = "navy",
+           size = 1.1) +
+  annotate(geom = "text",
+           x = 31.5, y = 54.2,
+           label = "Dnieper River",
+           colour = "navy") +
+  annotate(geom = "segment",
+           x = 28.55, xend = 28.05,
+           y = 54.45, yend = 54.15,
+           colour = "navy",
+           size = 1.1) +
+  annotate(geom = "text",
+           x = 26.85, y = 54.11,
+           label = "Berezina River",
+           colour = "navy") 
+
+
+```
+
+```{r ,include=FALSE}
+
+plot_troops_cities_fixed <- plot_troops_cities +
+  coord_cartesian(xlim = c(24, 38)) +
+  labs(x = NULL, y = NULL) +
+  guides(color = FALSE, size = FALSE) +
+  theme_void()
+
+```
+
+
+```{r,include=FALSE}
+
+Minard.temp <- Minard.temp %>%
+    mutate(label = paste0(temp, "° ", date))
+
+
+```
+
+Quanto a temperatura utilizamos o gradiente de cor para reforçar a evolução temporal da temperatura registrada.
+
+```{r}
+
+
+plot_temp <- ggplot(Minard.temp, aes(long, temp)) +
+    geom_path(aes(color = temp), size=1.5) +
+    geom_point(aes(color = temp),size=3.) +
+    scale_color_gradient(low = "navy", high = "cyan") +
+    guides(color = FALSE) +
+  geom_text_repel(aes(label=label), size=2.5)
+
+
+```
+
+```{r,include=FALSE}
+
+plot_temp_fixed <- plot_temp + 
+  coord_cartesian(xlim = c(24, 38)) +
+  labs(x = NULL, y="Temperature") + 
+  theme_bw() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text.x = element_blank(), axis.ticks = element_blank(),
+        panel.border = element_blank()) 
+
+```
+
+A seguir temos o gráfico com as modificações mencionadas:
+
+
+```{r, echo=FALSE}
+
+grid.arrange(plot_troops_cities_fixed, plot_temp_fixed, nrow=2, heights=c(3.5, 1.2))
+grid.rect(width = .99, height = .99, gp = gpar(lwd = 2, col = "gray", fill = NA))
+
+```
+
+
