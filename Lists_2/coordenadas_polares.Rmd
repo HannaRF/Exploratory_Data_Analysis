@@ -1,13 +1,13 @@
 ---
-title: "coordenadas polares"
+title: "Coordenadas Polares"
 author: "Hanna Rodrigues Ferreira"
 date: "`r format(Sys.time(), '%d %B,%Y')`"
 output:
+  pdf_document:
   html_document:
     highlight: textmate
     includes: null
     theme: flatly
-  pdf_document:
 always_allow_html: true
 ---
 
@@ -17,8 +17,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 library(tidyverse)
-library(janitor)
-library(patchwork)
+library(janitor)   # tabyl
+library(patchwork) # combine plots
 
 ```
 
@@ -29,15 +29,11 @@ Tabela <- read.csv('Dados limpos')
 
 ```
 
-```{r}
-
-
-```
+Utilizaremos de uma amostra da base de dados de imóveis para alugar. Para entender como a coord_polar() funciona, foi feito um pie chart simples da porcentagem de imóveis anunciados de cada cidade:
 
 ```{r}
 
 city <- Tabela %>% tabyl(city)
-
 
 city %>% ggplot(aes(x="", y=percent, fill = as.factor(city))) +
   geom_bar(width = 1, stat = "identity") +
@@ -46,6 +42,8 @@ city %>% ggplot(aes(x="", y=percent, fill = as.factor(city))) +
 
 
 ```
+
+A seguir temos variações que são dois gráficos de uma categoria dos imóveis pela cidade:
 
 ```{r}
 
@@ -80,9 +78,77 @@ bathroom_0 + bathroom_1
 
 ```
 
+
+Adicionando ao final novamente a função coor_polar() chegamos no bullseye chart:
+
+
 ```{r}
 
+b0 <- Tabela %>%
+  filter(city == 0) %>% 
+  mutate(rooms = ifelse(rooms>=5, "5+", rooms)) %>%
+  tabyl(rooms)
 
+b1 <- Tabela %>%
+  filter(city == 1) %>% 
+  mutate(rooms = ifelse(rooms>=5, "5+", rooms)) %>%
+  tabyl(rooms)
+
+
+rooms_0 <- b0 %>%
+  ggplot(aes(x="", y=percent, fill = as.factor(rooms))) +
+  geom_bar(width = 1, stat = "identity") +
+  labs(x = NULL, y = "city 0", fill = NULL) +
+  theme(legend.position="none") +
+  coord_polar("y", start=0) +
+  coord_polar()
+
+rooms_1 <- b1 %>%
+  ggplot(aes(x="", y=percent, fill = as.factor(rooms))) +
+  geom_bar(width = 1, stat = "identity") +
+  labs(x = NULL, y = "city 1", fill = "rooms") +
+  theme(legend.position="right") +
+  coord_polar("y", start=0) +
+  coord_polar()
+
+
+
+rooms_0 + rooms_1
+
+
+```
+
+Mudando o start redefinimos onde o gráfico começa a ser desenhado, neste caso o deslocamos 60 graus, e mudamos o direction que por padrão desenha no sentido horário, agora desenhará no anti-horário:
+
+```{r}
+
+b0 <- Tabela %>%
+  filter(city == 0) %>% 
+  mutate(parking.spaces = ifelse(parking.spaces>=7, "7+", parking.spaces)) %>%
+  tabyl(parking.spaces)
+
+b1 <- Tabela %>%
+  filter(city == 1) %>% 
+  mutate(parking.spaces = ifelse(parking.spaces>=7, "7+", parking.spaces)) %>%
+  tabyl(parking.spaces)
+
+
+parking.spaces_0 <- b0 %>%
+  ggplot(aes(x="", y=percent, fill = as.factor(parking.spaces))) +
+  geom_bar(width = 1, stat = "identity") +
+  labs(x = NULL, y = "city 0", fill = NULL) +
+  theme(legend.position="none") +
+  coord_polar("y", start=pi/3, direction = -1) 
+
+parking.spaces_1 <- b1 %>%
+  ggplot(aes(x="", y=percent, fill = as.factor(parking.spaces))) +
+  geom_bar(width = 1, stat = "identity") +
+  labs(x = NULL, y = "city 1", fill = "parking.spaces") +
+  theme(legend.position="right") +
+  coord_polar("y", start=pi/3, direction = -1)
+
+
+parking.spaces_0 + parking.spaces_1
 
 ```
 
@@ -92,25 +158,28 @@ bathroom_0 + bathroom_1
 
 ```
 
-```{r}
 
 
+```{r, warning=FALSE,include=FALSE}
 
-```
-
-```{r}
-
-
-
-```
-
-```{r}
+t0 <- Tabela %>%
+  filter(city == 0) %>%
+  select(area, rooms, bathroom, parking.spaces, total) %>% 
+  summarize_if(is.numeric, funs(mean), na.rm = TRUE) %>%
+  ungroup()
 
 
+t1 <- Tabela %>%
+  filter(city == 1) %>%
+  select(area, rooms, bathroom, parking.spaces, total) %>% 
+  summarize_if(is.numeric, funs(mean), na.rm = TRUE) %>%
+  ungroup()
 
-```
 
-```{r}
+t <- Tabela %>%
+  select(area, rooms, bathroom, parking.spaces, total) %>% 
+  summarize_if(is.numeric, funs(min, max), na.rm = TRUE) %>%
+  ungroup()
 
 
 
