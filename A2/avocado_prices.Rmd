@@ -1,0 +1,66 @@
+---
+title: "Preços do Abacate"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output:
+  html_document:
+    highlight: textmate
+    includes: null
+    theme: cosmo
+  pdf_document:
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+library(gapminder)
+library(tidyverse)
+
+```
+
+[kaggle](https://www.kaggle.com/neuromusic/avocado-prices)
+
+```{r}
+
+data <- read.csv('avocado.csv')
+
+glimpse(head(data))
+
+```
+
+```{r}
+
+
+
+
+```
+
+```{r fig.align="center", fig.height=10}
+
+data %>%
+  group_by(region) %>%
+  ggplot(aes(x = reorder(region,
+                         AveragePrice,
+                         na.rm = TRUE),
+             y = AveragePrice)) +
+  geom_boxplot(color = "blue") +
+  labs(x = NULL) +
+  coord_flip()
+
+```
+
+```{r}
+
+
+
+
+```
+
+```{r}
+
+
+
+
+```
