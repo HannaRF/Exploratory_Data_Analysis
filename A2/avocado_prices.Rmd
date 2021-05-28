@@ -32,22 +32,10 @@ glimpse(head(data))
 
 ```{r}
 
-
-
-
-```
-
-```{r fig.align="center", fig.height=10}
-
-data %>%
-  group_by(region) %>%
-  ggplot(aes(x = reorder(region,
-                         AveragePrice,
-                         na.rm = TRUE),
-             y = AveragePrice)) +
-  geom_boxplot(color = "blue") +
-  labs(x = NULL) +
-  coord_flip()
+dark_green = "#384001"
+green = "#B2BF4B"
+brown = "#733410"
+beige = "#F2E5A0"
 
 ```
 
@@ -55,8 +43,22 @@ data %>%
 
 
 
+```
+
+```{r fig.align="center",fig.height=10}
+
+data %>%
+  filter(region == 'TotalUS') %>%
+  ggplot() +
+  geom_boxplot(y = data$AveragePrice,
+               color = dark_green, fill = green) +
+  labs(title = "Avocado's average price in US",
+       y = "average price") +
+  theme_minimal() +
+  coord_flip()
 
 ```
+
 
 ```{r}
 
