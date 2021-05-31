@@ -3,11 +3,11 @@ title: "Preços do Abacate"
 author: "Hanna Rodrigues Ferreira"
 date: "`r format(Sys.time(), '%d %B,%Y')`"
 output:
+  pdf_document:
   html_document:
     highlight: textmate
     includes: null
     theme: cosmo
-  pdf_document:
 always_allow_html: true
 ---
 
@@ -15,54 +15,43 @@ always_allow_html: true
 
 knitr::opts_chunk$set(echo = TRUE)
 
-library(gapminder)
-library(tidyverse)
-
 ```
 
-[kaggle](https://www.kaggle.com/neuromusic/avocado-prices)
+Dados do dataset [Avocado Prices](https://www.kaggle.com/neuromusic/avocado-prices), paleta de cor extraída de imagens de abacate :
 
-```{r}
+```{r,warning=FALSE, message=FALSE}
+
+library(gapminder)
+library(tidyverse)
+library(scales)
 
 data <- read.csv('avocado.csv')
 
-glimpse(head(data))
-
 ```
 
-```{r}
+```{r,fig.height=3}
 
 dark_green = "#384001"
 green = "#B2BF4B"
 brown = "#733410"
 beige = "#F2E5A0"
 
-```
-
-```{r}
-
-
+show_col(c(dark_green, green,brown,beige))
 
 ```
 
-```{r fig.align="center",fig.height=10}
+```{r fig.align="center",fig.height=15}
 
 data %>%
-  filter(region == 'TotalUS') %>%
-  ggplot() +
-  geom_boxplot(y = data$AveragePrice,
-               color = dark_green, fill = green) +
-  labs(title = "Avocado's average price in US",
-       y = "average price") +
+  ggplot(aes(x = AveragePrice,
+             y = reorder(region, AveragePrice),
+             color = type, fill = type)) +
+  geom_boxplot() +
+  scale_color_manual(values = c(brown,dark_green)) +
+  scale_fill_manual(values = c(beige,green)) +
   theme_minimal() +
-  coord_flip()
-
-```
-
-
-```{r}
-
-
-
+  guides(color = FALSE) +
+  theme(legend.position = 'top') +
+  labs(title = "Avocado's average price per region",y = NULL, x = "average price")
 
 ```

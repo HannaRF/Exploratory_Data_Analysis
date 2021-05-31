@@ -3,11 +3,11 @@ title: "Títulos e anotações"
 author: "Hanna Rodrigues Ferreira"
 date: "`r format(Sys.time(), '%d %B,%Y')`"
 output:
-  pdf_document:
   html_document:
     highlight: textmate
     includes: null
     theme: flatly
+  pdf_document:
 always_allow_html: true
 ---
 
@@ -758,7 +758,7 @@ Vamos agora aplicar o que foi discutido no capítulo revisitando um gráfico do 
 
 library(ggExtra)
 
-Tabela <- read.csv('../Moradia/Dados limpos')
+Tabela <- read.csv('Dados limpos')
 
 ```  
 
