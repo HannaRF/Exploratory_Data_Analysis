@@ -1,0 +1,350 @@
+---
+title: "Mapas"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output:
+  html_document:
+    highlight: textmate
+    includes: null
+    theme: flatly
+  pdf_document:
+always_allow_html: true
+---
+
+
+Vamos reproduzir os resultados do capítulo 7 do livro **Data Visualization - A pratical Introduction**. Os dados utilizados foram retirados deste [github ](https://github.com/kjhealy/socviz).
+
+```{r setup, message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(gapminder)
+library(here)
+library(tidyverse)
+library(ggrepel)
+library(socviz)
+
+```
+
+Choropleth maps mostra geograficamente regiões coloridas de acordo com certa variável. Além de Choropleth maps veremos outras formas de representar dados deste tipo na ggplot2.
+
+## Mapa dos EUA
+
+Utilizaremos uma amostra dos dados de eleição presidencial dos EUA em 2016, ela possui diversas medidas do voto pela região e estado 
+
+
+```{r}
+
+election %>% select(state,
+                    total_vote,
+                    r_points,
+                    pct_trump,
+                    party,
+                    census) %>%
+  sample_n(5)
+
+```
+
+Antes de partir diretamente para a representação por mapas, podemos começar com um dotplot do resultado das eleições dos estados divididos pela região.
+
+```{r, fig.width=4, fig.height=10}
+
+# cores : Democratas azul e Republicanos vermelho
+party_colors <- c("#2E74C0", "#CB454A") 
+
+p0 <- ggplot(data = subset(election,
+                           st %nin% "DC"),
+             mapping = aes(x = r_points,
+                           y = reorder(state, r_points),
+                           color = party))
+
+p1 <- p0 +
+  geom_vline(xintercept = 0,
+             color = "gray30") +
+  geom_point(size = 2)
+
+p2 <- p1 + scale_color_manual(values = party_colors)
+
+p3 <- p2 + scale_x_continuous(breaks = c(-30, -20, -10, 0, 10, 20, 30, 40),
+                              labels = c("30\n (Clinton)", "20", "10", "0",
+                                         "10", "20", "30", "40\n(Trump)"))
+
+p3 + facet_wrap(~ census, ncol=1, scales="free_y") +
+  guides(color=FALSE) +
+  labs(x = "Point Margin", y = "") +
+  theme(axis.text=element_text(size=8))
+
+```
+
+
+Agora vamos fazer uso do pacote maps que nos dará acesso a alguns dados de mapa pré-desenhados.
+
+```{r, message=FALSE,warning=FALSE}
+
+library(maps)
+
+us_states <- map_data("state")
+head(us_states)
+dim(us_states)
+
+```
+
+Perceba o tamanho deste dataframe, é necessário muitas linhas para se desenhar com robustez um mapa. Podemos utilizar estes dados para plotar um mapa ainda em branco através da função geom_ploygon().
+
+```{r}
+
+p <- ggplot(data = us_states,
+            mapping = aes(x = long,
+                          y = lat,
+                          group = group))
+
+p + geom_polygon(fill = "white",
+                 color = "black")
+
+```
+
+Podemos adicionar cor aos estados definindo a variável region ao fill e às fronteiras redefinindo color e size.
+
+
+```{r, fig.cap='Coloring the states', out.width="100%", fig.width=6, fig.height=5}
+
+library('mapproj')
+
+p <- ggplot(data = us_states,
+            aes(x = long,
+                y = lat,
+                group = group,
+                fill = region))
+
+p + geom_polygon(color = "gray90",
+                 size = 0.1) + 
+  guides(fill = FALSE)
+
+```
+
+Por padrão a projeção do mapa é "mercator", existem diversos tipos de técnicas cartográficas para projetar mapas e optaremos por redefinir a projeção e seus parâmetros para a "albers" através da função coord_map().
+
+```{r, out.width="100%", fig.width=6, fig.height=5}
+
+p <- ggplot(data = us_states,
+            mapping = aes(x = long,
+                          y = lat,
+                          group = group,
+                          fill = region))
+
+p + geom_polygon(color = "gray90", size = 0.1) +
+  coord_map("albers", lat0 = 39, lat1 = 45) +
+  guides(fill = FALSE)
+
+```
+
+Agora vamos plotar nossos dados no mapa, faremos um merge dos dados do pacote maps com nossos dados das eleições.
+
+```{r}
+
+election$region <- tolower(election$state)
+us_states_elec <- left_join(us_states, election)
+
+```
+
+Com os dados compilados podemos portanto plotar o mapa colorindo segundo o partido.
+
+```{r, out.width="100%", fig.width=6, fig.height=5}
+
+p <- ggplot(data = us_states_elec,
+            aes(x = long, y = lat,
+                group = group, fill = party))
+
+p + geom_polygon(color = "gray90", size = 0.1) +
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
+
+```
+
+Adicionando certas configurações ao tema, como as cores pre-definidas anteriormente e remover o grid.
+
+```{r}
+
+theme_map <- function(base_size=9, base_family="") {
+    require(grid)
+    theme_bw(base_size=base_size, base_family=base_family) %+replace%
+        theme(axis.line=element_blank(),
+              axis.text=element_blank(),
+              axis.ticks=element_blank(),
+              axis.title=element_blank(),
+              panel.background=element_blank(),
+              panel.border=element_blank(),
+              panel.grid=element_blank(),
+              panel.spacing=unit(0, "lines"),
+              plot.background=element_blank(),
+              legend.justification = c(0,0),
+              legend.position = c(0,0)
+              )
+}
+
+p0 <- ggplot(data = us_states_elec,
+             mapping = aes(x = long, y = lat,
+                           group = group, fill = party))
+p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
+p2 <- p1 + scale_fill_manual(values = party_colors) +
+    labs(title = "Election Results 2016", fill = NULL)
+p2 + theme_map() 
+
+```
+
+Agora a partir deste podemos colorir utilizando outras variáveis nosso mapa, como a variável contínua da porcentagem de votos em Donald Trump.
+
+
+```{r, out.width="100%", fig.width=6, fig.height=5, fig.show = 'hold'}
+
+p0 <- ggplot(data = us_states_elec,
+             mapping = aes(x = long, y = lat, group = group, fill = pct_trump))
+
+p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
+
+p1 + labs(title = "Trump vote") + theme_map() + labs(fill = "Percent")
+
+p2 <- p1 + scale_fill_gradient(low = "white", high = "#CB454A") +
+        labs(title = "Trump vote") 
+p2 + theme_map() + labs(fill = "Percent")
+
+```
+
+Como por padrão a cor de mapeamento é azul, em p2 especificamos a escala manualmente através da função scale_fill_gradient().
+
+Para um para com o resultado das eleições optaremos uma função de gradiente que diverge de um ponto central, a scale_fill_gradient2(). Ela por padrão nos dá um gradiente azul-vermelho que passa pelo branco, ... (pg. pdf 202)
+
+```{r, out.width="100%", fig.width=6, fig.height=5, fig.show = "hold"}
+
+p0 <- ggplot(data = us_states_elec,
+             mapping = aes(x = long, y = lat, group = group, fill = d_points))
+
+p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
+
+p2 <- p1 + scale_fill_gradient2() + labs(title = "Winning margins") 
+p2 + theme_map() + labs(fill = "Percent")
+
+p3 <- p1 + scale_fill_gradient2(low = "red", mid = scales::muted("purple"),
+                                high = "blue", breaks = c(-25, 0, 25, 50, 75)) +
+    labs(title = "Winning margins") 
+p3 + theme_map() + labs(fill = "Percent")
+
+```
+
+
+```{r 07-maps-12, fig.cap='A Purple America version of Trump vs Clinton that excludes results from Washington, DC.', out.width="100%", fig.width=6, fig.height=5}
+
+p0 <- ggplot(data = subset(us_states_elec,
+                           region %nin% "district of columbia"),
+             aes(x = long, y = lat, group = group, fill = d_points))
+
+p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
+
+p2 <- p1 + scale_fill_gradient2(low = "red",
+                                mid = scales::muted("purple"),
+                                high = "blue") +
+    labs(title = "Winning margins") 
+p2 + theme_map() + labs(fill = "Percent")
+```
+
+## America's ur-choropleths
+
+```{r county1}
+county_map %>% sample_n(5)
+```
+
+
+```{r county2}
+county_data %>%
+    select(id, name, state, pop_dens, pct_black) %>%
+    sample_n(5)
+```
+
+
+```{r county3}
+county_full <- left_join(county_map, county_data, by = "id")
+```
+
+
+```{r ch-07-urchoro1, fig.cap='US population density by county.', out.width="100%", fig.width = 12, fig.height = 8, layout = 'l-screen-inset'}
+
+p <- ggplot(data = county_full,
+            mapping = aes(x = long, y = lat,
+                          fill = pop_dens, 
+                          group = group))
+
+p1 <- p + geom_polygon(color = "gray90", size = 0.05) + coord_equal()
+
+p2 <- p1 + scale_fill_brewer(palette="Blues",
+                             labels = c("0-10", "10-50", "50-100", "100-500",
+                                        "500-1,000", "1,000-5,000", ">5,000"))
+
+p2 + labs(fill = "Population per\nsquare mile") +
+    theme_map() +
+    guides(fill = guide_legend(nrow = 1)) + 
+    theme(legend.position = "bottom")
+```
+
+
+```{r ch-07-urchoro2, fig.cap='Percent Black population by county.', out.width="100%", fig.width = 12, fig.height = 8, , layout = 'l-screen-inset'}
+
+p <- ggplot(data = county_full,
+            mapping = aes(x = long, y = lat, fill = pct_black, 
+                          group = group))
+p1 <- p + geom_polygon(color = "gray90", size = 0.05) + coord_equal()
+p2 <- p1 + scale_fill_brewer(palette="Greens")
+
+p2 + labs(fill = "US Population, Percent Black") +
+    guides(fill = guide_legend(nrow = 1)) + 
+    theme_map() + theme(legend.position = "bottom")
+
+```
+
+
+```{r 07-maps-13}
+
+orange_pal <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
+orange_pal
+
+orange_rev <- rev(orange_pal)
+orange_rev
+
+```
+
+
+```{r ch-07-gunsu, fig.cap='Gun-related suicides by county; Reverse-coded population density by county.', out.width="50%", fig.show="hold", fig.width = 10, fig.height = 7, , layout = 'l-screen-inset'}
+
+gun_p <- ggplot(data = county_full,
+            mapping = aes(x = long, y = lat,
+                          fill = su_gun6, 
+                          group = group))
+
+gun_p1 <- gun_p + geom_polygon(color = "gray90", size = 0.05) + coord_equal()
+
+gun_p2 <- gun_p1 + scale_fill_manual(values = orange_pal)
+
+gun_p2 + labs(title = "Gun-Related Suicides, 1999-2015",
+              fill = "Rate per 100,000 pop.") +
+    theme_map() +
+    theme(legend.position = "bottom")
+
+
+pop_p <- ggplot(data = county_full,
+            mapping = aes(x = long, y = lat,
+                          fill = pop_dens6, 
+                          group = group))
+
+pop_p1 <- pop_p + geom_polygon(color = "gray90", size = 0.05) + coord_equal()
+
+pop_p2 <- pop_p1 + scale_fill_manual(values = orange_rev)
+
+pop_p2 + labs(title = "Reverse-coded Population Density",
+              fill = "People per square mile") +
+    theme_map() +
+    theme(legend.position = "bottom")
+
+```
+
+
