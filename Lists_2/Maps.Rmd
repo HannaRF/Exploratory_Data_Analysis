@@ -105,7 +105,7 @@ p + geom_polygon(fill = "white",
 Podemos adicionar cor aos estados definindo a variável region ao fill e às fronteiras redefinindo color e size.
 
 
-```{r, fig.cap='Coloring the states', out.width="100%", fig.width=6, fig.height=5}
+```{r, out.width="100%", fig.width=6, fig.height=5}
 
 library('mapproj')
 
@@ -151,8 +151,10 @@ Com os dados compilados podemos portanto plotar o mapa colorindo segundo o parti
 ```{r, out.width="100%", fig.width=6, fig.height=5}
 
 p <- ggplot(data = us_states_elec,
-            aes(x = long, y = lat,
-                group = group, fill = party))
+            aes(x = long,
+                y = lat,
+                group = group,
+                fill = party))
 
 p + geom_polygon(color = "gray90", size = 0.1) +
     coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
@@ -181,63 +183,89 @@ theme_map <- function(base_size=9, base_family="") {
 }
 
 p0 <- ggplot(data = us_states_elec,
-             mapping = aes(x = long, y = lat,
-                           group = group, fill = party))
+             mapping = aes(x = long,
+                           y = lat,
+                           group = group,
+                           fill = party))
+
 p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
-    coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45)
+
 p2 <- p1 + scale_fill_manual(values = party_colors) +
     labs(title = "Election Results 2016", fill = NULL)
+
 p2 + theme_map() 
 
 ```
 
 Agora a partir deste podemos colorir utilizando outras variáveis nosso mapa, como a variável contínua da porcentagem de votos em Donald Trump.
 
+Como por padrão a cor de mapeamento é azul, em p2 especificamos a escala manualmente através da função scale_fill_gradient().
+
 
 ```{r, out.width="100%", fig.width=6, fig.height=5, fig.show = 'hold'}
 
 p0 <- ggplot(data = us_states_elec,
-             mapping = aes(x = long, y = lat, group = group, fill = pct_trump))
+             mapping = aes(x = long,
+                           y = lat,
+                           group = group,
+                           fill = pct_trump))
 
 p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
     coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
 
-p1 + labs(title = "Trump vote") + theme_map() + labs(fill = "Percent")
+p1 + labs(title = "Trump vote") +
+  theme_map() +
+  labs(fill = "Percent")
 
-p2 <- p1 + scale_fill_gradient(low = "white", high = "#CB454A") +
+p2 <- p1 + scale_fill_gradient(low = "white",
+                               high = "#CB454A") +
         labs(title = "Trump vote") 
+
 p2 + theme_map() + labs(fill = "Percent")
 
 ```
 
-Como por padrão a cor de mapeamento é azul, em p2 especificamos a escala manualmente através da função scale_fill_gradient().
-
-Para um para com o resultado das eleições optaremos uma função de gradiente que diverge de um ponto central, a scale_fill_gradient2(). Ela por padrão nos dá um gradiente azul-vermelho que passa pelo branco, ... (pg. pdf 202)
+Para um para com o resultado das eleições optaremos uma função de gradiente que diverge de um ponto central, a scale_fill_gradient2(). Ela por padrão nos dá um gradiente azul-vermelho que passa pelo branco como vemos em p1, podemos redefinir que passe pelo roxo como vemos em p2:
 
 ```{r, out.width="100%", fig.width=6, fig.height=5, fig.show = "hold"}
 
 p0 <- ggplot(data = us_states_elec,
-             mapping = aes(x = long, y = lat, group = group, fill = d_points))
+             mapping = aes(x = long,
+                           y = lat,
+                           group = group,
+                           fill = d_points))
 
 p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
     coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
 
-p2 <- p1 + scale_fill_gradient2() + labs(title = "Winning margins") 
+p2 <- p1 + scale_fill_gradient2() +
+  labs(title = "Winning margins") 
+
 p2 + theme_map() + labs(fill = "Percent")
 
-p3 <- p1 + scale_fill_gradient2(low = "red", mid = scales::muted("purple"),
-                                high = "blue", breaks = c(-25, 0, 25, 50, 75)) +
-    labs(title = "Winning margins") 
+p3 <- p1 + scale_fill_gradient2(low = "red",
+                                mid = scales::muted("purple"),
+                                high = "blue",
+                                breaks = c(-25, 0, 25, 50, 75)) +
+    labs(title = "Winning margins")
+
 p3 + theme_map() + labs(fill = "Percent")
 
 ```
 
 
-```{r 07-maps-12, fig.cap='A Purple America version of Trump vs Clinton that excludes results from Washington, DC.', out.width="100%", fig.width=6, fig.height=5}
+Perceba que o gradiente do último mapa apresenta estar muito mais para os tons azuis, isso é devido ao fato de Washington ter disparado os maiores votos a favor dos Democratas do que qualquer outro estado do mapa. Para resolver este problema de escala, vamos omitir essa parte dos dados.
+
+
+```{r, out.width="100%", fig.width=6, fig.height=5}
 
 p0 <- ggplot(data = subset(us_states_elec,
                            region %nin% "district of columbia"),
-             aes(x = long, y = lat, group = group, fill = d_points))
+             aes(x = long,
+                 y = lat,
+                 group = group,
+                 fill = d_points))
 
 p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
     coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
@@ -246,29 +274,32 @@ p2 <- p1 + scale_fill_gradient2(low = "red",
                                 mid = scales::muted("purple"),
                                 high = "blue") +
     labs(title = "Winning margins") 
+
 p2 + theme_map() + labs(fill = "Percent")
 ```
 
-## America's ur-choropleths
+## Ur-choropleths dos EUA
 
-```{r county1}
+
+
+```{r}
 county_map %>% sample_n(5)
 ```
 
 
-```{r county2}
+```{r}
 county_data %>%
     select(id, name, state, pop_dens, pct_black) %>%
     sample_n(5)
 ```
 
 
-```{r county3}
+```{r}
 county_full <- left_join(county_map, county_data, by = "id")
 ```
 
 
-```{r ch-07-urchoro1, fig.cap='US population density by county.', out.width="100%", fig.width = 12, fig.height = 8, layout = 'l-screen-inset'}
+```{r, out.width="100%", fig.width = 12, fig.height = 8, layout = 'l-screen-inset'}
 
 p <- ggplot(data = county_full,
             mapping = aes(x = long, y = lat,
@@ -288,12 +319,16 @@ p2 + labs(fill = "Population per\nsquare mile") +
 ```
 
 
-```{r ch-07-urchoro2, fig.cap='Percent Black population by county.', out.width="100%", fig.width = 12, fig.height = 8, , layout = 'l-screen-inset'}
+```{r, out.width="100%", fig.width = 12, fig.height = 8, , layout = 'l-screen-inset'}
 
 p <- ggplot(data = county_full,
-            mapping = aes(x = long, y = lat, fill = pct_black, 
+            mapping = aes(x = long,
+                          y = lat,
+                          fill = pct_black, 
                           group = group))
+
 p1 <- p + geom_polygon(color = "gray90", size = 0.05) + coord_equal()
+
 p2 <- p1 + scale_fill_brewer(palette="Greens")
 
 p2 + labs(fill = "US Population, Percent Black") +
@@ -303,7 +338,7 @@ p2 + labs(fill = "US Population, Percent Black") +
 ```
 
 
-```{r 07-maps-13}
+```{r}
 
 orange_pal <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
 orange_pal
@@ -314,10 +349,11 @@ orange_rev
 ```
 
 
-```{r ch-07-gunsu, fig.cap='Gun-related suicides by county; Reverse-coded population density by county.', out.width="50%", fig.show="hold", fig.width = 10, fig.height = 7, , layout = 'l-screen-inset'}
+```{r, out.width="50%", fig.show="hold", fig.width = 10, fig.height = 7, , layout = 'l-screen-inset'}
 
 gun_p <- ggplot(data = county_full,
-            mapping = aes(x = long, y = lat,
+            mapping = aes(x = long,
+                          y = lat,
                           fill = su_gun6, 
                           group = group))
 
@@ -332,7 +368,8 @@ gun_p2 + labs(title = "Gun-Related Suicides, 1999-2015",
 
 
 pop_p <- ggplot(data = county_full,
-            mapping = aes(x = long, y = lat,
+            mapping = aes(x = long,
+                          y = lat,
                           fill = pop_dens6, 
                           group = group))
 
