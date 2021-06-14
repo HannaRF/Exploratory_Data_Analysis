@@ -3,11 +3,11 @@ title: "Mapas"
 author: "Hanna Rodrigues Ferreira"
 date: "`r format(Sys.time(), '%d %B,%Y')`"
 output:
+  pdf_document:
   html_document:
     highlight: textmate
     includes: null
     theme: flatly
-  pdf_document:
 always_allow_html: true
 ---
 
@@ -22,6 +22,8 @@ library(here)
 library(tidyverse)
 library(ggrepel)
 library(socviz)
+library(knitr)
+library(statebins)
 
 ```
 
@@ -278,14 +280,15 @@ p2 <- p1 + scale_fill_gradient2(low = "red",
 p2 + theme_map() + labs(fill = "Percent")
 ```
 
-## Ur-choropleths dos EUA
+## choropleths dos EUA
 
-
+Vamos usar agora outro dataset um pouco maior que o anterior, que é dividido em pequenas regiões:
 
 ```{r}
 county_map %>% sample_n(5)
 ```
 
+E usaremos este dataset que possui informações das pequenas regiões:
 
 ```{r}
 county_data %>%
@@ -293,11 +296,13 @@ county_data %>%
     sample_n(5)
 ```
 
+Vamos unir os dois datasets utilizando a coluna de FIPS id.
 
 ```{r}
 county_full <- left_join(county_map, county_data, by = "id")
 ```
 
+Com os dados reunidos, podemos plotar o mapa da densidade populacional por milha quadrada.
 
 ```{r, out.width="100%", fig.width = 12, fig.height = 8, layout = 'l-screen-inset'}
 
@@ -318,6 +323,7 @@ p2 + labs(fill = "Population per\nsquare mile") +
     theme(legend.position = "bottom")
 ```
 
+Desta vez vamos alterar a paleta do mapa para uma verde.
 
 ```{r, out.width="100%", fig.width = 12, fig.height = 8, , layout = 'l-screen-inset'}
 
@@ -337,6 +343,7 @@ p2 + labs(fill = "US Population, Percent Black") +
 
 ```
 
+Podemos definir novas paletas do pacote Color Brewer, observe que utilizamos a função rev() para inverter o vetor de cores.
 
 ```{r}
 
@@ -348,6 +355,7 @@ orange_rev
 
 ```
 
+Agora aplicamos no mapa de densidade dos suicídios relacionados a armas a paleta customizada e a paleta invertida.
 
 ```{r, out.width="50%", fig.show="hold", fig.width = 10, fig.height = 7, , layout = 'l-screen-inset'}
 
@@ -384,4 +392,81 @@ pop_p2 + labs(title = "Reverse-coded Population Density",
 
 ```
 
+
+## Statebins
+
+Como uma alternativa, podemos considerar o pacote statebins:
+
+```{r, warning = FALSE, out.width = "100%", fig.show = "hold", fig.margin = TRUE, fig.width = 5, fig.height = 4, tidy = FALSE}
+
+
+statebins(election,
+          state_col = "state",
+          value_col = "pct_trump",
+          name = "Percent Trump",
+          palette = "Reds",
+          direction = 1,
+          font_size = 2) +
+  theme_statebins(legend_position = "top")
+
+
+statebins(state_data = subset(election, st %nin% "DC"),
+          state_col = "state",
+          value_col = "pct_clinton",
+          name = "Percent Trump",
+          palette = "Blues",
+          direction = 1,
+          font_size = 2) + 
+  theme_statebins(legend_position = "top")
+             
+```
+
+
+## Múltiplos mapas
+
+Múltiplos mapas é uma alternativa para representar dados geográficos ao longo do tempo. Utilizaremos o dataset opiates que foi dados sobre morte por drogas entre 1999 e 2014.
+
+```{r}
+opiates
+```
+
+
+
+```{r}
+
+opiates$region <- tolower(opiates$state)
+opiates_map <- left_join(us_states, opiates)
+
+```
+
+Utilizaremos a paleta de cores do pacote viridis, que possui opções de cores balanceadas:
+
+```{r, warning=FALSE,out.width="100%", fig.width=8, fig.height=12, fig.show = "hold", fig.fullwidth=TRUE, tidy = FALSE, message = FALSE}
+
+library(viridis)
+
+p0 <- ggplot(data = subset(opiates_map,
+                           year > 1999),
+             mapping = aes(x = long,
+                           y = lat,
+                           group = group,
+                           fill = adjusted))
+
+p1 <- p0 +
+  geom_polygon(color = "gray90",
+                        size = 0.05) +
+  coord_map(projection = "albers",
+            lat0 = 39,
+            lat1 = 45) 
+
+p2 <- p1 + scale_fill_viridis_c(option = "plasma")
+
+p2 + theme_map() +
+  facet_wrap(~ year, ncol = 3) +
+  theme(legend.position = "bottom",
+        strip.background = element_blank()) +
+  labs(fill = "Death rate per 100,000 population ",
+       title = "Opiate Related Deaths by State, 2000-2014")  
+
+```
 
