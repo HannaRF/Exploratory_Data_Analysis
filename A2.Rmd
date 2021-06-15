@@ -1,0 +1,66 @@
+---
+title: "Mapa de Vacinação"
+author: "Marcos Antônio e Hanna"
+date: "15 de julho de 2021"
+output: html_document
+---  
+
+```{r}
+dado <- read.csv("owid-covid-data.csv")
+```  
+
+```{r}
+library(maps)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+world <- map_data("world")
+```  
+
+```{r, message = FALSE, warning = FALSE}
+dado2 <- dado %>% group_by(location) %>% summarise(
+  mortes = max(total_deaths, na.rm = TRUE), 
+  dose1 = max(people_vaccinated - people_fully_vaccinated, na.rm = TRUE), 
+  dose2 = max(people_fully_vaccinated, na.rm = TRUE))
+
+colnames(dado2)[1] <- "region"
+dado3 <- dado2 %>% mutate(mortes = ifelse(!(mortes >= 0), 0, mortes),
+      dose1 = ifelse(!(dose1>=0 ), 0, dose1), 
+      dose2 = ifelse(!(dose2>=0), 0, dose2),
+      region = ifelse(as.character(region) == "United States", "USA", as.character(region)),
+      region = ifelse(as.character(region) == "United Kingdom", "UK", as.character(region)))
+dado3
+```  
+
+<br>  
+
+```{r}
+world2 <- left_join(by = "region", x = world, y = dado3)
+head(world2,10)
+```  
+
+<br>  
+
+```{r}
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = mortes, group = group)) + 
+  geom_polygon(color = "white", size = 0.1) + 
+  labs(title = "Mortes por país")
+```  
+
+<br>  
+```{r}
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1, group = group)) + 
+  geom_polygon(color = "white", size = 0.1) + 
+  labs(title = "Primeira dose")
+```  
+
+<br>  
+
+```{r}
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1, group = group)) + 
+  geom_polygon(color = "white", size = 0.1) + 
+  labs(title = "Segunda dose")
+```  
+
+
+
