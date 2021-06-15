@@ -1,0 +1,839 @@
+---
+title: "Títulos e anotações"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output:
+  html_document:
+    highlight: textmate
+    includes: null
+    theme: flatly
+  pdf_document:
+always_allow_html: true
+---
+
+
+Vamos reproduzir os resultados do capítulo 5 do livro **Data Visualization - A pratical Introduction**. Os dados utilizados foram retirados deste [github ](https://github.com/kjhealy/socviz).
+
+
+# Adicionando Títulos e fazendo anotações
+
+
+Vamos fazer uso da biblioteca a biblioteca `socviz` para fazer uso do datasets mencionados no livro.
+
+
+```{r setup, message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(gapminder)
+library(tidyverse)
+library(socviz)
+```
+
+## Usando pipe para resumir dados
+
+
+Utilizaremos o dataset **gss_sm** descrito neste [site](https://kjhealy.github.io/socviz/reference/gss_sm.html).
+
+
+Podemos transformar os dados utilizando a biblioteca `dplyr`, contida na `tidyverse`.
+A seguir temos a tabela de das porcentagens de preferencias religiosas segundo cada região.
+
+
+```{r, message=FALSE}
+
+rel_by_region <- gss_sm %>% 
+    group_by(bigregion, religion) %>% 
+    summarize(N = n()) %>% 
+    mutate(freq = N/sum(N),
+           pct = round((freq*100), 0))
+
+rel_by_region
+
+```
+
+
+O uso de pipes aumenta a legibilidade do código, fazendo a tarefa de checar a sanidade do nosso resultado mais fácil.
+
+Se fizemos tudo na ordem correta, a soma das porcentagens por região deve resultar em 100% (considerando erros de arredondamento). Conforme mostrado a seguir:
+
+
+```{r}
+
+rel_by_region %>%
+    group_by(bigregion) %>%
+    summarize(total = sum(pct)) 
+
+
+```
+
+
+Podemos então trabalhar diretamente com as porcentagens e fazer um gráfico de barras das preferências religiosas por região:
+
+
+```{r}
+
+p <- ggplot(rel_by_region,
+            aes(x = bigregion, y = pct, fill = religion) )
+
+p + geom_col( position = 'dodge') +
+    labs(x = 'Region', y = 'Percent', fill = 'Religion') +
+    theme(legend.position = 'top')
+
+```
+
+
+Utlizaremos **dodge2** em vez de **dodge** pois os dados já estão com as proporções computadas.
+
+
+```{r}
+
+p <- ggplot(rel_by_region,
+            aes(x = bigregion, y = pct, fill = religion) )
+
+p + geom_col( position = 'dodge2') +
+    labs(x = 'Region', y = 'Percent', fill = 'Religion') +
+    theme(legend.position = 'top')
+
+```
+
+
+Ainda sim existem várias barras uma ao lado da outra,uma alternativa é deitar o gráfico de barras através do **coord_flip()**.
+
+
+
+```{r}
+
+p <- ggplot(rel_by_region,
+            aes(x = religion, y = pct, fill = religion) )
+
+p + geom_col( position = 'dodge2') +
+    labs(x = NULL, y = 'Percent', fill = 'Religion') +
+    guides(fill = FALSE) +
+    coord_flip() +
+    facet_grid(~ bigregion)
+
+```
+
+
+## Variáveis Contínuas agrupadas por Categoria ou Grupo
+
+Utilizaremos o dataset *organdata* descrito neste [site](https://kjhealy.github.io/socviz/reference/organdata.html)
+
+Podemos alternativamente ao **head()**,utilizar a função **sample_n()** para coletar 10 linhas aleatoriamente dos dados. Observe que também selecionamos as primeiras 6 colunas.
+
+
+```{r}
+
+
+organdata %>%
+    select(1:6) %>%
+    sample_n(size = 10)
+
+
+```
+
+
+Vamos plotar a taxa de doação de órgãos por milhão de população, donors, pelo tempo para começar a analisar os dados.
+
+
+```{r}
+
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = year, y = donors))
+
+p + geom_point()
+
+
+```
+
+
+Não muito informativo por enquanto. Podemos plotar a série histórica da taxa de doação de cada país utilizando **geom_line()**:
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = year, y = donors))
+
+p + geom_line(aes(group = country)) +
+  facet_wrap(~country) +
+  theme(axis.text.x = element_text(size=6)) 
+
+```
+
+
+Focando agora não no tempo mas na variação da taxa de doação, plotaremos o boxplot de taxa de doação por país:
+
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = country, y = donors))
+
+p + geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 45)) 
+
+```
+
+
+Observe que os países se sobrepoem, uma alternativa é deitar o gráfico usando **coord_flip()**:
+
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = country, y = donors))
+
+p + geom_boxplot() +
+    coord_flip()
+
+```
+
+
+Mesmo mais legível, ele parece a priori pouco informativo, porque os países estão por ordem alfabética. Podemos reordená-los pela taxa de doações médias através da função **reorder()**
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country,
+                                      donors,
+                                      na.rm = TRUE),
+                          y = donors) )
+
+p + geom_boxplot() +
+    labs(x = NULL) +
+    coord_flip()
+
+
+```
+
+
+
+Podemos alternativamente fazer o **Violin plot** através da função **geom_violin()**
+
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country,
+                                      donors,
+                                      na.rm = TRUE),
+                          y = donors) )
+
+p + geom_violin() +
+    labs(x = NULL) +
+    coord_flip()
+
+
+```
+
+
+
+Podemos também colorir os boxplots de acordo com a variável categórica **world**:
+
+
+
+```{r}
+
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors,
+                          fill = world) )
+
+p + geom_boxplot() +
+    labs(x = NULL) +
+    coord_flip() +
+    theme(legend.position = 'top')
+
+
+```
+
+
+Colocando variáveis categóricas na vertical para comparar as distribuições é um bom recurso para resumir muitos pontos.Entretanto quando a quantidade de pontos por categoria é relativamente pequena, podemos simplismente plotar as observações.
+
+Vamos utilizar a função **geom_point()** em vez de **geom_boxplot()** fazendo os devidos ajustes de parâmetros:
+
+
+```{r}
+
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors,
+                          color = world) )
+
+p + geom_point() +
+    labs(x = NULL) +
+    coord_flip() +
+    theme(legend.position = 'top')
+
+
+```
+
+
+Perceba que desta forma, existe sobreposição de observações, nestes casos podemos perturbar os dados para evitar esta sobreposição através da função **geom_jitter()**:
+
+
+```{r}
+
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors,
+                          color = world) )
+
+p + geom_jitter() +
+    labs(x = NULL) +
+    coord_flip() +
+    theme(legend.position = 'top')
+
+
+```
+
+
+Podemos regular o grau de pertubação de dados com o parâmetros **width** e **height**:
+
+
+```{r}
+
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors,
+                          color = world) )
+
+p + geom_jitter(position = position_jitter(width = 0,
+                                           height = 0.5) ) +
+    labs(x = NULL) +
+    coord_flip() +
+    theme(legend.position = 'top')
+
+
+```
+
+
+ Dado o formato do gráfico, usaremos apenas o **width**, pois o **heigh** altera o eixo y (não esqueça que deitamos o gráfico), ou seja, altera a distribuição das observações.
+ 
+ 
+ 
+```{r}
+
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors,
+                          color = world) )
+
+p + geom_jitter(position = position_jitter(width = 0.15) ) +
+    labs(x = NULL) +
+    coord_flip() +
+    theme(legend.position = 'top')
+
+
+```
+
+
+Quando queremos resumir uma variável categórica com apenas um valor por catergoria, como a taxa média de doações por país, podemos usar o **Cleverland plot**. 
+
+
+Vamos fazer um pipeline para agregar e resumir nosso dataframe, podemos escolher manualmente as variáveis e usar repetidamente as funções de resumo **mean()** e **std()**:
+
+
+```{r}
+
+by_country <- organdata %>%
+  group_by(consent_law, country) %>%
+  summarize(donors_mean = mean(donors, na.rm = TRUE),
+            donors_sd = sd(donors, na.rm = TRUE),
+            gdp_mean = mean(gdp, na.rm = TRUE),
+            health_mean = mean(health, na.rm = TRUE),
+            roads_mean = mean(roads, na.rm = TRUE),
+            cerebvas_mean = mean(cerebvas, na.rm = TRUE))
+
+by_country
+
+```
+
+
+Ou alternativamente podemos fazer esta tarefa iterando através de recursos de programação funcional do R:
+
+
+```{r}
+
+by_country <- organdata %>% 
+  group_by(consent_law, country) %>%
+    summarize_if(is.numeric, funs(mean, sd), na.rm = TRUE) %>%
+    ungroup()
+
+by_country
+
+```
+
+
+Com os dado resumidos por país, podemos fazer um **Cleveland dotplot** com os pontos coloridos conforme a variável categórica **consent_law**.
+
+
+```{r}
+p <- ggplot(data = by_country,
+            mapping = aes(x = donors_mean, 
+                          y = reorder(country, donors_mean),
+                          color = consent_law))
+p + geom_point(size=3) +
+    labs(x = "Donor Procurement Rate",
+         y = "", color = "Consent Law") +
+    theme(legend.position="top")      
+```
+
+
+Alternativamente podemos plotar separadamente pela categoria **consent_law** em vez de colorir. Colocaremos os gráficos empilhados, **ncol = 1**, para melhor compará-los dado que são da mesma escala.
+
+
+```{r}
+p <- ggplot(data = by_country,
+            mapping = aes(x = donors_mean,
+                          y = reorder(country, donors_mean)))
+
+p + geom_point(size=3) +
+    facet_wrap(~ consent_law, ncol = 1) +
+    labs(x= "Donor Procurement Rate",
+         y= "")       
+```
+
+
+Note que pelo eixo y ser categórico, ele vai plotar o nome todos os países nos 2 plots, então para evitar isso colocaremos **scales = "free_y"**.
+
+
+```{r}
+p <- ggplot(data = by_country,
+            mapping = aes(x = donors_mean,
+                          y = reorder(country, donors_mean)))
+
+p + geom_point(size=3) +
+    facet_wrap(~ consent_law, scales = "free_y", ncol = 1) +
+    labs(x= "Donor Procurement Rate",
+         y= "")       
+```
+
+
+**Cleverland plots** é um ótimo recurso de resumir resultados de dados que possuem erros de range. Para extender este tipo de plot e incluir medidas de variância ou erro utilizamos o **geom_pointrange**.
+
+
+Este precisa do range em que se encontram os dados, **ymin** e **ymax**:
+
+
+```{r}
+
+p <- ggplot(data = by_country,
+            mapping = aes(x = reorder(country,donors_mean),
+                          y = donors_mean))
+
+p + geom_pointrange(mapping = aes(ymin = donors_mean - donors_sd,
+                                  ymax = donors_mean + donors_sd)) +
+  labs(x= "", y= "Donor Procurement Rate") +
+  coord_flip()   
+
+```
+
+## Adicionando texto
+
+
+Pode ser útil as vezes plotar os labels dos pontos diretamente, podemos fazer isso através da função **geom_text()** 
+
+
+```{r}
+
+p <- ggplot(data = by_country,
+            mapping = aes(x = roads_mean,
+                          y = donors_mean))
+
+p + geom_point() +
+  geom_text(mapping = aes(label = country))
+
+```
+
+
+Como estamos utilizando o mesmo **mapping** para os pontos e labels, eles ficam sobrepostos.
+
+Para corrigir isso podemos retirar os pontos e manter os labels:
+
+```{r}
+
+p <- ggplot(data = by_country,
+            mapping = aes(x = roads_mean,
+                          y = donors_mean))
+
+p + geom_text(mapping = aes(label = country))
+
+```
+
+
+Ou alternativamente é ajustar o label, utilizando **hjust = 0** para deslocar para a esquerda e **hjust = 1** para a direita.
+
+
+```{r}
+
+p <- ggplot(data = by_country,
+            mapping = aes(x = roads_mean,
+                          y = donors_mean))
+
+p + geom_point() +
+  geom_text(mapping = aes(label = country),
+            hjust = 0)
+      
+```
+
+
+Perceba que por mais que modifiquemos o ajuste do label, não parece uma abordagem robusta. Em vez de usar **geom_text()** vamos usar as funções **geom_text_repel()** e **geom_label_repel()** da biblioteca **ggrepel**.
+
+
+```{r}
+
+library(ggrepel)      
+
+```
+
+
+Vamos utilizar o dataset **elections_historic** descrito neste [site](https://kjhealy.github.io/socviz/reference/elections_historic.html)
+
+
+```{r}
+
+elections_historic %>% select(2:7)       
+
+```
+
+
+A figura a seguir plota cada eleição presidencial Americana desde 1824, primeiro ano que foi computado o voto popular. Em que os eixos são a parcela de votos no vencedor e a parcela de votos do vencedor que são populares.
+
+
+Estando interessados em certas presidências, vamos adicionar labels aos pontos. Porém para evitar sobreposição, como discutido anteriormente, vamos utilizar a função **geom_text_repel()**.
+
+
+```{r, layout = 'l-screen-inset', fig.height=10, fig.width=12}
+
+
+p_title <- "Presidential Elections: Popular & Electoral College Margins"
+p_subtitle <- "1824-2016"
+p_caption <- "Data for 2016 are provisional."
+
+x_label <- "Winner's share of Popular Vote"
+y_label <- "Winner's share of Electoral College Votes"
+
+
+p <- ggplot(elections_historic, aes(x = popular_pct,
+                                    y = ec_pct,
+                                    label = winner_label))
+
+p + geom_hline(yintercept = 0.5,
+               size = 1.4,
+               color = "gray80") +
+    geom_vline(xintercept = 0.5,
+               size = 1.4,
+               color = "gray80") +
+    geom_point() +
+    geom_text_repel() +
+    scale_x_continuous(labels = scales::percent) +
+    scale_y_continuous(labels = scales::percent) +
+    labs(x = x_label,
+         y = y_label,
+         title = p_title,
+         subtitle = p_subtitle,
+         caption = p_caption)      
+
+
+```
+
+
+Como os dados dos eixos estão em proporção, de 0 a 1, utilizamos a função **scale_x_continuous()** e **scale_y_continuous()** para transformá-los em porcentagens.
+
+
+Adicionaremos retas que marcam 50% de votos no vencedor e 50% de votos do vencedor que são populares para melhor analisar o distanciamento de cada ponto destas retas.
+
+
+
+## Texto condicional
+
+
+Perceba que as vezes não é uma boa ideia nomear todos os pontos do plot, mas sim escolher alguns de interesse para adicionar seus labels. Podemos fazer isso ainda com as mesmas funções.
+
+
+Basta que passemos um dataframe apenas com os pontos selecionados para a função **geom_text_repel()** através da ferramenta **subset()**. Como podemos ver a seguir:
+
+
+```{r}
+
+p <- ggplot(data = by_country,
+            mapping = aes(x = gdp_mean,
+                          y = health_mean))
+
+p + geom_point() +
+    geom_text_repel(data = subset(by_country,
+                                  gdp_mean > 25000),
+                    mapping = aes(label = country))
+
+
+```
+
+
+Neste caso utilizamos um critério apenas, para mais critérios é de modo similar:
+
+
+
+```{r}
+
+p <- ggplot(data = by_country,
+            mapping = aes(x = gdp_mean,
+                          y = health_mean))
+
+p + geom_point() +
+    geom_text_repel(data = subset(by_country,
+                                  gdp_mean > 25000 |
+                                    health_mean < 1500 |
+                                    country %in% "Belgium"),
+                    mapping = aes(label = country))
+
+
+```
+
+
+Alternativamente, podemos selecionar pontos específicos criando uma variável auxiliar para essa tarefa, no caso abaixo criamos a coluna **ind**.
+
+
+```{r}
+
+organdata$ind <- organdata$ccode %in%
+  c("Ita", "Spa") & organdata$year > 1998
+
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = ind))
+
+p + geom_point() +
+    geom_text_repel(data = subset(organdata, ind),
+                    mapping = aes(label = ccode)) +
+    guides(label = FALSE,
+           color = FALSE)     
+
+
+```
+
+
+Utilizamos a coluna auxiliar tanto no filtro de labels quanto no parâmetro **color**. Além disso, para suprimir a legenda faz-se uso da função **guides()**.
+
+
+
+## Escrevendo e desenhando no Gráfico
+
+
+Por vezes se faz necessário fazer anotações diretamente no gráfico para fazer alguma observação. Utilizaremos a função **annotate()** e diremos para ela utilizar os argumentos da **geom_text()** através do parâmetro **geom**. Como pode-se ver no exemplo a seguir:
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads,
+                          y = donors))
+
+p + geom_point() +
+  annotate(geom = "text",
+           x = 91,
+           y = 33,
+           label = "A surprisingly high \n recovery rate.",
+           hjust = 0)
+      
+
+```
+
+
+Podemos fazer uso dos outros geoms, e desenhar retângulos, retas e setas. Vamos adicionar um retângulo para resaltar a quais pontos nossa observação se refere:
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads,
+                          y = donors))
+
+p + geom_point() +
+    annotate(geom = "rect",
+             xmin = 125, xmax = 155,
+             ymin = 30, ymax = 35,
+             fill = "red", alpha = 0.2) + 
+    annotate(geom = "text",
+             x = 157, y = 33,
+             label = "A surprisingly high \n recovery rate.",
+             hjust = 0)
+
+```
+
+
+## Escalas, guias e Temas
+
+
+A seguir temos um gráfico simples de dispersão:
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = world))
+p + geom_point()
+
+```
+
+
+Podemos mudar a escala do eixo através de uma função do tipo **scale_mapping_kind()**, além de mudar as escalas podemos definir as posições e os labels para as marcações do eixo. Como podemos ver a seguir:
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = world))
+p + geom_point() +
+    scale_x_log10() +
+    scale_y_continuous(breaks = c(5, 15, 25),
+                       labels = c("Five",
+                                  "Fifteen",
+                                  "Twenty Five"))
+```
+
+
+Porém, se quisermos mudar os labels da legenda ou dos eixos em si, faremos isso utilizando a função **labs()** :
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = world))
+p + geom_point() +
+    scale_color_discrete(labels = c("Corporatist",
+                                    "Liberal",
+                                    "Social Democratic",
+                                    "Unclassified")) +
+    labs(x = "Road Deaths",
+         y = "Donor Procurement",
+         color = "Welfare State")
+
+```
+
+
+Por fim, para o caso de não querermos a legenda, podemos utilizar o **guides()**.
+
+
+```{r}
+
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = world))
+
+p + geom_point() +
+    labs(x = "Road Deaths",
+         y = "Donor Procurement") +
+    guides(color = FALSE)
+
+```
+
+
+# Revisitando um Gráfico
+
+Vamos agora aplicar o que foi discutido no capítulo revisitando um gráfico do trabalho **"Casas para Alugar"** :
+
+
+```{r, warning = FALSE, message = FALSE}
+
+library(ggExtra)
+
+Tabela <- read.csv('Dados limpos')
+
+```  
+
+
+Trata-se de um gráfico de dispersão da metragem do imóvel pelo valor total para se alugar o imóvel: 
+
+
+
+```{r}
+
+graf <- Tabela %>%
+  filter( !is.na(Tabela) ) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = area, y = total, color = total)) +
+  scale_color_gradient(low = "orange",high = "red") +
+  theme(legend.position="none")
+
+graf <- ggMarginal(graf, type="histogram", fill = "darkorange")
+
+show(graf)
+
+```
+
+Podemos omitir a legenda de modo mais elegante utilizando a função **guides()**,
+
+
+```{r}
+
+graf <- Tabela %>%
+  filter( !is.na(Tabela) ) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = area, y = total, color = total)) +
+  scale_color_gradient(low = "orange",high = "red") +
+  guides(color = FALSE)
+
+graf <- ggMarginal(graf, type="histogram", fill = "darkorange")
+
+show(graf)
+
+```
+
+
+
+```{r}
+
+Tabela %>% filter(rent.amount > 12000) %>% 
+  ggplot(aes(x = area, y = rent.amount, colour = animal)) + geom_point()
+
+```
+
+
+Adicionei desenhos e um texto no gráfico diretamente utilizando **annotate()**:
+
+
+```{r}
+
+Tabela %>% filter(rent.amount > 12000) %>% 
+  ggplot(aes(x = area, y = rent.amount, colour = animal)) +
+  geom_point() +
+  annotate(geom = "rect",
+           xmin = 125, xmax = 910,
+           ymin = 15100, ymax = 14900,
+           fill = "yellow", alpha = 0.2) + 
+  annotate(geom = "rect",
+           xmin = 250, xmax = 750,
+           ymin = 14100, ymax = 13900,
+           fill = "yellow", alpha = 0.2) + 
+  annotate(geom = "text",
+           x = 350, y = 14500,
+           label = "Observe as faixas de valores \n invariantes à metragem do imóvel",
+           hjust = 0)
+
+
+```
+
+
+
+

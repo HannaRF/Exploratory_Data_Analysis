@@ -1,0 +1,83 @@
+---
+title: "Vaccines"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output:
+  html_document:
+    highlight: textmate
+    includes: null
+    theme: flatly
+  pdf_document:
+always_allow_html: true
+---
+
+```{r setup, message=FALSE,warning=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2) 
+library(dplyr) 
+library(tidyr) 
+library(stringr) 
+
+```
+
+```{r}
+
+data <- read.csv('country_vaccinations.csv')
+
+data2 <- read.csv('country_vaccinations_by_manufacturer.csv')
+
+```
+
+```{r}
+
+head(data)
+
+```
+
+```{r}
+
+head(data2)
+
+```
+
+
+
+```{r}
+
+
+
+```
+
+
+
+```{r}
+
+
+
+```
+
+
+
+```{r}
+
+
+
+```
+
+
+
+```{r}
+
+
+
+```
+
+
+
+```{r}
+
+
+
+```

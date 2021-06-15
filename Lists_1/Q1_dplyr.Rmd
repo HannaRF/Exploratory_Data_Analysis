@@ -1,0 +1,369 @@
+---
+title: "Familiarização com o dplyr - Exercício 1"
+author: "Hanna Rodrigues Ferreira"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Exercícios a seguir retirados de <https://livro.curso-r.com/7-2-dplyr.html>
+
+```{r lib,message=FALSE}
+#install.packages("dplyr")
+library(dplyr)
+```
+
+Utilizaremos a base imdb nos exercícios a seguir.
+
+
+
+```{r read}
+imdb <- readr::read_rds("imdb.rds")
+```
+
+# Selecionando colunas
+
+a função glimpse() do pacote dplyr printa uma versão transposta da base. É útil para ter uma visão geral das colunas e seus tipos de dados. 
+
+```{r}
+glimpse(imdb)
+```
+
+
+Podemos utilizar o select() para criar uma tabela alocada em imdb_simples com apenas as colunas titulo, ano e nota_imdb.
+
+```{r}
+imdb_simples <- select(imdb, titulo, ano, nota_imdb)
+
+glimpse(imdb_simples)
+```
+
+Com o ajudante contains() podemos selecionar as colunas que contém "ator" no nome, neste caso ator_1, ator_2 e ator_3.
+
+```{r}
+
+glimpse( select(imdb, contains("ator")) )
+
+```
+
+Com apenas o conhecimento da função select() e seus ajudantes temos diversas formas de retornar a base sem as colunas ator_1, ator_2 e ator_3.
+
+A seguir temos alguns exemplos:
+
+```{r,results='hide'}
+
+# caso quiséssemos retirar muitas colunas, seria inviável
+select(imdb, -ator_1, -ator_2, -ator_3)
+
+# é útil mas devemos nos atentar que as colunas devem ser consecutivas
+select(imdb, -(ator_1 : ator_3)) 
+
+# não funcionaria se quiséssemos retirar uma coluna "idade_ator"
+select(imdb, -starts_with("ator")) 
+
+# não funcionaria se quiséssemos manter uma coluna "idade_ator"
+select(imdb, -contains("ator"))
+
+```
+
+```{r,echo=FALSE}
+
+glimpse(select(imdb, -contains("ator")))
+
+```
+
+# Ordenando a base
+
+Podemos ordenar os filmes utilizando o arrange(), em ordem crescente de duração e decrescente de ano com o auxiliar desc().
+
+```{r}
+
+filmes_ordenados <- arrange(imdb, duracao, desc(ano))
+
+glimpse(filmes_ordenados)
+
+```
+
+É possível então, selecionar colunas e ordenar esta seleção, como mostra o exemplo:
+
+```{r}
+
+head( arrange(select(imdb, titulo, orcamento), desc(orcamento)) )
+
+```
+
+# O pipe em ação
+
+Podemos aplicar diversas função a um mesmo objeto utilizando o pipe %>%
+
+```{r}
+
+filmes_pb <- 
+  imdb %>% 
+    filter(cor == "Black and White")
+
+glimpse(filmes_pb)
+
+```
+
+ Podemos utilizar a função filter() para filtrar as linhas, mantendo assim as que concordem com as condições de entrada.
+ 
+Tal como filmes com 90 minutos ou menos de duração e nota no imdb maior do que 8.5, como no exemplo a seguir:
+
+```{r}
+
+curtos_legais <-
+  imdb %>%
+    filter(duracao <= 90, nota_imdb > 8.5)
+
+glimpse(curtos_legais)
+
+```
+
+filmes filmes coloridos anteriores a 1950:
+
+```{r}
+
+glimpse(
+  imdb %>%
+    filter(cor == "Color", ano < 1950)
+  )
+
+```
+
+filmes dirigidos por Stanley Kubrick ou por Quentin Tarantino:
+
+```{r}
+
+head(
+  imdb %>%
+    filter(diretor %in% c("Stanley Kubrick", "Quentin Tarantino"))
+  )
+
+```
+
+filmes do diretor Guillermo del Toro ou Francis Ford Coppola ordenados de forma decrescente por ano, mostrando apenas as colunas titulo, ano e diretor.
+
+```{r}
+
+
+head( imdb %>%
+  filter(diretor %in% c("Guillermo del Toro","Francis Ford Coppola")) %>% 
+  select(titulo,ano,diretor) %>% 
+  arrange(desc(ano))
+  )
+
+```
+
+filmes que tenham “Sci-Fi” ou “Musical” entre os seus gêneros, neste caso usaremos uma função do pacote stringr que procura padrões nas strings.
+
+```{r}
+
+#install.packages("stringr")
+library(stringr)
+
+head( imdb %>%
+  filter(str_detect(string = generos, pattern = "Animation")
+         | str_detect(string = generos, pattern = "Musical"))
+  )
+
+```
+
+filmes que tenham “Musical” e “Sci-Fi” entre os seus gêneros e tenha nota_imdb maior que 5 :
+
+```{r}
+
+imdb %>%
+  filter(str_detect(string = generos, pattern = "Musical"),
+  str_detect(string = generos, pattern = "Sci-Fi"),
+  nota_imdb > 5)
+
+```
+
+filmes que não possuem informação tanto de receita quanto de orçamento, isto é, possuem NA (not a number) nas colunas.
+
+Podemos utilizar o auxiliar is.na()
+
+```{r}
+
+head( imdb %>% filter(is.na(orcamento),is.na(receita)) )
+
+```
+
+# Modificando e criando novas colunas
+
+1. Crie uma coluna chamada prejuizo (orcamento - receita) e salve a nova tabela em um objeto chamado imdb_prejuizo. Em seguida, filtre apenas os filmes que deram prejuízo e ordene a tabela por ordem decrescente de prejuízo.
+
+
+```{r}
+
+imdb_prejuizo = mutate(imdb, prejuizo = orcamento - receita)
+
+glimpse(
+  imdb_prejuizo %>% 
+    filter(prejuizo > 0) %>% 
+    arrange(desc(prejuizo))
+  )
+
+```
+
+2. Fazendo apenas uma chamada da função mutate(), crie as seguintes colunas novas na base imdb:
+
+a. lucro = receita - orcamento
+
+
+```{r}
+
+imdb = mutate(imdb, lucro = receita - orcamento)
+
+```
+
+b. lucro_medio
+
+
+```{r}
+
+imdb = mutate(imdb, lucro_medio = mean(imdb $ lucro) )
+
+```
+
+c. lucro_relativo = (lucro - lucro_medio)/lucro_medio
+
+
+```{r}
+
+imdb = mutate(imdb, lucro_relativo = (lucro - lucro_medio)/lucro_medio)
+
+```
+
+d. houve_lucro = ifelse(lucro > 0, "sim", "não")
+
+
+```{r}
+
+imdb = mutate(imdb, houve_lucro = ifelse(lucro > 0, "sim", "não"))
+
+```
+
+3. Crie uma nova coluna que classifique o filme em "recente" (posterior a 2000) e "antigo" (de 2000 para trás).
+
+
+
+```{r}
+
+imdb  = mutate(imdb, antes_depois_2000 = ifelse(ano > 2000, "recente", "antigo"))
+
+```
+
+```{r,echo=FALSE}
+
+glimpse(imdb)
+
+```
+
+# Summarisando a base
+
+ 1. Calcule a duração média e mediana dos filmes da base.
+
+```{r}
+
+imdb %>% summarise(
+  media_duracao = mean(duracao, na.rm = TRUE),
+  mediana_duracao = median(duracao, na.rm = TRUE)
+)
+
+```
+
+ 2. Calcule o lucro médio dos filmes com duração menor que 60 minutos.
+
+```{r}
+
+imdb %>% 
+  filter(duracao < 60) %>% 
+  summarise( lucro_medio = mean(lucro, na.rm = TRUE))
+  
+
+```
+
+3. Apresente na mesma tabela o lucro médio dos filmes com duracao menor que 60 minutos e o lucro médio dos filmes com duracao maior ou igual a 60 minutos.
+
+```{r}
+
+imdb <- imdb %>%
+  mutate(duracao_60 = ifelse(duracao<60,"> 60 min","<= 60 min"))
+
+imdb %>% 
+  group_by(duracao_60) %>% 
+  summarise( lucro_medio = mean(lucro, na.rm = TRUE))
+
+imdb <- select(imdb, -duracao_60)
+
+```
+
+ 4. Retorne tabelas (tibbles) apenas com:
+
+a. a nota IMDB média dos filmes por tipo de classificacao;
+
+```{r}
+
+imdb %>% 
+  group_by(classificacao) %>% 
+  summarise( nota_media = mean(nota_imdb,  na.rm = TRUE) )
+
+```
+
+b. a receita média e mediana dos filmes por ano;
+
+```{r}
+
+head(imdb %>% 
+  group_by(ano) %>% 
+  summarise( receita_media = mean(receita,  na.rm = TRUE),
+             receita_mediana = median(receita,  na.rm = TRUE))
+  )
+
+```
+
+ c. apenas o nome dos diretores com mais de 10 filmes.
+
+```{r}
+
+head(imdb %>%
+  group_by(diretor) %>% 
+  summarise(n_filmes = n()) %>% 
+  filter(n_filmes > 10)
+  )
+
+```
+
+# Juntando duas bases
+
+ a. Salve em um novo objeto uma tabela com a nota média dos filmes de cada diretor. Essa tabela deve conter duas colunas (diretor e nota_imdb_media) e cada linha deve ser um diretor diferente.
+
+```{r}
+
+tab_nota_media <- imdb %>% 
+  group_by(diretor) %>% 
+  summarise( nota_imdb_media = mean(nota_imdb) )
+
+head(tab_nota_media)
+
+```
+
+ b. Use o left_join() para trazer a coluna nota_imdb_media da tabela do item anterior para a tabela imdb original.
+
+```{r}
+
+imdb <- left_join(imdb, tab_nota_media, by = "diretor")
+
+glimpse(imdb)
+
+```
+
