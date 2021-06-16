@@ -1,21 +1,25 @@
 ---
 title: "Mapa de Vacinação"
-author: "Marcos Antônio e Hanna"
+author: "Marcos Antônio e Hanna Rodrigues"
 date: "15 de julho de 2021"
 output: html_document
 ---  
 
-```{r}
-dado <- read.csv("owid-covid-data.csv")
-```  
-
-```{r}
+```{r, warning=FALSE}
 library(maps)
 library(ggplot2)
 library(tidyr)
 library(dplyr)
-world <- map_data("world")
+library(viridis)
+theme_set(theme_void())
 ```  
+
+```{r}
+world <- map_data("world")
+dado <- read.csv("owid-covid-data.csv")
+
+``` 
+
 
 ```{r, message = FALSE, warning = FALSE}
 dado2 <- dado %>% group_by(location) %>% summarise(
@@ -36,6 +40,7 @@ dado3
 
 ```{r}
 world2 <- left_join(by = "region", x = world, y = dado3)
+
 head(world2,10)
 ```  
 
@@ -44,14 +49,18 @@ head(world2,10)
 ```{r}
 ggplot(data = world2, mapping = aes(x= long, y = lat, fill = mortes, group = group)) + 
   geom_polygon(color = "white", size = 0.1) + 
-  labs(title = "Mortes por país")
+  coord_cartesian(ylim = c(-50, 90)) +
+  labs(title = "Mortes por país") +
+  theme(legend.position="bottom")
 ```  
 
 <br>  
 ```{r}
 ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1, group = group)) + 
   geom_polygon(color = "white", size = 0.1) + 
-  labs(title = "Primeira dose")
+  coord_cartesian(ylim = c(-50, 90)) +
+  labs(title = "Primeira dose") +
+  theme(legend.position="bottom")
 ```  
 
 <br>  
@@ -59,8 +68,21 @@ ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1, group = grou
 ```{r}
 ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1, group = group)) + 
   geom_polygon(color = "white", size = 0.1) + 
-  labs(title = "Segunda dose")
+  coord_cartesian(ylim = c(-50, 90)) +
+  labs(title = "Segunda dose") +
+  theme(legend.position="bottom")
 ```  
 
+```{r}
 
+
+
+``` 
+
+```{r}
+
+
+
+
+``` 
 
