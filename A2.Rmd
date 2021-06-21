@@ -5,7 +5,7 @@ date: "15 de julho de 2021"
 output: html_document
 ---  
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message = FALSE}
 library(maps)
 library(ggplot2)
 library(tidyr)
@@ -27,41 +27,59 @@ dado2 <- dado %>% group_by(location) %>% summarise(
   dose1 = max(people_vaccinated - people_fully_vaccinated, na.rm = TRUE), 
   dose2 = max(people_fully_vaccinated, na.rm = TRUE))
 
-colnames(dado2)[1] <- "region"
-dado3 <- dado2 %>% mutate(mortes = ifelse(!(mortes >= 0), 0, mortes),
+dado2 <- dado2 %>% mutate(mortes = ifelse(!(mortes >= 0), 0, mortes),
       dose1 = ifelse(!(dose1>=0 ), 0, dose1), 
-      dose2 = ifelse(!(dose2>=0), 0, dose2),
-      region = ifelse(as.character(region) == "United States", "USA", as.character(region)),
-      region = ifelse(as.character(region) == "United Kingdom", "UK", as.character(region)))
-dado3
+      dose2 = ifelse(!(dose2>=0), 0, dose2))
+
+colnames(dado2)[1] <- "region"
+
+## encontrando conflitos
+d1 <- levels(as.factor(world$region))
+d2 <- levels(as.factor(dado2$region))
+v1 <- d2[!(d2 %in% d1)]
+v2 <- d1[!(d1 %in% d2)]
+
+# O primeiro elementoo é como está em 'world' e o segundo é como está em 'dado'
+lista <- c(c("Antigua", "Antigua and Barbuda"),c("Bonaire","Bonaire Sint Eustatius and Saba"),
+           c("Democratic Republic of the Congo","Congo"),c("French Guiana","French"),
+           c("Republic of Congo","Congo"), c("Trinidad","Trinidad and Tobago"),
+           c("Timor-Leste", "Timor"), c("Tobago","Trinidad and Tobago"),
+           c("Grenadines", "Saint Vincent and the Grenadines"),c("Saint Vincent","Saint Vincent and the Grenadines"), c("Micronesia" ,"Micronesia (country)" ),
+           c("Macedonia","North Macedonia"), c("Czech Republic" ,"Czechia"), 
+           c("UK","United Kingdom"), c("USA","United States"),
+           c("Republic of Congo","Democratic Republic of Congo"),c("Western Sahara","Africa"))
+
+## separando a lista em duas
+h1 <- c()
+h2 <- c()
+for (x in 1:(length(lista)/2)) {
+  h1 <- c(h1,lista[2*x -1])
+  h2 <- c(h2, lista[2*x])
+}
+
+## função para corrigir o nome do país
+f <- function(a,b, dado2) {
+    dado2 <- dado2 %>% mutate(region = ifelse(as.character(region) == a, b, as.character(region)))
+    dado2
+}
+
+
+for (x in 1:length(h1)) {
+  dado2 <- f(h2[x],h1[x],dado2)
+}
+
 ```  
+
 
 <br>  
 
 ```{r}
-world2 <- left_join(by = "region", x = world, y = dado3)
+world2 <- left_join(by = "region", x = world, y = dado2)
 
 head(world2,10)
 ```  
 
 <br>  
-
-```{r}
-ggplot(data = world2, mapping = aes(x= long, y = lat, fill = mortes, group = group)) + 
-  geom_polygon(color = "white", size = 0.1) + 
-  coord_cartesian(ylim = c(-50, 90)) +
-  labs(title = "Mortes por país") +
-  theme(legend.position="bottom")
-```  
-
-<br>  
-```{r}
-ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1, group = group)) + 
-  geom_polygon(color = "white", size = 0.1) + 
-  coord_cartesian(ylim = c(-50, 90)) +
-  labs(title = "Primeira dose") +
-  theme(legend.position="bottom")
-```  
 
 <br>  
 
@@ -73,15 +91,9 @@ ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1, group = grou
   theme(legend.position="bottom")
 ```  
 
-```{r}
 
-
-
-``` 
 
 ```{r}
-
-
 
 
 ``` 
