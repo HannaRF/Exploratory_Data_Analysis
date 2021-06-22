@@ -11,33 +11,49 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(viridis)
+library(ggthemes)
 theme_set(theme_void())
 ```  
+
+<br> 
 
 ```{r}
 world <- map_data("world")
 dado <- read.csv("owid-covid-data.csv")
 
 ``` 
+<br> 
 
 
 ```{r, message = FALSE, warning = FALSE}
 dado2 <- dado %>% group_by(location) %>% summarise(
   mortes = max(total_deaths, na.rm = TRUE), 
   dose1 = max(people_vaccinated - people_fully_vaccinated, na.rm = TRUE), 
-  dose2 = max(people_fully_vaccinated, na.rm = TRUE))
+  dose2 = max(people_fully_vaccinated, na.rm = TRUE),
+  vacinadas = max(people_vaccinated, na.rm = TRUE),
+  population = max(population))
+
+dado2 <- dado2 %>% mutate(dose1_perc = 100*dose1/population,
+                          dose2_perc = 100*dose2/population,
+                          vacin_perc = 100*vacinadas/population)
+
 
 dado2 <- dado2 %>% mutate(mortes = ifelse(!(mortes >= 0), 0, mortes),
       dose1 = ifelse(!(dose1>=0 ), 0, dose1), 
-      dose2 = ifelse(!(dose2>=0), 0, dose2))
+      dose2 = ifelse(!(dose2>=0), 0, dose2),
+      dose1_perc = ifelse(!(dose1_perc >=0),0,dose1_perc),
+      dose2_perc = ifelse(!(dose2_perc >=0),0,dose2_perc))
 
 colnames(dado2)[1] <- "region"
 
+
+
 ## encontrando conflitos
-d1 <- levels(as.factor(world$region))
-d2 <- levels(as.factor(dado2$region))
-v1 <- d2[!(d2 %in% d1)]
-v2 <- d1[!(d1 %in% d2)]
+#d1 <- levels(as.factor(world$region))
+#d2 <- levels(as.factor(dado2$region))
+#v1 <- d2[!(d2 %in% d1)]
+#v2 <- d1[!(d1 %in% d2)]
+
 
 # O primeiro elementoo é como está em 'world' e o segundo é como está em 'dado'
 lista <- c(c("Antigua", "Antigua and Barbuda"),c("Bonaire","Bonaire Sint Eustatius and Saba"),
@@ -67,34 +83,126 @@ f <- function(a,b, dado2) {
 for (x in 1:length(h1)) {
   dado2 <- f(h2[x],h1[x],dado2)
 }
+head(dado2)
 
 ```  
 
 
 <br>  
+
 
 ```{r}
 world2 <- left_join(by = "region", x = world, y = dado2)
+world2 <- world2 %>% filter(region != "Antarctica" )
 
-head(world2,10)
+world2 <- world2 %>% mutate(dose1 = ifelse(is.na(dose1),0,dose1),
+                            dose2 = ifelse(is.na(dose2),0,dose2),
+                            dose1_perc = ifelse(is.na(dose1_perc),0,dose1_perc),
+                            dose2_perc = ifelse(is.na(dose2_perc),0,dose2_perc),
+                            vacin_perc = ifelse(is.na(vacin_perc),0,vacin_perc))
+
+world2 <- world2 %>% mutate(categoria = ifelse(dose2_perc < 0.1, "[0,0.1)",
+                                        ifelse(dose2_perc <5,"[0.1,5)",
+                                        ifelse(dose2_perc < 15, "[5,15)",
+                                        ifelse(dose2_perc < 35, "[15,35)", "[35,100]")))))
 ```  
 
 <br>  
 
 <br>  
 
+<br>  
+
+<br>  
+
+
 ```{r}
-ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1, group = group)) + 
-  geom_polygon(color = "white", size = 0.1) + 
-  coord_cartesian(ylim = c(-50, 90)) +
-  labs(title = "Segunda dose") +
-  theme(legend.position="bottom")
+# Grafico 1: Dados contínuos
+
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1_perc, group = group)) + 
+  geom_polygon(color = "white", size = 0.3) + 
+  labs(title = "Segunda dose", fill = "Percentil") +
+  scale_fill_gradient2(low = "#6666FF", midpoint = 15, mid = "purple", high = "red") + 
+  theme_map() + 
+    theme(
+    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
+    axis.title.x = element_blank(),
+    panel.background = element_rect(fill = "#EEEEEE"),
+    panel.grid = element_blank()) +
+   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) 
 ```  
 
 
 
 ```{r}
-
-
+# Gráfico 2: Dados discretos
+blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Blues")
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
+  geom_polygon(color = "white", size = 0.3) + 
+  labs(title = "Segunda dose", fill = "Percentil") +
+  scale_fill_manual(values = blue_rev, ) +
+  theme_map() + 
+    theme(
+    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
+    axis.title.x = element_blank(),
+    panel.background = element_rect(fill = "#000000"),
+    panel.grid = element_blank()) +
+   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) 
 ``` 
+
+<br>  
+
+```{r}
+# Gráfico 2: Dados discretos
+blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Blues")
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
+  geom_polygon(color = "white", size = 0.3) + 
+  labs(title = "Segunda dose", fill = "Percentil") +
+  scale_fill_manual(values = blue_rev) +
+  theme_map() + 
+    theme(
+    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
+    axis.title.x = element_blank(),
+    panel.background = element_rect(fill = "#EEEEEE"),
+    panel.grid = element_blank()) +
+   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) 
+``` 
+<br>  
+
+
+```{r}
+# Gráfico 2: Dados discretos
+blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
+  geom_polygon(color = "white", size = 0.3) + 
+  labs(title = "Segunda dose", fill = "Percentil") +
+  scale_fill_manual(values = blue_rev) +
+    theme_map() + 
+    theme(
+    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
+    axis.title.x = element_blank(),
+    panel.background = element_rect(fill = "#EEEEEE"),
+    panel.grid = element_blank()) +
+   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90))
+```  
+<br>  
+
+```{r}
+# Gráfico 2: Dados discretos
+blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
+  geom_polygon(color = "white", size = 0.3) + 
+  labs(title = "Segunda dose", fill = "Percentil") +
+  scale_fill_manual(values = blue_rev) +
+  guides(fill = guide_legend(nrow = 1)) +
+    theme(
+    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
+    axis.title.x = element_blank(),
+    panel.background = element_rect(fill = "#CCCCCC"),
+    panel.grid = element_blank()) +
+   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) + theme_map()
+```  
+<br>  
+
+
 
