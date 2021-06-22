@@ -1,9 +1,17 @@
 ---
 title: "Mapa de Vacinação"
-author: "Marcos Antônio e Hanna Rodrigues"
-date: "15 de julho de 2021"
-output: html_document
----  
+author: "Marcos Antônio Alves e Hanna Rodrigues"
+date: "`r format(Sys.time(), '%d %B,%Y')`"
+output: 
+    html_document:
+        theme: flatly 
+        highlight: textmate 
+        toc: no
+        number_sections: no
+        toc_float:
+            collapsed: no
+            smooth_scroll: yes
+---
 
 Neste trabalho, produzimos um mapa gráfico que fornece uma visualização do atual cenário da pandemia de covid-19 no mundo. Sabemos que os dados são significativamente alterados dia após dia e que novas fases da pandemia se estabelecem de tempos em tempos; no entanto mapas não são adequados para visualizar evolução ao longo do tempo, por isso o objetivo do gráfico é apenas transmitir a informação superficialmente mas de forma mais abrangente possível, de maneira elegante e eficiente. 
 
@@ -17,11 +25,13 @@ Utilizamos os dados do site *ourworldindata* contendo dados sobre testagens, vac
 *   Dados:https://covid.ourworldindata.org/data/owid-covid-data.csv  
 <br>  
 
-## O mapa  
+## O gráfico   
 
 Por se tratar de uma crise que afeta significamente o mundo todo, achamos interessante considerar o mundo como o nosso objeto informativo, onde cada país representa um único dado. Um mapa é eficiente nesse caso, pois além de permitir comprimir todas as informações da pandemia numa única visualização, ainda toma proveito do conhecimento geográfico preexistente de cada indivíduo para poupar tempo de leitura de textos com a posição da informação no mapa, atuando como elemento de pré-atenção.  
 Utilizaremos as variáveis `região`, `pessoas_vacindas` e `mortes` no nosso gráfico. A escolha do azul para o gráfico é justificada pela reincidência dessa cor em vários posts sobre vacinas. Utilizaremos a tonalidade das cores como artifício para representar quantidade. 
 
+
+## Organização da base  
 
 ```{r, warning=FALSE, message = FALSE}
 library(maps)
@@ -30,7 +40,7 @@ library(tidyr)
 library(dplyr)
 library(viridis)
 library(ggthemes)
-theme_set(theme_void())
+#theme_set(theme_void())
 ```  
 
 <br> 
@@ -41,6 +51,8 @@ dado <- read.csv("owid-covid-data.csv")
 
 ``` 
 <br> 
+
+Iremos juntar os dados do mapa com numero de mortes, vacinação e suas respectivas porcentagens.  
 
 
 ```{r, message = FALSE, warning = FALSE}
@@ -120,17 +132,75 @@ world2 <- world2 %>% mutate(dose1 = ifelse(is.na(dose1),0,dose1),
                             vacin_perc = ifelse(is.na(vacin_perc),0,vacin_perc))
 
 world2 <- world2 %>% mutate(categoria = ifelse(dose2_perc < 0.1, "[0,0.1)",
-                                        ifelse(dose2_perc < 5, "[0.1,5)",
+                                        ifelse(dose2_perc <5,"[0.1,5)",
                                         ifelse(dose2_perc < 15, "[5,15)",
-                                        ifelse(dose2_perc < 35, "[15,35)", "[35,100]")))))
+                                        ifelse(dose2_perc < 35, "[15,35)", 
+                                        ifelse(dose2_perc < 95, "[35,95)", ">95"))))),
+                            categoria_vac = ifelse(vacin_perc < 0.1, "[0,0.1)",
+                                        ifelse(vacin_perc <5,"[0.1,5)",
+                                        ifelse(vacin_perc < 15, "[5,15)",
+                                        ifelse(vacin_perc < 35, "[15,35)", 
+                                        ifelse(vacin_perc < 95, "[35,95)", ">95"))))))
+world2 <- world2 %>% mutate(categoria = as.factor(categoria))
 ```  
 
 <br>  
 
-<br>  
+## Mapas  {.tabset}
+
+ 
+Para o gráfico principal, optamos por um gráfico mais higiênico possível, uma vez que não queremos desviar a atenção das cores dos países com os gráficos não relacionados aos dados, uma vez que um mapa é muito detalhista. Há outros dois mapas secundários com outras informações.  
+<br> 
+
+### Vacinados  
+
+Abaixo um mapa com o percentil de vacinados. . A escolha do laranja foi por critério de destaque destaque entre os diferentes tons de cor.  
+
+```{r, message = FALSE, warning = FALSE}
+# Gráfico 2: Dados discretos
+blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria_vac, group = group)) + 
+  geom_polygon(color = "white", size = 0.3) + 
+  labs(title = "Vacinados", fill = "Percentil") +
+  scale_fill_manual(values = c("[0,0.1)" = blue_rev[1], "[0.1,5)" = blue_rev[2],
+                    "[5,15)" = blue_rev[3], "[15,35)" = blue_rev[4], "[35,95)" = blue_rev[5], ">95" = blue_rev[6])) +
+  theme_map() + 
+  guides(fill = guide_legend(nrow = 1)) +
+    theme(plot.title = element_text(hjust = 0.5, colour = "Black", size = 20)) + 
+   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-90,90))
+```  
 
 <br>  
 
+### Completamente vacinados  
+
+Uma vez feito o mapa, podemos visualizar outros dados da nossa base. Visualizaremos abaixo o percentil de pessoas vacinadas com a segunda dose e mortes.  O fundo preto foi pensado para dar destaque ao azul.  
+
+
+```{r}
+# Gráfico 2: Dados discretos
+blue_rev <- RColorBrewer::brewer.pal(n = 5, name = "Blues")
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
+  geom_polygon(color = "white", size = 0.3) + 
+  labs(title = "Segunda dose", fill = "Percentil") +
+  scale_fill_manual(values = c("[0,0.1)" = blue_rev[1], "[0.1,5)" = blue_rev[2],
+                    "[5,15)" = blue_rev[3], "[15,35)" = blue_rev[4], "[35,95)" = blue_rev[5], ">95" = blue_rev[6])) + 
+  theme_map() + 
+    theme(
+    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
+    axis.title.x = element_blank(),
+    panel.background = element_rect(fill = "#000000"),
+    panel.grid = element_blank()) +
+   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) 
+
+
+``` 
+
+<br>  
+
+### Mortes por país  
+
+Até agora utilizamos gradientes discretos para as cores. Como o número de mortes é mais diverso, optamos por utilizar uma escala contínua para a cor. A escala vai do vermelho ao azul e o meio é justamente a união dessas cores, o roxo.  
 <br>  
 
 
@@ -139,89 +209,33 @@ world2 <- world2 %>% mutate(categoria = ifelse(dose2_perc < 0.1, "[0,0.1)",
 
 ggplot(data = world2, mapping = aes(x= long, y = lat, fill = mortes, group = group)) + 
   geom_polygon(color = "white", size = 0.3) + 
-  labs(title = "Mortes por Covid", fill = "Número de mortos") +
-  scale_fill_gradient2(low = "#6666FF", midpoint = 15, mid = "purple", high = "red") + 
+  labs(title = "Número de Mortes", fill = "Percentil") +
+  scale_fill_gradient2(low = "#6666FF", midpoint = 15, mid = "purple", high = "red", 
+                       breaks = c(0,100000,200000,300000,400000,500000),
+                       labels = c("0","100k","200k","300k","400k","500k")) + 
   theme_map() + 
     theme(
     plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
     axis.title.x = element_blank(),
-    panel.background = element_rect(fill = "#EEEEEE"),
-    panel.grid = element_blank()) +
+    panel.background = element_rect(fill = "#EEEEEE", colour = "#EEEEEE"),
+    panel.grid = element_blank(),line = element_blank()) +
    coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) 
 ```  
 
+<br>  
+
+##  
+
+Alguns países não fornecem seus dados. Atribuir 0 ou qualquer outro valor a eles não é muito justificável, nesse caso, países em cinza estão com dados faltantes.  
 
 
-```{r}
-# Gráfico 2: Dados discretos
-blue_rev <- RColorBrewer::brewer.pal(n = 5, name = "Blues")
-ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
-  geom_polygon(color = "white", size = 0.3) + 
-  labs(title = "Segunda dose", fill = "Percentil") +
-  scale_fill_manual(values = blue_rev) + 
-  theme_map() + 
-    theme(
-    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
-    axis.title.x = element_blank(),
-    panel.background = element_rect(fill = "#000000"),
-    panel.grid = element_blank()) +
-   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) 
-``` 
+Analisando os mapas podemos notar uma associação entre número de vacinados, o que era esperado pois a medida que mais mrtes são confirmadas mais caótica é a situação e o estado toma providências mais rapidamente.  
+
+
+
+
 
 <br>  
 
-```{r}
-# Gráfico 2: Dados discretos
-blue_rev <- RColorBrewer::brewer.pal(n = 5, name = "Blues")
-ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
-  geom_polygon(color = "white", size = 0.3) + 
-  labs(title = "Segunda dose", fill = "Percentil") +
-  scale_fill_manual(values = blue_rev) +
-  theme_map() + 
-    theme(
-    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
-    axis.title.x = element_blank(),
-    panel.background = element_rect(fill = "#EEEEEE"),
-    panel.grid = element_blank()) +
-   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) 
-``` 
+
 <br>  
-
-
-```{r}
-# Gráfico 2: Dados discretos
-blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
-ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
-  geom_polygon(color = "white", size = 0.3) + 
-  labs(title = "Segunda dose", fill = "Percentil") +
-  scale_fill_manual(values = blue_rev) +
-  
-    theme_map() + 
-    theme(
-    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
-    axis.title.x = element_blank(),
-    panel.background = element_rect(fill = "#EEEEEE"),
-    panel.grid = element_blank()) +
-   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90))
-```  
-<br>  
-
-```{r}
-# Gráfico 2: Dados discretos
-blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
-ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
-  geom_polygon(color = "white", size = 0.3) + 
-  labs(title = "Segunda Dose", fill = "Percentil") +
-  scale_fill_manual(values = blue_rev) +
-  guides(fill = guide_legend(nrow = 1)) +
-    theme(
-    plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
-    axis.title.x = element_blank(),
-    panel.background = element_rect(fill = "#CCCCCC"),
-    panel.grid = element_blank()) +
-   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-90,90)) + theme_map()
-```  
-<br>  
-
-
-
