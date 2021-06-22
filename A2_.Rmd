@@ -1,0 +1,138 @@
+---
+title: "A2_"
+author: "Marcos Antônio e Hanna Rodrigues"
+date: "15 de julho de 2021"
+output: html_document
+---  
+
+```{r, warning=FALSE, message = FALSE}
+
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(Hmisc) # %nin% 
+
+```  
+
+
+```{r}
+
+data <- read.csv("owid-covid-data.csv")
+
+``` 
+
+
+```{r, message = FALSE, warning = FALSE}
+
+data <- data %>% 
+  group_by(location) %>%
+  summarise(continent = max(continent),
+    pop = max(population,na.rm = TRUE),
+    cases = max(total_cases,na.rm = TRUE),
+    deaths = max(total_deaths,na.rm = TRUE),
+    vac1 = max(people_vaccinated - people_fully_vaccinated,
+               na.rm = TRUE), 
+    vac2 = max(people_fully_vaccinated,na.rm = TRUE))
+
+data <- data %>% mutate(cases = ifelse(!(cases>=0), 0, cases),
+                        deaths = ifelse(!(deaths>=0), 0, deaths),
+                        vac1 = ifelse(!(vac1>=0 ), 0, vac1), 
+                        vac2 = ifelse(!(vac2>=0), 0, vac2))
+
+glimpse(data)
+
+```  
+
+<br>  
+
+```{r}
+
+data <- data %>% filter(location %nin% c("World",
+                                         "Asia",
+                                         "Europe",
+                                         "North America",
+                                         "European Union",
+                                         "South America",
+                                         "Africa"))
+
+#Estados Unidos: US$ 20,933 trilhões
+#China: US$ 14,723 trilhões
+#Japão: US$ 5,049 trilhões
+#Alemanha: US$ 3,803 trilhões
+#Reino Unido: US$ 2,711 trilhões
+#Índia: US$ 2,709 trilhões
+#França: US$ 2,599 trilhões
+#Itália: US$ 1,885 trilhão
+#Canadá: US$ 1,643 trilhão
+#Coreia do Sul: US$ 1,631 trilhão
+#Rússia: US$ 1,474 trilhão
+
+#Brasil: US$ 1,434 trilhão
+
+#Austrália: US$ 1,359 trilhão
+#Espanha: US$ 1,278 trilhão
+#México: US$ 1,076 trilhão
+
+names <- c('Brazil',
+          'United States',
+          'Canada',
+          'Mexico',
+          'Germany',
+          'United Kingdom',
+          'French',
+          'Italy',
+          'Spain',
+          'Russia',
+          'India',
+          'South Korea',
+          'China',
+          'Japan',
+          'Australia')
+
+
+colors <- c('#F28B30',
+            '#BF0A3A',
+            '#022873',
+            '#F23D6D',
+            'gray',
+            '#03A62C')
+
+data <- mutate(data, aux = ifelse(location %in% names,
+                                  ifelse(location == 'Brazil',
+                                         'z',
+                                         'b'),
+                                  'a'))
+
+data <- mutate(data, Continent =  ifelse(aux == 'a',
+                                         'Others',
+                                         continent))
+
+```
+
+<br>  
+
+
+```{r,height=6,width=6,units="in",dpi=200}
+
+data %>%
+  arrange(aux) %>% 
+  ggplot(aes(x=cases/pop,
+             y=deaths/pop)) +
+  geom_point(aes(size=vac2/pop,
+                 color=Continent),
+             alpha=0.6) +
+  scale_size(range = c(.1, 35), name="fully vaccinated") +
+  scale_colour_manual(values = colors) +
+  ggrepel::geom_text_repel(data = subset(data,
+                                         location %in% names),
+            aes(x=cases/pop,y=deaths/pop,label=location)) +
+  xlim(-0.012, .18) +
+  ylim(-0.0006, .0058) +
+  theme_classic() +
+  theme(legend.position = 'top') + 
+  guides( size = FALSE) +
+  labs(title="COVID-19 vaccinations of top 15 GPD countries")
+
+
+``` 
+
