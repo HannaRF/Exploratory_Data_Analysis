@@ -1,6 +1,6 @@
 ---
 title: "Mapa de Vacinação"
-author: "Marcos Antônio Alves e Hanna Rodrigues"
+author: "Marcos Antônio Alves e Hanna Rodrigues Ferreira"
 date: "`r format(Sys.time(), '%d %B,%Y')`"
 output: 
     html_document:
@@ -237,6 +237,7 @@ Analisando os mapas podemos notar uma associação entre número de vacinados, o
 
 <br>  
 
+# COVID-19 vaccinations of top 15 GPD countries
 
 <br>  
 
@@ -385,3 +386,16 @@ Outra coisa interessante a se resaltar é a concentração de países do top 15 
 
 
 De modo geral podemos analisar uma tendência linear crescente da parcela de casos e mortes em todos os países, com variações mais comuns da porcentagem de mortos para menos. Um outlier muito chamativo nesse contexto é o Peru, em cinza sem label, com a maior porcentagem de mortos.
+
+
+## Dinâmica e divisão do trabalho  
+
+Utilizamos um repositório no github para fazer o trabalho, os códigos e imagens foram feitas em `Rmarkdown`. Para fazê-lo, revisitamos diversas ferramentas elementares apresentadas no curso, utilizamos as bibliotecas de manipulação de dados como `dplyr` e `tidyrr`, bibliotecas para construção dos gráficos como `ggplot2`,`viridis` e `map`. Um ponto importante do trabalho foram as decisões sobre o que seria importante no gráfico, os critérios de prioridades entre visual e função dos elementos gráficos além de decidir entre diversas visualizações, a  que fosse mais eficiente para os nossos dados.  
+
+<br>  
+
+* Marcos Antônio : Mapas
+
+* Hanna Rodrigues : Bubble Chart
+
+<br>
