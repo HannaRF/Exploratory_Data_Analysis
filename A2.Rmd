@@ -5,6 +5,24 @@ date: "15 de julho de 2021"
 output: html_document
 ---  
 
+Neste trabalho, produzimos um mapa gráfico que fornece uma visualização do atual cenário da pandemia de covid-19 no mundo. Sabemos que os dados são significativamente alterados dia após dia e que novas fases da pandemia se estabelecem de tempos em tempos; no entanto mapas não são adequados para visualizar evolução ao longo do tempo, por isso o objetivo do gráfico é apenas transmitir a informação superficialmente mas de forma mais abrangente possível, de maneira elegante e eficiente. 
+
+<br>  
+
+## Base de dados  
+
+Utilizamos os dados do site *ourworldindata* contendo dados sobre testagens, vacinação, novos casos, número de mortos por covid e população de cada país.  
+
+*   Site:https://ourworldindata.org/covid-vaccinations  
+*   Dados:https://covid.ourworldindata.org/data/owid-covid-data.csv  
+<br>  
+
+## O mapa  
+
+Por se tratar de uma crise que afeta significamente o mundo todo, achamos interessante considerar o mundo como o nosso objeto informativo, onde cada país representa um único dado. Um mapa é eficiente nesse caso, pois além de permitir comprimir todas as informações da pandemia numa única visualização, ainda toma proveito do conhecimento geográfico preexistente de cada indivíduo para poupar tempo de leitura de textos com a posição da informação no mapa, atuando como elemento de pré-atenção.  
+Utilizaremos as variáveis `região`, `pessoas_vacindas` e `mortes` no nosso gráfico. A escolha do azul para o gráfico é justificada pela reincidência dessa cor em vários posts sobre vacinas. Utilizaremos a tonalidade das cores como artifício para representar quantidade. 
+
+
 ```{r, warning=FALSE, message = FALSE}
 library(maps)
 library(ggplot2)
@@ -102,7 +120,7 @@ world2 <- world2 %>% mutate(dose1 = ifelse(is.na(dose1),0,dose1),
                             vacin_perc = ifelse(is.na(vacin_perc),0,vacin_perc))
 
 world2 <- world2 %>% mutate(categoria = ifelse(dose2_perc < 0.1, "[0,0.1)",
-                                        ifelse(dose2_perc <5,"[0.1,5)",
+                                        ifelse(dose2_perc < 5, "[0.1,5)",
                                         ifelse(dose2_perc < 15, "[5,15)",
                                         ifelse(dose2_perc < 35, "[15,35)", "[35,100]")))))
 ```  
@@ -119,9 +137,9 @@ world2 <- world2 %>% mutate(categoria = ifelse(dose2_perc < 0.1, "[0,0.1)",
 ```{r}
 # Grafico 1: Dados contínuos
 
-ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1_perc, group = group)) + 
+ggplot(data = world2, mapping = aes(x= long, y = lat, fill = mortes, group = group)) + 
   geom_polygon(color = "white", size = 0.3) + 
-  labs(title = "Segunda dose", fill = "Percentil") +
+  labs(title = "Mortes por Covid", fill = "Número de mortos") +
   scale_fill_gradient2(low = "#6666FF", midpoint = 15, mid = "purple", high = "red") + 
   theme_map() + 
     theme(
@@ -136,11 +154,11 @@ ggplot(data = world2, mapping = aes(x= long, y = lat, fill = dose1_perc, group =
 
 ```{r}
 # Gráfico 2: Dados discretos
-blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Blues")
+blue_rev <- RColorBrewer::brewer.pal(n = 5, name = "Blues")
 ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
   geom_polygon(color = "white", size = 0.3) + 
   labs(title = "Segunda dose", fill = "Percentil") +
-  scale_fill_manual(values = blue_rev, ) +
+  scale_fill_manual(values = blue_rev) + 
   theme_map() + 
     theme(
     plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
@@ -154,7 +172,7 @@ ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = 
 
 ```{r}
 # Gráfico 2: Dados discretos
-blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Blues")
+blue_rev <- RColorBrewer::brewer.pal(n = 5, name = "Blues")
 ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
   geom_polygon(color = "white", size = 0.3) + 
   labs(title = "Segunda dose", fill = "Percentil") +
@@ -177,6 +195,7 @@ ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = 
   geom_polygon(color = "white", size = 0.3) + 
   labs(title = "Segunda dose", fill = "Percentil") +
   scale_fill_manual(values = blue_rev) +
+  
     theme_map() + 
     theme(
     plot.title = element_text(hjust = 0.5, colour = "Black", size = 20),
@@ -192,7 +211,7 @@ ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = 
 blue_rev <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
 ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = group)) + 
   geom_polygon(color = "white", size = 0.3) + 
-  labs(title = "Segunda dose", fill = "Percentil") +
+  labs(title = "Segunda Dose", fill = "Percentil") +
   scale_fill_manual(values = blue_rev) +
   guides(fill = guide_legend(nrow = 1)) +
     theme(
@@ -200,7 +219,7 @@ ggplot(data = world2, mapping = aes(x= long, y = lat, fill = categoria, group = 
     axis.title.x = element_blank(),
     panel.background = element_rect(fill = "#CCCCCC"),
     panel.grid = element_blank()) +
-   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-60,90)) + theme_map()
+   coord_map(proj = "mollweide", orientation = c(90,0,0), xlim = c(-130,170), ylim = c(-90,90)) + theme_map()
 ```  
 <br>  
 
