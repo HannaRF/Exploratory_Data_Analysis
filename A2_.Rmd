@@ -143,6 +143,8 @@ p <- data %>%
 
 p
 
+ggsave('bubble_chart_ggplot2.png',p,height=6,width=6,units="in",dpi=200)
+
 ``` 
 
 Uma possível análise a se fazer a partir dessa visualização é o fato de o Brasil, dentro do top ter junto com EUA, Reino Unido, Itália e Espanha ter os maiores percentuais de casos e mortes, entretanto ter uma campanha vacinal tímida se comparada aos mesmos países.
